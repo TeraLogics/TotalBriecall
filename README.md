@@ -1,7 +1,7 @@
 # 18f
 
 [![Build](https://travis-ci.org/TeraLogics/18F.png)](https://travis-ci.org/TeraLogics/18F)
-[![Coverage Status](https://coveralls.io/repos/TeraLogics/18F/badge.png)](https://coveralls.io/r/TeraLogics/18F)
+[![Coverage Status](https://coveralls.io/repos/TeraLogics/18F/badge.svg)](https://coveralls.io/r/TeraLogics/18F)
 [![Quality](https://codeclimate.com/github/TeraLogics/18F.png)](https://codeclimate.com/github/TeraLogics/18F)
 [![Dependencies](https://david-dm.org/TeraLogics/18F.png)](https://david-dm.org/TeraLogics/18F)
 
