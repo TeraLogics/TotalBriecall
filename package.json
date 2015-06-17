@@ -7,7 +7,7 @@
 		"start": "node index.js"
 	},
 	"dependencies": {
-		"express": "~4.9.x"
+		"express": "~4.12.x"
 	},
 	"engines": {
 		"node": "0.12.2"
