@@ -1,25 +1,44 @@
 {
-  "name": "18F",
-  "version": "0.1.3",
-  "description": "Prototype for 18F",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "express": "~4.9.x"
-  },
-  "engines": {
-    "node": "0.12.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/teralogics/18f"
-  },
-  "keywords": [
-    "node",
-    "heroku",
-    "express"
-  ],
-  "license": "MIT"
+	"name": "18F",
+	"version": "0.1.0",
+	"description": "Prototype for 18F",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"express": "~4.9.x"
+	},
+	"engines": {
+		"node": "0.12.2"
+	},
+	"bugs": {
+		"url": "https://github.com/TeraLogics/18F/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/TeraLogics/18F"
+	},
+	"keywords": [
+		"node",
+		"heroku",
+		"express"
+	],
+	"licenses": [{
+		"type": "MIT",
+		"url": "http://www.opensource.org/licenses/MIT"
+	}],
+	"devDependencies": {
+		"chai": "^2.1.0",
+		"chai-passport-strategy": "0.1.x",
+		"mocha": "^2.1.0"
+	},
+	"scripts": {
+		"test": "mocha --reporter spec --require test/bootstrap/node test/*.test.js"
+	},
+	"homepage": "https://github.com/TeraLogics/18F",
+	"directories": {
+		"example": "examples",
+		"test": "test"
+	}
 }
