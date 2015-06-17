@@ -1,0 +1,7 @@
+{
+  "name": "18F",
+  "description": "Prototype for 18F",
+  "repository": "https://github.com/teralogics/18f",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "static"]
+}
