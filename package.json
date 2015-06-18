@@ -1,7 +1,7 @@
 {
-	"name": "18F",
+	"name": "Total Briecall",
 	"version": "0.1.0",
-	"description": "Prototype for 18F",
+	"description": "Prototype for Total Briecall",
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js"
@@ -13,11 +13,11 @@
 		"node": "0.12.2"
 	},
 	"bugs": {
-		"url": "https://github.com/TeraLogics/18F/issues"
+		"url": "https://github.com/TeraLogics/TotalBriecall/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/TeraLogics/18F"
+		"url": "https://github.com/TeraLogics/TotalBriecall"
 	},
 	"keywords": [
 		"node",
@@ -30,13 +30,12 @@
 	}],
 	"devDependencies": {
 		"chai": "^3.0.0",
-		"chai-passport-strategy": "^0.2.0",
 		"mocha": "^2.2.5"
 	},
 	"scripts": {
 		"test": "mocha --reporter spec --require test/bootstrap/node test/*.test.js"
 	},
-	"homepage": "https://github.com/TeraLogics/18F",
+	"homepage": "https://github.com/TeraLogics/TotalBriecall",
 	"directories": {
 		"example": "examples",
 		"test": "test"
