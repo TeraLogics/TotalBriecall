@@ -1,9 +1,9 @@
 # 18f
 
-[![Build](https://travis-ci.org/TeraLogics/18F.png)](https://travis-ci.org/TeraLogics/18F)
-[![Coverage Status](https://coveralls.io/repos/TeraLogics/18F/badge.svg)](https://coveralls.io/r/TeraLogics/18F)
-[![Quality](https://codeclimate.com/github/TeraLogics/18F.png)](https://codeclimate.com/github/TeraLogics/18F)
-[![Dependencies](https://david-dm.org/TeraLogics/18F.png)](https://david-dm.org/TeraLogics/18F)
+[![Build](https://travis-ci.org/TeraLogics/TotalBriecall.png)](https://travis-ci.org/TeraLogics/TotalBriecall)
+[![Coverage Status](https://coveralls.io/repos/TeraLogics/TotalBriecall/badge.svg)](https://coveralls.io/r/TeraLogics/TotalBriecall)
+[![Quality](https://codeclimate.com/github/TeraLogics/TotalBriecall.png)](https://codeclimate.com/github/TeraLogics/TotalBriecall)
+[![Dependencies](https://david-dm.org/TeraLogics/TotalBriecall.png)](https://david-dm.org/TeraLogics/TotalBriecall)
 
 A barebones Node.js app using [Express 4](http://expressjs.com/).
 
