@@ -14,3 +14,11 @@ exports.details = function (req, res, next) {
 		id: req.params.id
 	});
 };
+
+exports.map = function (req, res, next) {
+	return res.render('map');
+};
+
+exports.geocode = function (req, res, next) {
+	return res.render('geocode');
+};
