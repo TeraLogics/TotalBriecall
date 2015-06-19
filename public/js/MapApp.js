@@ -156,9 +156,10 @@ var GeoCode = {
 			dataType: "text" //use text so we can simply regex match the state
 		}).done(function(data) {
 			var match = data.match(/<State>(.*)<\/State>/);
-			if(!match) {
-				deferred.reject();
+			if(!match || match.length === 1) { //check the regex matched more than itself
+				return deferred.reject();
 			}
+
 			var state = match[1].length === 2 ? match[1] : stateNameToAbbr[match[1]] ;
 			return deferred.resolve(state);
 		}).fail(function(data) {

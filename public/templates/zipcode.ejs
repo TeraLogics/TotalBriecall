@@ -1,0 +1,19 @@
+<div class="modal fade" id="zipcodeModal" tabindex="-1" role="dialog" aria-labelledby="zipcodeModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">What's your zipcode?</h4>
+			</div>
+			<div class="modal-body">
+				<div class="input-group input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+					<input type="text" tabindex="1" class="form-control" id="zipcodeInput" name="zipcodeInput" maxlength="5" placeholder="Zipcode"/>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" onclick="GetZipcode($('#zipcodeInput').val())" class="btn btn-primary">Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
