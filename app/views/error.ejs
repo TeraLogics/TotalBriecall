@@ -1,0 +1,44 @@
+<%
+var errorCode = (_.isUndefined(code) || _.isNull(code)) ? 500 : code;
+var errorTitle = (_.isUndefined(title) || _.isNull(title)) ? 'Oh noes! An error occured!' : title;
+var errorMessage = (_.isUndefined(message) || _.isNull(message)) ? 'Sorry, the page you are looking for errored. Please try again later. Please try again, modify your url, or contact your administrator.' : message;
+%>
+<% include ./common/header.ejs %>
+<style>
+	h1 {
+		margin-top: 0;
+	}
+</style>
+<div><p>&nbsp;</p></div>
+<div class="container">
+	<div class="row">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
+			<div class="panel">
+				<div class="panel-heading">Error</div>
+				<div class="panel-body">
+					<h1><%= errorCode %>
+						<small><%= errorTitle %></small>
+					</h1>
+					<hr/>
+					<% if (errorMessage) { %>
+					<p><%= errorMessage %></p>
+					<hr/>
+					<% } %>
+					<% if (typeof showback === 'undefined' || showback) { %>
+					<p>
+						<a href="javascript:window.history.go(-1)" class="btn btn-warning">
+							<span class="batchicon batchicon_296"></span>
+							Back
+						</a>
+					</p>
+					<% } %>
+					<% if (typeof showerr !== 'undefined' && showerr && typeof err !== 'undefined' && err) { %>
+					<p><%= err.type %></p>
+					<pre><%= err.stack %></pre>
+					<% } %>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% include ./common/footer.ejs %>
