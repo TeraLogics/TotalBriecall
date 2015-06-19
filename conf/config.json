@@ -1,0 +1,29 @@
+{
+	"environment": "development",
+	"connections": {
+		"mongodb": {
+			"host": "***REMOVED***",
+			"port": 39860,
+			"user": "totalbriecall",
+			"password": "***REMOVED***",
+			"database": "***REMOVED***",
+			"reconnect": true
+		},
+		"secret": "***REMOVED***"
+	},
+	"portal": {
+		"version": "v1.0.0",
+		"port": 5000,
+		"workers": 3,
+		"default": "/",
+		"sessionlength": 3600000,
+		"logging": {
+			"title": "total-briecall",
+			"level": "debug"
+		},
+		"website": {
+			"name": "Total Briecall",
+			"cookie_domain": ""
+		}
+	}
+}

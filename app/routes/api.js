@@ -3,7 +3,7 @@
 var path = require('path'),
 	apiCtrl = require(path.join(global.__ctrldir, 'api'));
 
-module.exports = function (app, passport, middleware) {
+module.exports = function (app) {
 	app.route('/api/recalls/:id')
 		.get(apiCtrl.getRecallById);
 
@@ -12,4 +12,7 @@ module.exports = function (app, passport, middleware) {
 
 	app.route('/api/firms/:name')
 		.get(apiCtrl.getRecallByRecallingFirm);
+
+	app.route('/api/search')
+		.get(apiCtrl.search);
 };
