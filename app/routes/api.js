@@ -12,4 +12,7 @@ module.exports = function (app) {
 
 	app.route('/api/firms/:name')
 		.get(apiCtrl.getRecallByRecallingFirm);
+
+	app.route('/api/search')
+		.get(apiCtrl.search);
 };

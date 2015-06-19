@@ -39,6 +39,8 @@ global.__modelsdir = path.join(global.__libdir, 'models');
 global.__viewsdir = path.join(global.__appdir, 'views');
 global.__ctrldir = path.join(global.__appdir, 'controllers');
 
+global.__adptsdir = path.join(global.__appdir, 'adapters');
+
 // Load application configuration
 global.config = require(path.join(global.__basedir, 'conf', 'config')).get();
 
@@ -150,14 +152,14 @@ global.config = require(path.join(global.__basedir, 'conf', 'config')).get();
 		return next();
 	});
 
-	readDir(path.join(__appdir, 'routes')).then(function (routes) {
+	readDir(path.join(global.__appdir, 'routes')).then(function (routes) {
 		// load each resource
 		routes.sort();
 
 		routes.forEach(function (route) {
-			if (path.extname(route) == '.js') {
+			if (path.extname(route) === '.js') {
 				route = route.slice(0, route.length - 3); // Remove extension
-				require(path.join(__appdir, 'routes', route))(app); // Include the route file
+				require(path.join(global.__appdir, 'routes', route))(app); // Include the route file
 			} else {
 				console.warn('Skipped loading route: ' + route + ' because it is not a route file');
 			}
@@ -165,7 +167,7 @@ global.config = require(path.join(global.__basedir, 'conf', 'config')).get();
 
 		// Assume "not found" in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.
 		app.use(function (err, req, res, next) {
-			if (~err.message.indexOf('not found')) { // Treat as 404
+			if (err.message.indexOf('not found') !== -1) { // Treat as 404
 				return next();
 			} else {
 				console.error(err.stack);

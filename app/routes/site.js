@@ -7,6 +7,6 @@ module.exports = function (app, passport, middleware) {
 	app.route('/')
 		.get(siteCtrl.index);
 
-	app.route('/details')
+	app.route('/details/:id')
 		.get(siteCtrl.details);
 };
