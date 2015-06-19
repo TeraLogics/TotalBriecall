@@ -1,7 +1,7 @@
 COVERALLS ?= coveralls
 
 submit-istanbul-lcov-to-coveralls:
-	cat $(ISTANBUL_LCOV_INFO_PATH) | $(COVERALLS)
+	$(COVERALLS) < $(ISTANBUL_LCOV_INFO_PATH)
 
 
 .PHONY: submit-istanbul-lcov-to-coveralls
