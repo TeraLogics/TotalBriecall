@@ -67,10 +67,13 @@ var stateMappings = {
 	],
 // TODO expand keyword mappings
 	keywordMappings = {
-		'nut': ['nut'],
-		'milk': ['milk'],
-		'soy': ['soy'],
-		'whey': ['whey']
+		'dairy': ['dairy', 'milk', 'cheese', 'cheeses', 'whey'],
+		'dye': ['dye', 'color', 'colors', 'red', 'yellow', 'pink', 'blue', 'green'],
+		'egg': ['egg', 'eggs'],
+		'fish': ['fish', 'shellfish', 'oyster', 'oysters'],
+		'gluten': ['gluten', 'wheat'],
+		'nut': ['nut', 'nuts', 'peanut', 'peanuts', 'seed', 'seeds', 'walnuts', 'almond', 'almonds', 'pistachio', 'pistachio', 'hazelnut', 'hazelnuts'],
+		'soy': ['soy', 'tofu']
 	};
 
 /**
@@ -166,12 +169,12 @@ exports.search = function (req, res, next) {
 	}
 
 	if (req.query.from && req.query.to) {
-		obj.from = req.query.from;
-		obj.to = req.query.to;
+		obj.from = parseInt(req.query.from, 10);
+		obj.to = parseInt(req.query.to, 10);
 	}
 
 	if (req.query.classificationlevel) {
-		obj.classificationlevel = req.query.classificationlevel;
+		obj.classificationlevel = parseInt(req.query.classificationlevel, 10);
 	}
 
 	if (req.query.keywords) {

@@ -108,16 +108,16 @@ exports.getFoodRecallBySearch = function (obj) {
 	}
 
 	if (obj.classificationlevel) {
-		search.push('classification:"Class+' + Array(obj.classificationlevel).join('I') + '"');
+		search.push('classification:"Class+' + (new Array(obj.classificationlevel + 1).join('I')) + '"');
 	}
 
 	if (obj.keywords) {
 		search.push('(' + _.map(obj.keywords, function (keyword) {
-			return 'product_description:"' + keyword.replace(/ /g, '+') + '"';
+			return 'reason_for_recall:"' + keyword.replace(/ /g, '+') + '"';
 		}).join('+') + ')');
 	}
 
 	return makeRequest({
-		search: search.join('+')
+		search: search.join('+AND+')
 	});
 };
