@@ -5,26 +5,79 @@
     <script src="/js/bluebird.min.js"></script>
     <link rel="stylesheet" href="/css/leaflet.css" />
     <script src="/js/leaflet.js"></script>
+    <script src="/js/ejs-1.0.0.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="/js/us-states.js"></script>
     <script src="/js/MapApp.js"></script>
 </head>
 <body>
 <script>
     $(document).ready(function(){
-        navigator.geolocation.getCurrentPosition(GetLocation);
-        function GetLocation(location) {
-            GeoCode.latlon({
-                lat: location.coords.latitude,
-                lon: location.coords.longitude
-            }).then(function(state){
-                console.log(state);
-            }).fail(function(test, err){
-                console.log('failed');
-            });
-        }
+        var modal = new EJS({url: '/templates/zipcode.ejs'}).render();
+        $('#modal').append(modal);
+        $('#zipcodeModal').on('shown.bs.modal', function () {
+            $('#zipcodeInput').focus();
+        });
+
+        navigator.geolocation.getCurrentPosition(GetLatLon);
     });
+
+    function GetLatLon(location) {
+        GeoCode.latlon({
+            lat: location.coords.latitude,
+            lon: location.coords.longitude
+        }).then(function(state){
+            HidePromptForZip();
+            DrawMap(state);
+        }).fail(function(test, err){
+            PromptForZip();
+        });
+    }
+
+    function GetZipcode(zipcode) {
+        GeoCode.zipcode(zipcode).then(function(state){
+            HidePromptForZip();
+            DrawMap(state);
+        }).fail(function(){
+            alert('your zip failed, try again');
+            $('#zipcodeInput').val("");
+        });
+    }
+
+    function PromptForZip() {
+        $('#zipcodeModal').modal();
+    }
+
+    function HidePromptForZip() {
+        $('#zipcodeModal').modal('hide');
+    }
+
+    function DrawMap(state) {
+        var map = new MapApp({
+            height: 250,
+            width: 500,
+        });
+        map.create();
+        var style = function(feature) {
+            return {
+                fillColor: '#800026', //feature.properties.name ? '#800026' : null,
+                weight: 1,
+                opacity: 1,
+                color: 'white',
+                //dashArray: '3',
+                fillOpacity: 0.7
+            };
+        };
+
+        map.add('layer', getStateGeoJSON([state]), {
+            style: style
+        });
+    }
 </script>
-<div id="map">
-</div>
+    <div id="map">
+    </div>
+    <div id="modal">
+    </div>
 </body>
 </html>
