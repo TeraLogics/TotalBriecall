@@ -8,3 +8,11 @@ exports.index = function (req, res, next) {
 exports.details = function (req, res, next) {
 	return res.render('details');
 };
+
+exports.map = function (req, res, next) {
+	return res.render('map');
+};
+
+exports.geocode = function (req, res, next) {
+	return res.render('geocode');
+};

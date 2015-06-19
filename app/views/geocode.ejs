@@ -1,0 +1,30 @@
+<html>
+<head>
+    <script src="/js/jquery-2.1.4.min.js"></script>
+    <script src="/js/underscore-min.js"></script>
+    <script src="/js/bluebird.min.js"></script>
+    <link rel="stylesheet" href="/css/leaflet.css" />
+    <script src="/js/leaflet.js"></script>
+    <script src="/js/us-states.js"></script>
+    <script src="/js/MapApp.js"></script>
+</head>
+<body>
+<script>
+    $(document).ready(function(){
+        navigator.geolocation.getCurrentPosition(GetLocation);
+        function GetLocation(location) {
+            GeoCode.latlon({
+                lat: location.coords.latitude,
+                lon: location.coords.longitude
+            }).then(function(state){
+                console.log(state);
+            }).fail(function(test, err){
+                console.log('failed');
+            });
+        }
+    });
+</script>
+<div id="map">
+</div>
+</body>
+</html>
