@@ -7,7 +7,13 @@ var _ = require('underscore'),
 
 var options = {
 		uri: 'https://api.fda.gov/food/enforcement.json',
-		method: 'GET'
+		method: 'GET',
+		resolveWithFullResponse: true, // useful for debugging
+		json: true,
+		qsStringifyOptions: {
+			encodeURIComponent: function (str) { return str; } // requires node 0.12, needed to work with complex searches
+		},
+		useQuerystring: true
 	},
 	limit = 100;
 
@@ -36,11 +42,16 @@ function makeRequest(obj) {
 	return request.get(_.extend(options, {
 		qs: obj
 	})).then(function (response) {
-		return JSON.parse(response);
+		//console.log(response);
+		return response.body;
 	}).catch(function (err) {
-		// TODO determine html code to pass up
-		console.log(err);
-		throw err;
+		//console.log(err);
+		// TODO need better wrapper for error handling
+		console.log(err.statusCode + ' - ' + JSON.stringify(err.error));
+		throw {
+			statusCode: err.statusCode,
+			error: err.error.error // `error` for request -> `error` for openFDA response
+		};
 	});
 }
 
@@ -87,9 +98,9 @@ exports.getFoodRecallBySearch = function (obj) {
 	var search = [];
 
 	if (obj.locations) {
-		search.push(_.map(obj.locations, function (location) {
+		search.push('(' + _.map(obj.locations, function (location) {
 			return 'distribution_pattern:"' + location.replace(/ /g, '+') + '"';
-		}).join('+'));
+		}).join('+') + ')');
 	}
 
 	if (obj.from && obj.to) {
@@ -101,9 +112,9 @@ exports.getFoodRecallBySearch = function (obj) {
 	}
 
 	if (obj.keywords) {
-		search.push(_.map(obj.keywords, function (keyword) {
+		search.push('(' + _.map(obj.keywords, function (keyword) {
 			return 'product_description:"' + keyword.replace(/ /g, '+') + '"';
-		}).join('+'));
+		}).join('+') + ')');
 	}
 
 	return makeRequest({

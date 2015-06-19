@@ -88,8 +88,8 @@ exports.getRecallById = function (req, res, next) {
 	}).then(function (response) {
 		res.json(response);
 	}).catch(function (err) {
-		res.status(500).json({
-			message: 'Internal Error - Could not fetch data'
+		res.status(err.statusCode).json({
+			error: err.error
 		});
 	}).done();
 };
@@ -109,8 +109,8 @@ exports.getRecallByEventId = function (req, res, next) {
 	}).then(function (response) {
 		res.json(response);
 	}).catch(function (err) {
-		res.status(500).json({
-			message: 'Internal Error - Could not fetch data'
+		res.status(err.statusCode).json({
+			error: err.error
 		});
 	}).done();
 };
@@ -130,8 +130,8 @@ exports.getRecallByRecallingFirm = function (req, res, next) {
 	}).then(function (response) {
 		res.json(response);
 	}).catch(function (err) {
-		res.status(500).json({
-			message: 'Internal Error - Could not fetch data'
+		res.status(err.statusCode).json({
+			error: err.error
 		});
 	}).done();
 };
@@ -162,7 +162,7 @@ exports.search = function (req, res, next) {
 	var obj = {};
 
 	if (req.query.state) {
-		obj.locations = stateMappings[req.query.state].concat(nationalTerms);
+		obj.locations = stateMappings[req.query.state.toUpperCase()].concat(nationalTerms);
 	}
 
 	if (req.query.from && req.query.to) {
@@ -176,8 +176,8 @@ exports.search = function (req, res, next) {
 
 	if (req.query.keywords) {
 		obj.keywords = _.reduce(req.query.keywords, function (arr, keyword) {
-			if (keywordMappings[keyword]) {
-				return arr.concat(keywordMappings[keyword]);
+			if (keywordMappings[keyword.toLowerCase()]) {
+				return arr.concat(keywordMappings[keyword.toLowerCase()]);
 			} else {
 				return arr;
 			}
@@ -187,8 +187,8 @@ exports.search = function (req, res, next) {
 	fdaAdapter.getFoodRecallBySearch(obj).then(function (response) {
 		res.json(response);
 	}).catch(function (err) {
-		res.status(500).json({
-			message: 'Internal Error - Could not fetch data'
+		res.status(err.statusCode).json({
+			error: err.error
 		});
 	}).done();
 };
