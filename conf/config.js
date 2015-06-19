@@ -15,7 +15,23 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 exports.path = path.resolve(__dirname, 'config.json');
 
+function buildConnectionString (conf) {
+	var s = 'mongodb://';
 
+	if (conf.connections.mongodb.user && conf.connections.mongodb.password) {
+		s += conf.connections.mongodb.user + ':' + crypto.decrypt(key, conf.connections.mongodb.password) + '@';
+	}
+
+	s += conf.connections.mongodb.host
+
+	if (conf.connections.mongodb.port) {
+		s += ':' + conf.connections.mongodb.port;
+	}
+
+	s += '/' + conf.connections.mongodb.database;
+
+	return s;
+}
 
 /**
  * Reads the configuration file.
@@ -30,8 +46,7 @@ exports.read = function (extend) {
 		// Extend by default
 		if (_.isUndefined(extend) || _.isNull(extend) || (_.isBoolean(extend) && extend === true)) {
 			conf.connections.mongodb.buildConnectionString = function () {
-				// We build it every time so we don't hold it in memory (STIG)
-				return 'mongodb://' + conf.connections.mongodb.user + ':' + crypto.decrypt(key, conf.connections.mongodb.password) + '@' + conf.connections.mongodb.host + ':' + conf.connections.mongodb.port + '/' + conf.connections.mongodb.database;
+				return buildConnectionString(conf);
 			};
 		}
 
@@ -57,7 +72,7 @@ exports.readSync = function (extend) {
 		if (_.isUndefined(extend) || _.isNull(extend) || (_.isBoolean(extend) && extend === true)) {
 			conf.connections.mongodb.buildConnectionString = function () {
 				// We build it every time so we don't hold it in memory (STIG)
-				return 'mongodb://' + conf.connections.mongodb.user + ':' + crypto.decrypt(key, conf.connections.mongodb.password) + '@' + conf.connections.mongodb.host + ':' + conf.connections.mongodb.port + '/' + conf.connections.mongodb.database;
+				return buildConnectionString(conf);
 			}
 		}
 
