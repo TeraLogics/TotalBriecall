@@ -1,0 +1,27 @@
+<html>
+<head>
+    <script src="../../../static/jquery/js/jquery-2.1.4.min.js"></script>
+    <script src="../../../static/underscore/js/underscore-min.js"></script>
+    <link rel="stylesheet" href="../../../static/map/css/leaflet.css" />
+    <script src="../../../static/map/js/leaflet.js"></script>
+    <script src="../../../static/map/js/us-states.js"></script>
+    <script src="../../../static/map/js/MapApp.js"></script>
+</head>
+<body>
+<script>
+    $(document).ready(function(){
+        navigator.geolocation.getCurrentPosition(GetLocation);
+        function GetLocation(location) {
+            alert(location.coords.latitude);
+            alert(location.coords.longitude);
+            GeoCode.latlon({
+                lat: location.coords.latitude,
+                lon: location.coords.longitude
+            });
+        }
+    });
+</script>
+<div id="map">
+</div>
+</body>
+</html>
