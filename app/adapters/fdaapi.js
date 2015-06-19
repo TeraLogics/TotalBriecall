@@ -32,16 +32,14 @@ function makeRequest(obj) {
 		return Promise.reject(new Error('Invalid skip'));
 	}
 
+	console.log('Making request to api', obj);
 	return request.get(_.extend(options, {
 		qs: obj
 	})).then(function (response) {
-		if (response.statusCode !== 200) {
-			Promise.reject(new Error(response.statusCode + ' | ' + response.body.error.code + ' - ' + response.body.error.message));
-		} else {
-			Promise.resolve(response.body);
-		}
+		return JSON.parse(response);
 	}).catch(function (err) {
-		console.error(err);
+		// TODO determine html code to pass up
+		console.log(err);
 		throw err;
 	});
 }

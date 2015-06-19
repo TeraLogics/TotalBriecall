@@ -68,7 +68,9 @@ var stateMappings = {
 // TODO expand keyword mappings
 	keywordMappings = {
 		'nut': ['nut'],
-		'milk': ['milk']
+		'milk': ['milk'],
+		'soy': ['soy'],
+		'whey': ['whey']
 	};
 
 /**
@@ -85,8 +87,11 @@ exports.getRecallById = function (req, res, next) {
 		id: req.params.id
 	}).then(function (response) {
 		res.json(response);
-		return next();
-	});
+	}).catch(function (err) {
+		res.status(500).json({
+			message: 'Internal Error - Could not fetch data'
+		});
+	}).done();
 };
 
 /**
@@ -103,8 +108,11 @@ exports.getRecallByEventId = function (req, res, next) {
 		id: req.params.id
 	}).then(function (response) {
 		res.json(response);
-		return next();
-	});
+	}).catch(function (err) {
+		res.status(500).json({
+			message: 'Internal Error - Could not fetch data'
+		});
+	}).done();
 };
 
 /**
@@ -121,8 +129,11 @@ exports.getRecallByRecallingFirm = function (req, res, next) {
 		name: req.params.name
 	}).then(function (response) {
 		res.json(response);
-		return next();
-	});
+	}).catch(function (err) {
+		res.status(500).json({
+			message: 'Internal Error - Could not fetch data'
+		});
+	}).done();
 };
 
 /* TODO
@@ -175,6 +186,9 @@ exports.search = function (req, res, next) {
 
 	fdaAdapter.getFoodRecallBySearch(obj).then(function (response) {
 		res.json(response);
-		return next();
-	});
+	}).catch(function (err) {
+		res.status(500).json({
+			message: 'Internal Error - Could not fetch data'
+		});
+	}).done();
 };
