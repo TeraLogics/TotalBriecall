@@ -1,0 +1,12 @@
+$text-direction: ltr !default;
+$bg-default: #fff !default;
+$bg-void: darken($bg-default, 10%) !default;
+
+//
+// Avatars
+// --------------------------------------------------
+$avatar-thumbnail-width: 40px;
+$avatar-thumbnail-height: 40px;
+
+// Import custom Bootstrap variables
+@import "bootstrap-variables";

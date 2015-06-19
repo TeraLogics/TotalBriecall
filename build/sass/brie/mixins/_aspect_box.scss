@@ -1,0 +1,29 @@
+@mixin aspect-box-ratio($ratio: 1, $box-width: 100%) {
+  position: relative;
+  width: $box-width;
+
+  &:before {
+    content: "";
+    display: block;
+    padding-top: ($box-width / $ratio);
+  }
+}
+
+@mixin aspect-box-percentage($percentage-of-width: 100%, $box-width: 100%) {
+  position: relative;
+  width: $box-width;
+
+  &:before {
+    content: "";
+    display: block;
+    padding-top: $percentage-of-width;
+  }
+}
+
+@mixin aspect-content {
+  position:  absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
