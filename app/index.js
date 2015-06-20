@@ -71,7 +71,7 @@ global.config = require(path.join(global.__basedir, 'conf', 'config')).get();
 	var app = express(),
 		readDir = Promise.promisify(fs.readdir);
 
-	app.set('port', (process.env.PORT || 5000));
+	app.set('port', (process.env.PORT || global.config.portal.port || 5000));
 	app.set('showStackError', true);
 
 	// Should be placed before express.static to ensure that all assets and data are compressed (utilize bandwidth)
@@ -187,8 +187,6 @@ global.config = require(path.join(global.__basedir, 'conf', 'config')).get();
 		if (process.env.NODE_ENV === 'development') { // Error handler - has to be last
 			app.use(errorHandler());
 		}
-
-		app.set('port', global.config.portal.port);
 
 		app.listen(app.get('port'), function () {
 			_.each(app._router.stack, function (r) {
