@@ -15,13 +15,17 @@ function MapApp(options) {
 	self._features = null;
 	self.Mediator = (function(){
 		var subscribe = function(channel, fn){
-				if (!self.Mediator.channels[channel]) self.Mediator.channels[channel] = [];
+				if (!self.Mediator.channels[channel]) {
+					self.Mediator.channels[channel] = [];
+				}
 				self.Mediator.channels[channel].push({ context: this, callback: fn });
 				return this;
 			},
 
 			publish = function(channel){
-				if (!self.Mediator.channels[channel]) return false;
+				if (!self.Mediator.channels[channel]) {
+					return false;
+				}
 				var args = Array.prototype.slice.call(arguments, 1);
 				for (var i = 0, l = self.Mediator.channels[channel].length; i < l; i++) {
 					var subscription = self.Mediator.channels[channel][i];
@@ -55,7 +59,7 @@ function MapApp(options) {
 		}).addTo(self._map);
 
 		return true;
-	}
+	};
 
 	self._updateMap = function(obj){
 	};
@@ -71,7 +75,7 @@ function MapApp(options) {
 	};
 
 	self._addMarker = function(obj, options){
-		var marker = L.marker([obj.lat, obj.lon]).addTo(self._map)
+		L.marker([obj.lat, obj.lon]).addTo(self._map)
 			.bindPopup(obj.message)
 			.openPopup();
 		self._map.setView([obj.lat, obj.lon], 17);
@@ -88,7 +92,7 @@ function MapApp(options) {
 
 	self._deleteAllFeatures = function(){
 	};
-};
+}
 
 MapApp.prototype.create = function (options) {
 	this._createMap(options);
@@ -129,20 +133,20 @@ var GeoCode = {
 			return deferred.reject();
 		}
 		$.ajax({
-			type: "GET",
+			type: 'GET',
 			url: 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + obj.lat + '&lon=' + obj.lon,
-			dataType: "JSON" //use text so we can simply regex match the state
+			dataType: 'JSON' //use text so we can simply regex match the state
 		}).done(function(data) {
 			if(!data ||  !data.address) {
 				return deferred.reject();
 			}
 			var state = data.address.state.length === 2 ? data.address.state : stateNameToAbbr[data.address.state] ;
 			return deferred.resolve(state);
-		}).fail(function(data) {
-			return deferred.reject();
+		}).fail(function(err) {
+			return deferred.reject(err);
 		});
 
-		return deferred
+		return deferred;
 	},
 	zipcode: function(zipcode) {
 		var deferred = $.Deferred();
@@ -151,9 +155,9 @@ var GeoCode = {
 			return deferred.reject();
 		}
 		$.ajax({
-			type: "GET",
+			type: 'GET',
 			url: 'http://production.shippingapis.com/ShippingAPITest.dll?API=CityStateLookup&XML=%3CCityStateLookupRequest%20USERID=%22***REMOVED***%22%3E%20%3CZipCode%20ID=%20%220%22%3E%20%3CZip5%3E' + zipcode + '%3C/Zip5%3E%20%3C/ZipCode%3E%20%3C/CityStateLookupRequest%3E',
-			dataType: "text" //use text so we can simply regex match the state
+			dataType: 'text' //use text so we can simply regex match the state
 		}).done(function(data) {
 			var match = data.match(/<State>(.*)<\/State>/);
 			if(!match || match.length === 1) { //check the regex matched more than itself
@@ -162,10 +166,10 @@ var GeoCode = {
 
 			var state = match[1].length === 2 ? match[1] : stateNameToAbbr[match[1]] ;
 			return deferred.resolve(state);
-		}).fail(function(data) {
-			return deferred.reject();
+		}).fail(function(err) {
+			return deferred.reject(err);
 		});
 
-		return deferred
+		return deferred;
 	}
 };
