@@ -77,66 +77,150 @@ var stateMappings = {
 	};
 
 /**
- * TODO
+ * Converts input to a valid integer or undefined
+ * @param input
+ * @returns {Number|undefined}
+ * @private
+ */
+function _validateNumber(input) {
+	var temp;
+	try {
+		temp = parseInt(input, 10);
+		if (!_.isFinite(temp)) {
+			temp = undefined;
+		}
+	} catch(e) {
+		return undefined;
+	}
+
+	return temp;
+}
+
+function _validateSkipAndLimit(params, obj) {
+
+}
+
+/**
+ * Sends invalid argument error to client
+ * @param message
+ * @param res
+ * @private
+ */
+function _rejectArgument(message, res) {
+	res.status(409).json({
+		error: {
+			code: "Invalid Argument",
+			message: message
+		}
+	});
+}
+
+/**
+ * Outputs response from database and handles errors
+ * @param {Promise} promise
+ * @param res
+ * @private
+ */
+function _processResponse(promise, res) {
+	promise.then(function (response) {
+		res.json(response);
+	}).catch(function (err) {
+		if (err.message) {
+			_rejectArgument(err.message, res);
+		} else {
+			res.status(err.statusCode).json({
+				error: err.error
+			});
+		}
+	}).done();
+}
+
+/**
+ * Gets recall for specific id
  * @param req
  * @param {Number} req.params.id
  * @param res
- * @param next
  */
-exports.getRecallById = function (req, res, next) {
-	// TODO - validation
-	//req.params.id = "recall_number"
-	fdaAdapter.getFoodRecallById({
-		id: req.params.id
-	}).then(function (response) {
-		res.json(response);
-	}).catch(function (err) {
-		res.status(err.statusCode).json({
-			error: err.error
-		});
-	}).done();
+exports.getRecallById = function (req, res) {
+	var obj = {};
+
+	obj.id = req.params.id; // TODO validate against pattern?
+
+	if (req.params.skip) {
+		_rejectArgument('Invalid skip - not allowed', res);
+		return;
+	}
+
+	if (req.params.limit) {
+		_rejectArgument('Invalid limit - not allowed', res);
+		return;
+	}
+
+	_processResponse(fdaAdapter.getFoodRecallById(obj), res);
 };
 
 /**
- * TODO
+ * Gets recalls for event
  * @param req
  * @param {Number} req.params.id
  * @param res
- * @param next
  */
-exports.getRecallByEventId = function (req, res, next) {
-	// TODO - validation
-	//req.params.id = event_id
-	fdaAdapter.getFoodRecallByEventId({
-		id: req.params.id
-	}).then(function (response) {
-		res.json(response);
-	}).catch(function (err) {
-		res.status(err.statusCode).json({
-			error: err.error
-		});
-	}).done();
+exports.getRecallByEventId = function (req, res) {
+	var obj = {};
+
+	obj.id = _validateNumber(req.params.id);
+	if (_.isUndefined(obj.id)) {
+		_rejectArgument('Invalid id', res);
+		return;
+	}
+
+	if (req.params.skip) {
+		obj.skip = _validateNumber(req.params.skip);
+		if (_.isUndefined(obj.skip)) {
+			_rejectArgument('Invalid skip', res);
+			return;
+		}
+	}
+
+	if (req.params.limit) {
+		obj.limit = _validateNumber(req.params.limit);
+		if (_.isUndefined(obj.limit)) {
+			_rejectArgument('Invalid limit', res);
+			return;
+		}
+	}
+
+	_processResponse(fdaAdapter.getFoodRecallByEventId(obj), res);
 };
 
 /**
- * TODO
+ * Gets recalls for recalling firm
  * @param req
  * @param {String} req.params.name
  * @param res
- * @param next
  */
-exports.getRecallByRecallingFirm = function (req, res, next) {
-	// TODO - validation
-	//req.params.name = recalling_firm
-	fdaAdapter.getFoodRecallByRecallingFirm({
+exports.getRecallByRecallingFirm = function (req, res) {
+	var obj = {};
+
+	if (req.params.skip) {
+		obj.skip = _validateNumber(req.params.skip);
+		if (_.isUndefined(obj.skip)) {
+			_rejectArgument('Invalid skip', res);
+			return;
+		}
+	}
+
+	if (req.params.limit) {
+		obj.limit = _validateNumber(req.params.limit);
+		if (_.isUndefined(obj.limit)) {
+			_rejectArgument('Invalid limit', res);
+			return;
+		}
+	}
+
+	_processResponse(fdaAdapter.getFoodRecallByRecallingFirm({
 		name: req.params.name
-	}).then(function (response) {
-		res.json(response);
-	}).catch(function (err) {
-		res.status(err.statusCode).json({
-			error: err.error
-		});
-	}).done();
+	}), res);
 };
 
 /* TODO
@@ -145,53 +229,92 @@ exports.getRecallByRecallingFirm = function (req, res, next) {
  * - filter out 'no' when found in distribution?
  */
 /**
- * TODO
+ * Gets recalls for matches against provided input
  * @param req
- * @param {String} req.query.state
- * @param {Number} req.query.from
- * @param {Number} req.query.to
- * @param {Number} req.query.classificationlevel
- * @param {String[]} req.query.keywords
+ * @param {String} [req.query.state]
+ * @param {String} [req.query.from]
+ * @param {String} [req.query.to]
+ * @param {String} [req.query.classificationlevel]
+ * @param {String[]} [req.query.keywords]
  * @param res
- * @param next
  */
-exports.search = function (req, res, next) {
-	// TODO - validation (should also have at least one of the elements)
-	//req.query.state
-	//req.query.from
-	//req.query.to
-	//req.query.classificationlevel
-	//req.query.keywords
+exports.search = function (req, res) {
 	var obj = {};
 
 	if (req.query.state) {
+		if (!stateMappings.hasOwnProperty(req.query.state.toUpperCase())) {
+			_rejectArgument('Invalid state', res);
+			return;
+		}
 		obj.locations = stateMappings[req.query.state.toUpperCase()].concat(nationalTerms);
 	}
 
-	if (req.query.from && req.query.to) {
-		obj.from = parseInt(req.query.from, 10);
-		obj.to = parseInt(req.query.to, 10);
+	if (req.query.from || req.query.to) {
+		obj.to = _validateNumber(req.query.to);
+		if (_.isUndefined(obj.to)) {
+			_rejectArgument('Invalid to', res);
+			return;
+		}
+		obj.from = _validateNumber(req.query.from);
+		if (_.isUndefined(obj.from)) {
+			_rejectArgument('Invalid from', res);
+			return;
+		}
+
+		if (obj.from >= obj.to) {
+			_rejectArgument('Invalid from/to - from must be before to', res);
+		}
 	}
 
 	if (req.query.classificationlevel) {
-		obj.classificationlevel = parseInt(req.query.classificationlevel, 10);
+		obj.classificationlevel = _validateNumber(req.query.classificationlevel);
+		if (_.isUndefined(obj.classificationlevel)) {
+			_rejectArgument('Invalid classificationlevel', res);
+			return;
+		}
+
+		if (obj.classificationlevel < 1 || obj.classificationlevel > 3) {
+			_rejectArgument('Invalid classificationlevel - must be 1, 2, or 3', res);
+		}
 	}
 
 	if (req.query.keywords) {
+		if (!_.isArray(req.query.keywords)) {
+			_rejectArgument('Invalid keywords', res);
+			return;
+		}
+		var invalid = _.find(req.query.keywords, function (keyword) {
+			return !keywordMappings.hasOwnProperty(keyword.toLowerCase());
+		});
+		if (invalid) {
+			_rejectArgument('Invalid keywords - could not match keyword ' + invalid, res);
+			return;
+		}
 		obj.keywords = _.reduce(req.query.keywords, function (arr, keyword) {
-			if (keywordMappings[keyword.toLowerCase()]) {
-				return arr.concat(keywordMappings[keyword.toLowerCase()]);
-			} else {
-				return arr;
-			}
+			return arr.concat(keywordMappings[keyword.toLowerCase()]);
 		}, []);
 	}
 
-	fdaAdapter.getFoodRecallBySearch(obj).then(function (response) {
-		res.json(response);
-	}).catch(function (err) {
-		res.status(err.statusCode).json({
-			error: err.error
-		});
-	}).done();
+	if (_.size(obj) === 0) {
+		_rejectArgument('No parameters supplied', res);
+		return;
+	}
+
+	if (req.query.skip) {
+		obj.skip = _validateNumber(req.query.skip);
+		if (_.isUndefined(obj.skip)) {
+			_rejectArgument('Invalid skip', res);
+			return;
+		}
+	}
+
+	if (req.query.limit) {
+		obj.limit = _validateNumber(req.query.limit);
+		if (_.isUndefined(obj.limit)) {
+			_rejectArgument('Invalid limit', res);
+			return;
+		}
+	}
+
+	_processResponse(fdaAdapter.getFoodRecallBySearch(obj), res);
 };

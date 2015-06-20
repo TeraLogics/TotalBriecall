@@ -21,8 +21,8 @@ var options = {
  * Makes a request to the openFDA's api
  * @param obj
  * @param {String} obj.search
- * @param {Number} obj.skip
- * @param {Number} obj.limit
+ * @param {Number} [obj.skip]
+ * @param {Number} [obj.limit]
  * @returns {Promise}
  */
 function makeRequest(obj) {
@@ -56,8 +56,9 @@ function makeRequest(obj) {
 }
 
 /**
- * TODO
+ * Gets food recall details for specific recall id
  * @param obj
+ * @param {Number} obj.id
  * @returns {Promise}
  */
 exports.getFoodRecallById = function (obj) {
@@ -68,30 +69,47 @@ exports.getFoodRecallById = function (obj) {
 };
 
 /**
- * TODO
+ * Gets food recall(s) details for event
  * @param obj
+ * @param {Number} obj.id
+ * @param {Number} [obj.skip]
+ * @param {Number} [obj.limit]
  * @returns {Promise}
  */
 exports.getFoodRecallByEventId = function (obj) {
 	return makeRequest({
-		search: 'event_id:' + obj.id
+		search: 'event_id:' + obj.id,
+		skip: obj.skip || null,
+		limit: obj.limit || null
 	});
 };
 
 /**
- * TODO
+ * Gets food recall(s) for recalling firm
  * @param obj
+ * @param {String} obj.name
+ * @param {Number} [obj.skip]
+ * @param {Number} [obj.limit]
  * @returns {Promise}
  */
 exports.getFoodRecallByRecallingFirm = function (obj) {
 	return makeRequest({
-		search: 'recalling_firm:' + obj.name
+		search: 'recalling_firm:' + obj.name,
+		skip: obj.skip || null,
+		limit: obj.limit || null
 	});
 };
 
 /**
- * TODO
+ * Gets food recall(s) based on search parameters
  * @param obj
+ * @param {String[]} [obj.locations]
+ * @param {Number} [obj.from]
+ * @param {Number} [obj.to]
+ * @param {Number} [obj.classificationlevel]
+ * @param {String[]} [obj.keywords]
+ * @param {Number} [obj.skip]
+ * @param {Number} [obj.limit]
  * @returns {Promise}
  */
 exports.getFoodRecallBySearch = function (obj) {
@@ -104,7 +122,7 @@ exports.getFoodRecallBySearch = function (obj) {
 	}
 
 	if (obj.from && obj.to) {
-		search.push('recall_initiation_date:[' + moment.unix(obj.from).format('YYYY-MM-DD') + '+TO+' + moment.unix(obj.to).format('YYYY-MM-DD') + ']');
+		search.push('recall_initiation_date:[' + moment.unix(obj.from).utc().format('YYYY-MM-DD') + '+TO+' + moment.unix(obj.to).utc().format('YYYY-MM-DD') + ']');
 	}
 
 	if (obj.classificationlevel) {
@@ -118,6 +136,8 @@ exports.getFoodRecallBySearch = function (obj) {
 	}
 
 	return makeRequest({
-		search: search.join('+AND+')
+		search: search.join('+AND+'),
+		skip: obj.skip || null,
+		limit: obj.limit || null
 	});
 };
