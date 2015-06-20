@@ -96,10 +96,6 @@ function _validateNumber(input) {
 	return temp;
 }
 
-function _validateSkipAndLimit(params, obj) {
-
-}
-
 /**
  * Sends invalid argument error to client
  * @param message
