@@ -16,11 +16,8 @@
     $(document).ready(function(){
         var modal = new EJS({url: '/templates/zipcode.ejs'}).render();
         $('#modal').append(modal);
-        $('#zipcodeModal').on('shown.bs.modal', function () {
-            $('#zipcodeInput').focus();
-        });
 
-        navigator.geolocation.getCurrentPosition(GetLatLon);
+        navigator.geolocation.getCurrentPosition(GetLatLon, PromptForZip);
     });
 
     function GetLatLon(location) {
@@ -30,7 +27,7 @@
         }).then(function(state){
             HidePromptForZip();
             DrawMap(state);
-        }).fail(function(test, err){
+        }).fail(function(){
             PromptForZip();
         });
     }
@@ -40,17 +37,10 @@
             HidePromptForZip();
             DrawMap(state);
         }).fail(function(){
-            alert('your zip failed, try again');
+            alert('sorry failed zipcode');
             $('#zipcodeInput').val("");
+            PromptForZip();
         });
-    }
-
-    function PromptForZip() {
-        $('#zipcodeModal').modal();
-    }
-
-    function HidePromptForZip() {
-        $('#zipcodeModal').modal('hide');
     }
 
     function DrawMap(state) {
