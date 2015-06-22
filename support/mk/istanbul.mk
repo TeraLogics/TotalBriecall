@@ -12,6 +12,7 @@ test-istanbul-mocha: node_modules
 	$(_MOCHA) -- \
 		--reporter $(MOCHA_REPORTER) \
 		--require $(MOCHA_REQUIRE) \
+		--recursive \
 		$(TESTS)
 
 view-istanbul-report:
