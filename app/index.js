@@ -40,12 +40,12 @@ global.__ctrldir = path.join(global.__appdir, 'controllers');
 global.__adptsdir = path.join(global.__appdir, 'adapters');
 
 // Load application configuration
-global.config = require(path.join(global.__basedir, 'conf', 'config')).get();
+global.config = require(path.join(global.__basedir, 'conf', 'config'));
 
 var app = express(),
 	readDir = Promise.promisify(fs.readdir);
 
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (global.config.port));
 app.set('showStackError', true);
 
 // Should be placed before express.static to ensure that all assets and data are compressed (utilize bandwidth)
@@ -75,7 +75,7 @@ if (fs.exists(faviconPath)) {
 }
 
 // The cookieParser should be above session
-app.use(cookieParser(process.env.SECRET));
+app.use(cookieParser(global.config.secret));
 
 // Request body parsing middleware should be above methodOverride
 app.use(expressValidator());
@@ -94,12 +94,12 @@ app.use(function (req, res, next) {
 // Express/Mongo session storage
 app.use(session({
 	proxy: true,
-	secret: process.env.SECRET || 'foobarbaz',
+	secret: global.config.secret,
 	cookie: {
-		maxAge: process.env.SESSIONLENGTH || 3600000
+		maxAge: global.config.sessionlength
 	},
 	store: new mongoStore({
-		url: global.config.connections.mongodb.buildConnectionString()
+		url: global.config.mongodb
 	}),
 	resave: true,
 	saveUninitialized: true
@@ -158,7 +158,7 @@ readDir(path.join(global.__appdir, 'routes')).then(function (routes) {
 		});
 	});
 
-	if (process.env.NODE_ENV === 'development') { // Error handler - has to be last
+	if (global.config.environment === 'development') { // Error handler - has to be last
 		app.use(errorHandler());
 	}
 
