@@ -59,7 +59,7 @@ function processRes(res) {
 					item.initial_firm_notification
 				];
 
-			pg.singleQuery(global.config.pg, sql, params).catch(console.error).done();
+			pg.singleQuery(global.config.PGSQL_URI, sql, params).catch(console.error).done();
 		});
 
 		offset += result.results.length;

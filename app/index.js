@@ -45,7 +45,7 @@ global.config = require(path.join(global.__basedir, 'conf', 'config'));
 var app = express(),
 	readDir = Promise.promisify(fs.readdir);
 
-app.set('port', (global.config.port));
+app.set('port', (global.config.PORT));
 app.set('showStackError', true);
 
 // Should be placed before express.static to ensure that all assets and data are compressed (utilize bandwidth)
@@ -75,7 +75,7 @@ if (fs.exists(faviconPath)) {
 }
 
 // The cookieParser should be above session
-app.use(cookieParser(global.config.secret));
+app.use(cookieParser(global.config.SECRET));
 
 // Request body parsing middleware should be above methodOverride
 app.use(expressValidator());
@@ -94,12 +94,12 @@ app.use(function (req, res, next) {
 // Express/Mongo session storage
 app.use(session({
 	proxy: true,
-	secret: global.config.secret,
+	secret: global.config.SECRET,
 	cookie: {
-		maxAge: global.config.sessionlength
+		maxAge: global.config.SESSIONLENGTH
 	},
 	store: new mongoStore({
-		url: global.config.mongodb
+		url: global.config.MONGOLAB_URI
 	}),
 	resave: true,
 	saveUninitialized: true
@@ -158,7 +158,7 @@ readDir(path.join(global.__appdir, 'routes')).then(function (routes) {
 		});
 	});
 
-	if (global.config.environment === 'development') { // Error handler - has to be last
+	if (global.config.NODE_ENV === 'development') { // Error handler - has to be last
 		app.use(errorHandler());
 	}
 
