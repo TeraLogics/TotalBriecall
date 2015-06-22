@@ -237,8 +237,9 @@ exports.isValidStatus = function (status) {
 };
 
 /**
- * Validates count field
- * @param status
+ * Validates count field string
+ * @param {String} field
+ * @returns {boolean}
  */
 exports.isValidCountField = function (field) {
 	return _.contains(supportedCountFields, field.toLowerCase());
