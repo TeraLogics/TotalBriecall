@@ -2,11 +2,8 @@
 
 var _ = require('underscore'),
 	moment = require('moment'),
-	path = require('path'),
 	Promise = require('bluebird'),
-	request = require('request-promise'),
-	FoodCounts = require(path.join(global.__modelsdir, 'foodcounts')),
-	FoodResult = require(path.join(global.__modelsdir, 'foodresult'));
+	request = require('request-promise');
 
 var options = {
 		uri: 'https://api.fda.gov/food/enforcement.json',
@@ -164,7 +161,7 @@ function _formatRecallResults(data) {
 		return _.omit(foodrecall, ['@id', '@epoch', 'openfda']);
 	});
 
-	return new FoodResult(data);
+	return data;
 }
 
 /**
@@ -289,8 +286,10 @@ exports.searchFoodRecalls = function (obj) {
 		search.push('recall_initiation_date:[' + moment.unix(obj.from).utc().format('YYYY-MM-DD') + '+TO+' + moment.unix(obj.to).utc().format('YYYY-MM-DD') + ']');
 	}
 
-	if (obj.classificationlevel) {
-		search.push('classification:"Class+' + (new Array(obj.classificationlevel + 1).join('I')) + '"');
+	if (obj.classificationlevels) {
+		search.push(_convertArrayToParam(_.map(obj.classificationlevels, function (ele) {
+			return 'Class ' + (new Array(ele + 1).join('I'));
+		}), 'classification'));
 	}
 
 	if (obj.keywords) {
@@ -338,6 +337,6 @@ exports.getFoodRecallsCounts = function (obj) {
 			stats.total += val;
 		});
 
-		return new FoodCounts(stats);
+		return stats;
 	});
 };

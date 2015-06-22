@@ -48,7 +48,7 @@ function _rejectArgument(message, res) {
  */
 function _processResponse(promise, res) {
 	promise.then(function (foodResult) {
-		res.json(foodResult.toResponse());
+		res.json(foodResult);
 	}).catch(function (err) {
 		if (err.message) {
 			_rejectArgument(err.message, res);
@@ -95,7 +95,7 @@ exports.getRecallById = function (req, res) {
  * @param {String} [req.query.state]
  * @param {String} [req.query.from]
  * @param {String} [req.query.to]
- * @param {String} [req.query.classificationlevel]
+ * @param {String[]|String} [req.query.classificationlevels]
  * @param {String[]} [req.query.keywords]
  * @param res
  */
@@ -139,16 +139,28 @@ exports.getRecalls = function (req, res) {
 		}
 	}
 
-	if (req.query.classificationlevel) {
-		obj.classificationlevel = _validateNumber(req.query.classificationlevel);
-		if (_.isUndefined(obj.classificationlevel)) {
-			_rejectArgument('Invalid classificationlevel', res);
-			return;
+	if (req.query.classificationlevels) {
+		if (!_.isArray(req.query.classificationlevels)) {
+			if (!_.isString(req.query.classificationlevels)) {
+				_rejectArgument('Invalid classificationlevels', res);
+				return;
+			}
+			req.query.classificationlevels = req.query.classificationlevels.split(',');
 		}
+		obj.classificationlevels = [];
+		_.each(req.query.classificationlevels, function (level) {
+			var temp = _validateNumber(level);
+			if (_.isUndefined(temp)) {
+				_rejectArgument('Invalid classificationlevels', res);
+				return;
+			}
 
-		if (obj.classificationlevel < 1 || obj.classificationlevel > 3) {
-			_rejectArgument('Invalid classificationlevel - must be 1, 2, or 3', res);
-		}
+			if (temp < 1 || temp > 3) {
+				_rejectArgument('Invalid classificationlevels - must be 1, 2, or 3', res);
+			}
+
+			obj.classificationlevels.push(temp);
+		});
 	}
 
 	if (req.query.keywords) {

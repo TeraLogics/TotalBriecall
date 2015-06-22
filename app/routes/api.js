@@ -144,7 +144,7 @@ module.exports = function (app) {
 	 * @apiParam {String} [firmname] The recalling firm's name.
 	 * @apiParam {Number} [from] The timestamp for the earliest point in the desired time period. Requires `to` parameter.
 	 * @apiParam {Number} [to] The timestamp for the latest point in the desired time period. Requires `from` parameter.
-	 * @apiParam {Number={1..3}} [classificationlevel] The classification level of the recall.
+	 * @apiParam {Number[]={1..3}} [classificationlevels] The classification levels of the recall.
 	 * @apiParam {String[]="dairy","dye","egg","fish","gluten","nut","soy"} [keywords] An array of keywords to target in reason for recall.
 	 * @apiUse CommonParams
 	 *
@@ -161,13 +161,11 @@ module.exports = function (app) {
 	 *
 	 * `to` is invalid. It must be a valid timestamp and must have an associated `from` parameter. `to` must be after `from`.
 	 *
-	 * `classificationlevel` is invalid. It must be one of the valid values.
+	 * `classificationlevels` is invalid. It must be one of the valid values.
 	 *
 	 * `keywords` is invalid. It must be one of the valid values.
 	 *
 	 * `skip` or `limit` are invalid. They must be in their respective ranges.
-	 *
-	 * One of the parameters must be defined.
 	 *
 	 * @apiUse ResourceNotFoundErrorExample
 	 * @apiUse InvalidArgumentErrorExample
