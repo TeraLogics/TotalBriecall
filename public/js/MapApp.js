@@ -1,3 +1,12 @@
+'use strict';
+
+/* globals
+ _, L, stateNameToAbbr
+ */
+/* exported
+ GeoCode
+ */
+
 L.Icon.Default.imagePath = '/img/leaflet';
 
 function MapApp(options) {
@@ -13,16 +22,19 @@ function MapApp(options) {
 	}, options);
 	self._map = null;
 	self._features = null;
-	self.Mediator = (function(){
-		var subscribe = function(channel, fn){
+	self.Mediator = (function () {
+		var subscribe = function (channel, fn) {
 				if (!self.Mediator.channels[channel]) {
 					self.Mediator.channels[channel] = [];
 				}
-				self.Mediator.channels[channel].push({ context: this, callback: fn });
+				self.Mediator.channels[channel].push({
+					context: this,
+					callback: fn
+				});
 				return this;
 			},
 
-			publish = function(channel){
+			publish = function (channel) {
 				if (!self.Mediator.channels[channel]) {
 					return false;
 				}
@@ -37,12 +49,12 @@ function MapApp(options) {
 		return {
 			channels: {},
 			publish: publish,
-			subscribe: subscribe,
+			subscribe: subscribe
 		};
 
 	}());
 
-	self._createMap = function(options) {
+	self._createMap = function (options) {
 		if (self._map) { //if already created, do nothing
 			return false;
 		}
@@ -53,7 +65,6 @@ function MapApp(options) {
 			.get(0); //and get the DOM object
 		self._map = L.map(div, options); //create the Leaflet map
 
-
 		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(self._map);
@@ -61,11 +72,11 @@ function MapApp(options) {
 		return true;
 	};
 
-	self._updateMap = function(obj){
+	self._updateMap = function (obj) {
 	};
 
-	self._deleteMap = function(obj){
-		if(!self._map) { //if already uninitialized do nothing
+	self._deleteMap = function () {
+		if (!self._map) { //if already uninitialized do nothing
 			return false;
 		}
 		self._map = null;
@@ -74,23 +85,29 @@ function MapApp(options) {
 		return true;
 	};
 
-	self._addMarker = function(obj, options){
-		L.marker([obj.lat, obj.lon]).addTo(self._map)
+	self._addMarker = function (obj) {
+		L.marker([
+			obj.lat,
+			obj.lon
+		]).addTo(self._map)
 			.bindPopup(obj.message)
 			.openPopup();
-		self._map.setView([obj.lat, obj.lon], 17);
+		self._map.setView([
+			obj.lat,
+			obj.lon
+		], 17);
 	};
 
-	self._addLayer = function(obj, options){
+	self._addLayer = function (obj, options) {
 		var layer = L.geoJson(obj, options);
 		layer.addTo(self._map);
 		self._map.fitBounds(layer.getBounds());
 	};
 
-	self._deleteFeature = function(obj){
+	self._deleteFeature = function (obj) {
 	};
 
-	self._deleteAllFeatures = function(){
+	self._deleteAllFeatures = function () {
 	};
 }
 
@@ -107,7 +124,7 @@ MapApp.prototype.delete = function () {
 };
 
 MapApp.prototype.add = function (type, obj, options) {
-	switch(type) {
+	switch (type) {
 		case 'marker':
 			this._addMarker(obj, options);
 			break;
@@ -118,7 +135,7 @@ MapApp.prototype.add = function (type, obj, options) {
 };
 
 MapApp.prototype.remove = function (obj) {
-	if(!obj) {
+	if (!obj) {
 		this._deleteAllFeatures();
 	} else {
 		this._deleteFeature(obj);
@@ -126,47 +143,47 @@ MapApp.prototype.remove = function (obj) {
 };
 
 var GeoCode = {
-	latlon: function(obj) {
+	latlon: function (obj) {
 		var deferred = $.Deferred();
 
-		if(!_.isNumber(obj.lat) || !_.isNumber(obj.lon)) {
+		if (!_.isNumber(obj.lat) || !_.isNumber(obj.lon)) {
 			return deferred.reject();
 		}
 		$.ajax({
 			type: 'GET',
 			url: 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + obj.lat + '&lon=' + obj.lon,
 			dataType: 'JSON' //use text so we can simply regex match the state
-		}).done(function(data) {
-			if(!data ||  !data.address) {
+		}).done(function (data) {
+			if (!data || !data.address) {
 				return deferred.reject();
 			}
-			var state = data.address.state.length === 2 ? data.address.state : stateNameToAbbr[data.address.state] ;
+			var state = data.address.state.length === 2 ? data.address.state : stateNameToAbbr[data.address.state];
 			return deferred.resolve(state);
-		}).fail(function(err) {
+		}).fail(function (err) {
 			return deferred.reject(err);
 		});
 
 		return deferred;
 	},
-	zipcode: function(zipcode) {
+	zipcode: function (zipcode) {
 		var deferred = $.Deferred();
 
-		if(!zipcode) {
+		if (!zipcode) {
 			return deferred.reject();
 		}
 		$.ajax({
 			type: 'GET',
 			url: 'http://production.shippingapis.com/ShippingAPITest.dll?API=CityStateLookup&XML=%3CCityStateLookupRequest%20USERID=%22***REMOVED***%22%3E%20%3CZipCode%20ID=%20%220%22%3E%20%3CZip5%3E' + zipcode + '%3C/Zip5%3E%20%3C/ZipCode%3E%20%3C/CityStateLookupRequest%3E',
 			dataType: 'text' //use text so we can simply regex match the state
-		}).done(function(data) {
+		}).done(function (data) {
 			var match = data.match(/<State>(.*)<\/State>/);
-			if(!match || match.length === 1) { //check the regex matched more than itself
+			if (!match || match.length === 1) { //check the regex matched more than itself
 				return deferred.reject();
 			}
 
-			var state = match[1].length === 2 ? match[1] : stateNameToAbbr[match[1]] ;
+			var state = match[1].length === 2 ? match[1] : stateNameToAbbr[match[1]];
 			return deferred.resolve(state);
-		}).fail(function(err) {
+		}).fail(function (err) {
 			return deferred.reject(err);
 		});
 
