@@ -1,5 +1,7 @@
 'use strict';
 
+require('newrelic');
+
 var _ = require('underscore'),
 	bodyParser = require('body-parser'),
 	colors = require('colors'),
