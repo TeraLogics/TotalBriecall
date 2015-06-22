@@ -1,0 +1,49 @@
+<html>
+<head>
+	<script src="../../../static/jquery/js/jquery-2.1.4.min.js"></script>
+	<script src="../../../static/underscore/js/underscore-min.js"></script>
+	<link rel="stylesheet" href="../../../static/map/css/leaflet.css" />
+	<script src="../../../static/map/js/leaflet.js"></script>
+	<script src="../../../static/map/js/us-states.js"></script>
+	<script src="../../../static/map/js/MapApp.js"></script>
+</head>
+<body>
+	<script>
+		$(document).ready(function(){
+			var map = new MapApp({
+				height: 250,
+				width: 500,
+			});
+			map.create();
+			var style = function(feature) {
+				return {
+					fillColor: '#800026', //feature.properties.name ? '#800026' : null,
+					weight: 1,
+					opacity: 1,
+					color: 'white',
+					//dashArray: '3',
+					fillOpacity: 0.7
+				};
+			};
+
+			map.add('layer', getStateGeoJSON(['TX', 'Virginia', 'Bad', 'MD']), {
+				style: style
+			});
+
+			var map_location = new MapApp({
+				height: 200,
+				width: 200,
+			});
+			map_location.create();
+			map_location.add('marker', {
+				lat: 39.06090,
+				lon: -77.46330,
+				message: 'A pretty CSS3 popup. <br> Easily customizable.'
+			});
+
+		});
+	</script>
+	<div id="map">
+	</div>
+</body>
+</html>
