@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('underscore'),
+	moment = require('moment'),
 	path = require('path'),
 	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
 
@@ -72,7 +73,7 @@ var stateMappings = {
 		'egg': ['egg', 'eggs'],
 		'fish': ['fish', 'shellfish', 'oyster', 'oysters'],
 		'gluten': ['gluten', 'wheat'],
-		'nut': ['nut', 'nuts', 'peanut', 'peanuts', 'seed', 'seeds', 'walnuts', 'almond', 'almonds', 'pistachio', 'pistachio', 'hazelnut', 'hazelnuts'],
+		'nut': ['nut', 'nuts', 'peanut', 'peanuts', 'seed', 'seeds', 'walnut', 'walnuts', 'almond', 'almonds', 'pistachio', 'pistachios', 'hazelnut', 'hazelnuts'],
 		'soy': ['soy', 'tofu']
 	};
 
@@ -105,7 +106,7 @@ function _validateNumber(input) {
 function _rejectArgument(message, res) {
 	res.status(409).json({
 		error: {
-			code: "Invalid Argument",
+			code: 'INVALID_ARGUMENT',
 			message: message
 		}
 	});
@@ -118,8 +119,8 @@ function _rejectArgument(message, res) {
  * @private
  */
 function _processResponse(promise, res) {
-	promise.then(function (response) {
-		res.json(response);
+	promise.then(function (foodResult) {
+		res.json(foodResult.toResponse());
 	}).catch(function (err) {
 		if (err.message) {
 			_rejectArgument(err.message, res);
@@ -142,12 +143,12 @@ exports.getRecallById = function (req, res) {
 
 	obj.id = req.params.id; // TODO validate against pattern?
 
-	if (req.params.skip) {
+	if (req.query.skip) {
 		_rejectArgument('Invalid skip - not allowed', res);
 		return;
 	}
 
-	if (req.params.limit) {
+	if (req.query.limit) {
 		_rejectArgument('Invalid limit - not allowed', res);
 		return;
 	}
@@ -170,7 +171,7 @@ exports.getRecallByEventId = function (req, res) {
 		return;
 	}
 
-	if (req.params.skip) {
+	if (req.query.skip) {
 		obj.skip = _validateNumber(req.params.skip);
 		if (_.isUndefined(obj.skip)) {
 			_rejectArgument('Invalid skip', res);
@@ -178,7 +179,7 @@ exports.getRecallByEventId = function (req, res) {
 		}
 	}
 
-	if (req.params.limit) {
+	if (req.query.limit) {
 		obj.limit = _validateNumber(req.params.limit);
 		if (_.isUndefined(obj.limit)) {
 			_rejectArgument('Invalid limit', res);
@@ -198,7 +199,7 @@ exports.getRecallByEventId = function (req, res) {
 exports.getRecallByRecallingFirm = function (req, res) {
 	var obj = {};
 
-	if (req.params.skip) {
+	if (req.query.skip) {
 		obj.skip = _validateNumber(req.params.skip);
 		if (_.isUndefined(obj.skip)) {
 			_rejectArgument('Invalid skip', res);
@@ -206,7 +207,7 @@ exports.getRecallByRecallingFirm = function (req, res) {
 		}
 	}
 
-	if (req.params.limit) {
+	if (req.query.limit) {
 		obj.limit = _validateNumber(req.params.limit);
 		if (_.isUndefined(obj.limit)) {
 			_rejectArgument('Invalid limit', res);
@@ -246,14 +247,14 @@ exports.search = function (req, res) {
 	}
 
 	if (req.query.from || req.query.to) {
-		obj.to = _validateNumber(req.query.to);
-		if (_.isUndefined(obj.to)) {
-			_rejectArgument('Invalid to', res);
+		obj.from = _validateNumber(req.query.from);
+		if (_.isUndefined(obj.from) || !moment.unix(obj.from).isValid()) {
+			_rejectArgument('Invalid from', res);
 			return;
 		}
-		obj.from = _validateNumber(req.query.from);
-		if (_.isUndefined(obj.from)) {
-			_rejectArgument('Invalid from', res);
+		obj.to = _validateNumber(req.query.to);
+		if (_.isUndefined(obj.to) || !moment.unix(obj.to).isValid()) {
+			_rejectArgument('Invalid to', res);
 			return;
 		}
 

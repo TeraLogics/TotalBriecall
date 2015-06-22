@@ -2,20 +2,30 @@
 
 var _ = require('underscore'),
 	moment = require('moment'),
+	path = require('path'),
 	Promise = require('bluebird'),
-	request = require('request-promise');
+	request = require('request-promise'),
+	FoodResult = require(path.join(global.__modelsdir, 'foodresult'));
 
 var options = {
 		uri: 'https://api.fda.gov/food/enforcement.json',
 		method: 'GET',
 		resolveWithFullResponse: true, // useful for debugging
 		json: true,
+		// need to use node's querystring for overriding the url encoding (fda's api does not handle it), needed to work with complex searches
+		useQuerystring: true,
+		// override the encode function
 		qsStringifyOptions: {
-			encodeURIComponent: function (str) { return str; } // requires node 0.12, needed to work with complex searches
-		},
-		useQuerystring: true
+			encodeURIComponent: function identity(str) { return str; } // requires node 0.12
+		}
 	},
 	limit = 100;
+
+function _convertArrayToParam(arr, field) {
+	return '(' + _.map(arr, function (ele) {
+		return field + ':"' + ele.replace(/ /g, '+') + '"';
+	}).join('+') + ')';
+}
 
 /**
  * Makes a request to the openFDA's api
@@ -24,8 +34,9 @@ var options = {
  * @param {Number} [obj.skip]
  * @param {Number} [obj.limit]
  * @returns {Promise}
+ * @private
  */
-function makeRequest(obj) {
+function _makeRequest(obj) {
 	if (obj.limit) {
 		if (obj.limit > 100) {
 			return Promise.reject(new Error('Invalid limit'));
@@ -43,7 +54,7 @@ function makeRequest(obj) {
 		qs: obj
 	})).then(function (response) {
 		//console.log(response);
-		return response.body;
+		return new FoodResult(response.body);
 	}).catch(function (err) {
 		//console.log(err);
 		// TODO need better wrapper for error handling
@@ -62,7 +73,7 @@ function makeRequest(obj) {
  * @returns {Promise}
  */
 exports.getFoodRecallById = function (obj) {
-	return makeRequest({
+	return _makeRequest({
 		search: 'recall_number:' + obj.id,
 		limit: 1
 	});
@@ -77,7 +88,7 @@ exports.getFoodRecallById = function (obj) {
  * @returns {Promise}
  */
 exports.getFoodRecallByEventId = function (obj) {
-	return makeRequest({
+	return _makeRequest({
 		search: 'event_id:' + obj.id,
 		skip: obj.skip || null,
 		limit: obj.limit || null
@@ -93,7 +104,7 @@ exports.getFoodRecallByEventId = function (obj) {
  * @returns {Promise}
  */
 exports.getFoodRecallByRecallingFirm = function (obj) {
-	return makeRequest({
+	return _makeRequest({
 		search: 'recalling_firm:' + obj.name,
 		skip: obj.skip || null,
 		limit: obj.limit || null
@@ -116,9 +127,7 @@ exports.getFoodRecallBySearch = function (obj) {
 	var search = [];
 
 	if (obj.locations) {
-		search.push('(' + _.map(obj.locations, function (location) {
-			return 'distribution_pattern:"' + location.replace(/ /g, '+') + '"';
-		}).join('+') + ')');
+		search.push(_convertArrayToParam(obj.locations, 'distribution_pattern'));
 	}
 
 	if (obj.from && obj.to) {
@@ -130,12 +139,10 @@ exports.getFoodRecallBySearch = function (obj) {
 	}
 
 	if (obj.keywords) {
-		search.push('(' + _.map(obj.keywords, function (keyword) {
-			return 'reason_for_recall:"' + keyword.replace(/ /g, '+') + '"';
-		}).join('+') + ')');
+		search.push(_convertArrayToParam(obj.keywords, 'reason_for_recall'));
 	}
 
-	return makeRequest({
+	return _makeRequest({
 		search: search.join('+AND+'),
 		skip: obj.skip || null,
 		limit: obj.limit || null

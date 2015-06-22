@@ -35,7 +35,7 @@ global.__libdir = path.join(global.__basedir, 'lib');
 global.__assetsdir = path.join(global.__basedir, 'public');
 
 // MVC directory structure
-global.__modelsdir = path.join(global.__libdir, 'models');
+global.__modelsdir = path.join(global.__appdir, 'models');
 global.__viewsdir = path.join(global.__appdir, 'views');
 global.__ctrldir = path.join(global.__appdir, 'controllers');
 
