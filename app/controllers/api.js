@@ -206,7 +206,7 @@ exports.getRecalls = function (req, res) {
 exports.getRecallsCounts = function (req, res) {
 	var obj = {};
 
-	if (!fdaAdapter.isValidCountField(req.query.field)) {
+	if (!req.query.field || !fdaAdapter.isValidCountField(req.query.field)) {
 		_rejectArgument('Invalid field', res);
 		return;
 	}
