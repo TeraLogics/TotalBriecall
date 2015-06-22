@@ -5912,6 +5912,9 @@ button.close {
   -webkit-box-shadow: none;
   box-shadow: none; }
 
+.panel-title {
+  font-weight: bold; }
+
 .panel-subtitle {
   margin-top: 0;
   margin-bottom: 0;
@@ -5924,22 +5927,25 @@ button.close {
   .panel-subtitle > .small > a {
     color: inherit; }
 
+.panel-title + .panel-subtitle {
+  margin-top: 7px; }
+
 .list-view {
   list-style: none;
   margin: 0;
   padding: 0;
   padding-left: 0;
   list-style: none; }
-  .list-view + .list-view-empty-message,
-  .list-view + .list-view-error-message {
+  .list-view + .list-view-messages > .list-view-empty-message,
+  .list-view + .list-view-messages > .list-view-error-message {
     display: none; }
   .list-view:empty,
   .list-view.empty {
     display: none; }
-  .list-view.error + .list-view-empty-message {
+  .list-view.error + .list-view-messages > .list-view-empty-message {
     display: none; }
-  .list-view:empty + .list-view-empty-message,
-  .list-view.empty + .list-view-empty-message {
+  .list-view:empty + .list-view-messages > .list-view-empty-message,
+  .list-view.empty + .list-view-messages > .list-view-empty-message {
     display: block;
     margin: 10px 0;
     font-style: italic;
@@ -5973,3 +5979,33 @@ button.close {
 
 .visible-overflow {
   overflow: visible; }
+
+.recall-class-i.recall-class-bg {
+  background-color: #f2dede; }
+
+.recall-class-i.recall-class-text {
+  color: #a94442; }
+
+.recall-class-ii.recall-class-bg {
+  background-color: #fcf8e3; }
+
+.recall-class-ii.recall-class-text {
+  color: #8a6d3b; }
+
+.recall-class-iii.recall-class-bg {
+  background-color: #d9edf7; }
+
+.recall-class-iii.recall-class-text {
+  color: #31708f; }
+
+.recall-summary-card .panel-title, .recall-summary-card .panel-subtitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.recall-summary-card .recall-hud {
+  overflow: auto;
+  margin-bottom: 16px; }
+
+.recall-summary-card .recall-reason {
+  margin: 0; }
