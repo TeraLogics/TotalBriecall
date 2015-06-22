@@ -6,8 +6,7 @@ var path = require('path'),
 	sinon = require('sinon'),
 	request = require('supertest'),
 	Promise = require('bluebird'),
-	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi')),
-	FoodResult = require(path.join(global.__modelsdir, 'foodresult'));
+	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
 
 var app = express(),
 	assert = chai.assert;
@@ -19,16 +18,12 @@ module.exports = function () {
 
 	describe('API', function () {
 
-		var EMPTY_RESULT = new FoodResult({
-			meta: {
-				results: {
-					skip: 0,
-					limit: 100,
-					total: 1
-				}
-			},
-			results: []
-		});
+		var EMPTY_RESULT = {
+			skip: 0,
+			limit: 100,
+			total: 1,
+			data: []
+		};
 
 		describe('getRecallById', function () {
 

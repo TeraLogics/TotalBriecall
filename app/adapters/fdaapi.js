@@ -161,7 +161,12 @@ function _formatRecallResults(data) {
 		return _.omit(foodrecall, ['@id', '@epoch', 'openfda']);
 	});
 
-	return data;
+	return {
+		skip: data.meta.results.skip,
+		limit: data.meta.results.limit,
+		total: data.meta.results.total,
+		data: data.results
+	};
 }
 
 /**
