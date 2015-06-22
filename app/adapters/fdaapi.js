@@ -78,7 +78,7 @@ var options = {
 	stateAbbreviations = _.keys(stateMappings).sort(),
 	stateRegexes = _.reduce(stateMappings, function (memo, values, key) {
 		memo[key] = _.map(values, function (val) {
-			return new RegExp(val, 'i');
+			return new RegExp('\\b' + val + '\\b', 'i');
 		});
 		return memo;
 	}, {}),
@@ -91,7 +91,7 @@ var options = {
 		'usa'
 	],
 	nationalRegexes = _.map(nationalTerms, function (val) {
-		return new RegExp(val, 'i');
+		return new RegExp('\\b' + val + '\\b', 'i');
 	}),
 	keywordMappings = {
 		'dairy': ['dairy', 'milk', 'cheese', 'cheeses', 'whey'],
@@ -166,7 +166,7 @@ function _makeRequest(obj) {
 
 			// If we match a national term, select all states
 			if (_.some(nationalRegexes, function (regex) {
-					return foodrecall.distribution_pattern.match(regex) !== null;
+					return regex.test(foodrecall.distribution_pattern);
 				})) {
 				foodrecall.affectedstates = stateAbbreviations;
 				foodrecall.affectednationally = true;
@@ -174,7 +174,7 @@ function _makeRequest(obj) {
 				// Otherwise, find the states that match
 				foodrecall.affectedstates = _.keys(_.pick(stateRegexes, function (regexs) {
 					return _.some(regexs, function (regex) {
-						return foodrecall.distribution_pattern.match(regex) !== null;
+						return regex.test(foodrecall.distribution_pattern);
 					});
 				})).sort();
 				foodrecall.affectednationally = false;
