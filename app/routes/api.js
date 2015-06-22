@@ -129,68 +129,22 @@ module.exports = function (app) {
 	 * @apiUse ResourceNotFoundErrorExample
 	 * @apiUse InvalidArgumentErrorExample
 	 */
-	app.route('/api/recalls/:id')
+	app.route('/api/recalls/:id(F\\-\\d+\\-\\d+)')
 		.get(apiCtrl.getRecallById);
 
 	/**
-	 * @api {get} /events/:eventid Get Recalls By Event ID
-	 * @apiName GetRecallsByEventID
-	 * @apiVersion 1.0.0
-	 *
-	 * @apiDescription Gets the recalls associated with `eventid`.
-	 *
-	 * @apiParam {Number} eventid The event ID.
-	 * @apiUse CommonParams
-	 *
-	 * @apiUse SuccessResponse
-	 *
-	 * @apiUse SuccessExample
-	 *
-	 * @apiError (FailureHeader) ResourceNotFoundError There are no recalls associated with `eventid`.
-	 * @apiError (FailureHeader) InvalidArgumentError `eventid` is invalid. It must be a valid number.
-	 *
-	 * `skip` or `limit` are invalid. They must be in their respective ranges.
-	 *
-	 * @apiUse ResourceNotFoundErrorExample
-	 * @apiUse InvalidArgumentErrorExample
-	 */
-	app.route('/api/events/:id')
-		.get(apiCtrl.getRecallByEventId);
-
-	/**
-	 * @api {get} /firms/:firmname Get Recalls By Recalling Firm Name
-	 * @apiName GetRecallsByRecallingFirmName
-	 * @apiVersion 1.0.0
-	 *
-	 * @apiDescription Gets the recall identified by `firmname`.
-	 *
-	 * @apiParam {String} firmname The recalling firm's name.
-	 * @apiUse CommonParams
-	 *
-	 * @apiUse SuccessResponse
-	 *
-	 * @apiUse SuccessExample
-	 *
-	 * @apiError (FailureHeader) ResourceNotFoundError There are no recalls associated with `firmname`.
-	 * @apiError (FailureHeader) InvalidArgumentError `skip` or `limit` are invalid. They must be in their respective ranges.
-	 *
-	 * @apiUse ResourceNotFoundErrorExample
-	 * @apiUse InvalidArgumentErrorExample
-	 */
-	app.route('/api/firms/:name')
-		.get(apiCtrl.getRecallByRecallingFirm);
-
-	/**
-	 * @api {get} /search Search Recalls
+	 * @api {get} /recalls Search Recalls
 	 * @apiName SearchRecalls
 	 * @apiVersion 1.0.0
 	 *
 	 * @apiDescription Gets the recalls matching provided parameters.
 	 *
 	 * @apiParam {String} [state] The state abbreviation affected by the recall.
+	 * @apiParam {Number} [eventid] The event ID.
+	 * @apiParam {String} [firmname] The recalling firm's name.
 	 * @apiParam {Number} [from] The timestamp for the earliest point in the desired time period. Requires `to` parameter.
 	 * @apiParam {Number} [to] The timestamp for the latest point in the desired time period. Requires `from` parameter.
-	 * @apiParam {Number={1..3} [classificationlevel] The classification level of the recall.
+	 * @apiParam {Number={1..3}} [classificationlevel] The classification level of the recall.
 	 * @apiParam {String[]="dairy","dye","egg","fish","gluten","nut","soy"} [keywords] An array of keywords to target in reason for recall.
 	 * @apiUse CommonParams
 	 *
@@ -200,6 +154,8 @@ module.exports = function (app) {
 	 *
 	 * @apiError (FailureHeader) ResourceNotFoundError There are no recalls associated with provided parameters.
 	 * @apiError (FailureHeader) InvalidArgumentError `state` is invalid. It must be a valid state abbreviation, including 'DC'.
+	 *
+	 * `eventid` is invalid. It must be a valid number.
 	 *
 	 * `from` is invalid. It must be a valid timestamp and must have an associated `to` parameter. `from` must be before `to`.
 	 *
@@ -211,9 +167,49 @@ module.exports = function (app) {
 	 *
 	 * `skip` or `limit` are invalid. They must be in their respective ranges.
 	 *
+	 * One of the parameters must be defined.
+	 *
 	 * @apiUse ResourceNotFoundErrorExample
 	 * @apiUse InvalidArgumentErrorExample
 	 */
-	app.route('/api/search')
-		.get(apiCtrl.search);
+	app.route('/api/recalls')
+		.get(apiCtrl.getRecalls);
+
+	/**
+	 * @api {get} /recalls/counts Count Distinct Values
+	 * @apiName CountDistinctValues
+	 * @apiVersion 1.0.0
+	 *
+	 * @apiDescription Gets counts for distinct values in a recall field.
+	 *
+	 * @apiParam {String} field The state abbreviation affected by the recall.
+	 * @apiParam {String} [state] The state abbreviation affected by the recall.
+	 * @apiParam {String="Ongoing","Completed","Terminated","Pending"} [status] The state abbreviation affected by the recall.
+	 *
+	 * @apiSuccess (SuccessHeader) {Number} total Total recall count.
+	 * @apiSuccess (SuccessHeader) {Object} counts The counts of unique terms.
+	 *
+	 * @apiSuccessExample {json} Success Example
+	 * HTTP/1.1 200 OK
+	 * {
+	 *   "total": 3416,
+	 *   "counts": {
+	 *     "Class I": 1518,
+	 *     "Class II": 1816,
+	 *     "Class III": 82
+	 *   }
+	 * }
+	 *
+	 * @apiError (FailureHeader) ResourceNotFoundError There are no recalls associated with provided parameters.
+	 * @apiError (FailureHeader) InvalidArgumentError `field` is invalid. It must be a supported field.
+	 * `state` is invalid. It must be a valid state abbreviation, including 'DC'.
+	 * `status` is invalid. It must be one of the valid values.
+	 *
+	 * `skip` or `limit` cannot be provided.
+	 *
+	 * @apiUse ResourceNotFoundErrorExample
+	 * @apiUse InvalidArgumentErrorExample
+	 */
+	app.route('/api/recalls/counts')
+		.get(apiCtrl.getRecallsCounts);
 };

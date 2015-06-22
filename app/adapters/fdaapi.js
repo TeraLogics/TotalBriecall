@@ -5,6 +5,7 @@ var _ = require('underscore'),
 	path = require('path'),
 	Promise = require('bluebird'),
 	request = require('request-promise'),
+	FoodCounts = require(path.join(global.__modelsdir, 'foodcounts')),
 	FoodResult = require(path.join(global.__modelsdir, 'foodresult'));
 
 var options = {
@@ -101,7 +102,9 @@ var options = {
 		'gluten': ['gluten', 'wheat'],
 		'nut': ['nut', 'nuts', 'peanut', 'peanuts', 'seed', 'seeds', 'walnut', 'walnuts', 'almond', 'almonds', 'pistachio', 'pistachios', 'hazelnut', 'hazelnuts'],
 		'soy': ['soy', 'tofu']
-	};
+	},
+	statusKeys = ["ongoing", "completed", "terminated", "pending"],
+	supportedCountFields = ["classification"];
 
 /**
  * Format input for use in search
@@ -124,6 +127,44 @@ function _convertArrayToParam(arr, field) {
 	return '(' + _.map(arr, function (ele) {
 			return field + ':"' + _formatValue(ele) + '"';
 		}).join('+') + ')';
+}
+
+/**
+ * Takes openFDA results data and modifies it to have the desired output format
+ * @param data
+ * @returns {Object}
+ * @private
+ */
+function _formatRecallResults(data) {
+	data.results = _.map(data.results, function (foodrecall) {
+		foodrecall.recall_initiation_date = moment(foodrecall.recall_initiation_date, 'YYYY-MM-DD').unix();
+		foodrecall.report_date = moment(foodrecall.report_date, 'YYYY-MM-DD').unix();
+
+		foodrecall.classificationlevel = foodrecall.classification.match(/I/g).length;
+
+		// TODO Sometimes field is null, could parse reason for recall for some
+		foodrecall.mandated = foodrecall.voluntary_mandated ? foodrecall.voluntary_mandated.match(/mandated/i) !== null : false;
+
+		// If we match a national term, select all states
+		if (_.some(nationalRegexes, function (regex) {
+				return regex.test(foodrecall.distribution_pattern);
+			})) {
+			foodrecall.affectedstates = stateAbbreviations;
+			foodrecall.affectednationally = true;
+		} else {
+			// Otherwise, find the states that match
+			foodrecall.affectedstates = _.keys(_.pick(stateRegexes, function (regexs) {
+				return _.some(regexs, function (regex) {
+					return regex.test(foodrecall.distribution_pattern);
+				});
+			})).sort();
+			foodrecall.affectednationally = false;
+		}
+
+		return _.omit(foodrecall, ['@id', '@epoch', 'openfda']);
+	});
+
+	return new FoodResult(data);
 }
 
 /**
@@ -153,37 +194,8 @@ function _makeRequest(obj) {
 		qs: obj
 	})).then(function (response) {
 		//console.log(response);
-		var data = response.body;
 
-		data.results = _.map(data.results, function (foodrecall) {
-			foodrecall.recall_initiation_date = moment(foodrecall.recall_initiation_date, 'YYYY-MM-DD').unix();
-			foodrecall.report_date = moment(foodrecall.report_date, 'YYYY-MM-DD').unix();
-
-			foodrecall.classificationlevel = foodrecall.classification.match(/I/g).length;
-
-			// TODO Sometimes field is null, could parse reason for recall for some
-			foodrecall.mandated = foodrecall.voluntary_mandated ? foodrecall.voluntary_mandated.match(/mandated/i) !== null : false;
-
-			// If we match a national term, select all states
-			if (_.some(nationalRegexes, function (regex) {
-					return regex.test(foodrecall.distribution_pattern);
-				})) {
-				foodrecall.affectedstates = stateAbbreviations;
-				foodrecall.affectednationally = true;
-			} else {
-				// Otherwise, find the states that match
-				foodrecall.affectedstates = _.keys(_.pick(stateRegexes, function (regexs) {
-					return _.some(regexs, function (regex) {
-						return regex.test(foodrecall.distribution_pattern);
-					});
-				})).sort();
-				foodrecall.affectednationally = false;
-			}
-
-			return _.omit(foodrecall, ['@id', '@epoch', 'openfda']);
-		});
-
-		return new FoodResult(data);
+		return response.body;
 	}).catch(function (err) {
 		//console.log(err);
 		// TODO need better wrapper for error handling
@@ -216,6 +228,23 @@ exports.areValidKeywords = function (keywords) {
 };
 
 /**
+ * Validates status string
+ * @param {String} status
+ * @returns {boolean}
+ */
+exports.isValidStatus = function (status) {
+	return _.contains(statusKeys, status.toLowerCase());
+};
+
+/**
+ * Validates count field
+ * @param status
+ */
+exports.isValidCountField = function (field) {
+	return _.contains(supportedCountFields, field.toLowerCase());
+};
+
+/**
  * Gets food recall details for specific recall id
  * @param obj
  * @param {Number} obj.id
@@ -225,45 +254,13 @@ exports.getFoodRecallById = function (obj) {
 	return _makeRequest({
 		search: 'recall_number:"' + obj.id + '"',
 		limit: 1
-	});
-};
-
-/**
- * Gets food recall(s) details for event
- * @param obj
- * @param {Number} obj.id
- * @param {Number} [obj.skip]
- * @param {Number} [obj.limit]
- * @returns {Promise}
- */
-exports.getFoodRecallByEventId = function (obj) {
-	return _makeRequest({
-		search: 'event_id:' + obj.id,
-		skip: obj.skip || null,
-		limit: obj.limit || null
-	});
-};
-
-/**
- * Gets food recall(s) for recalling firm
- * @param obj
- * @param {String} obj.name
- * @param {Number} [obj.skip]
- * @param {Number} [obj.limit]
- * @returns {Promise}
- */
-exports.getFoodRecallByRecallingFirm = function (obj) {
-	return _makeRequest({
-		search: 'recalling_firm:"' + _formatValue(obj.name) + '"',
-		skip: obj.skip || null,
-		limit: obj.limit || null
-	});
+	}).then(_formatRecallResults);
 };
 
 /**
  * Gets food recall(s) based on search parameters
  * @param obj
- * @param {String[]} [obj.locations]
+ * @param {String} [obj.state]
  * @param {Number} [obj.from]
  * @param {Number} [obj.to]
  * @param {Number} [obj.classificationlevel]
@@ -272,11 +269,19 @@ exports.getFoodRecallByRecallingFirm = function (obj) {
  * @param {Number} [obj.limit]
  * @returns {Promise}
  */
-exports.getFoodRecallBySearch = function (obj) {
+exports.searchFoodRecalls = function (obj) {
 	var search = [];
 
 	if (obj.state) {
 		search.push(_convertArrayToParam(stateMappings[obj.state.toUpperCase()].concat(nationalTerms), 'distribution_pattern'));
+	}
+
+	if (obj.eventid) {
+		search.push('event_id:' + obj.id);
+	}
+
+	if (obj.firmname) {
+		search.push('recalling_firm:"' + _formatValue(obj.firmname) + '"');
 	}
 
 	if (obj.from && obj.to) {
@@ -297,5 +302,41 @@ exports.getFoodRecallBySearch = function (obj) {
 		search: search.join('+AND+'),
 		skip: obj.skip || null,
 		limit: obj.limit || null
+	}).then(_formatRecallResults);
+};
+
+/**
+ * Gets counts for each unique item in a field
+ * @param obj
+ * @param {String} [obj.state]
+ * @param {String} [obj.status]
+ * @returns {Promise}
+ */
+exports.getFoodRecallsCounts = function (obj) {
+	var search = [];
+
+	if (obj.state) {
+		search.push(_convertArrayToParam(stateMappings[obj.state.toUpperCase()].concat(nationalTerms), 'distribution_pattern'));
+	}
+
+	if (obj.status) {
+		search.push('status:"' + obj.status + '"');
+	}
+
+	return _makeRequest({
+		search: search.join('+AND+'),
+		count: obj.field + '.exact'
+	}).then(function (data) {
+		var stats = {total: 0, counts: {}};
+
+		_.each(data.results, function (result) {
+			var key = result.term,
+				val = result.count;
+
+			stats.counts[key] = val;
+			stats.total += val;
+		});
+
+		return new FoodCounts(stats);
 	});
 };

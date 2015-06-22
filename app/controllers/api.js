@@ -84,70 +84,6 @@ exports.getRecallById = function (req, res) {
 	_processResponse(fdaAdapter.getFoodRecallById(obj), res);
 };
 
-/**
- * Gets recalls for event
- * @param req
- * @param {Number} req.params.id
- * @param res
- */
-exports.getRecallByEventId = function (req, res) {
-	var obj = {};
-
-	obj.id = _validateNumber(req.params.id);
-	if (_.isUndefined(obj.id)) {
-		_rejectArgument('Invalid id', res);
-		return;
-	}
-
-	if (req.query.skip) {
-		obj.skip = _validateNumber(req.params.skip);
-		if (_.isUndefined(obj.skip)) {
-			_rejectArgument('Invalid skip', res);
-			return;
-		}
-	}
-
-	if (req.query.limit) {
-		obj.limit = _validateNumber(req.params.limit);
-		if (_.isUndefined(obj.limit)) {
-			_rejectArgument('Invalid limit', res);
-			return;
-		}
-	}
-
-	_processResponse(fdaAdapter.getFoodRecallByEventId(obj), res);
-};
-
-/**
- * Gets recalls for recalling firm
- * @param req
- * @param {String} req.params.name
- * @param res
- */
-exports.getRecallByRecallingFirm = function (req, res) {
-	var obj = {};
-
-	if (req.query.skip) {
-		obj.skip = _validateNumber(req.params.skip);
-		if (_.isUndefined(obj.skip)) {
-			_rejectArgument('Invalid skip', res);
-			return;
-		}
-	}
-
-	if (req.query.limit) {
-		obj.limit = _validateNumber(req.params.limit);
-		if (_.isUndefined(obj.limit)) {
-			_rejectArgument('Invalid limit', res);
-			return;
-		}
-	}
-
-	_processResponse(fdaAdapter.getFoodRecallByRecallingFirm({
-		name: req.params.name
-	}), res);
-};
-
 /* TODO
  * Filter results
  * - nationwide match: make sure there is no state designation
@@ -163,7 +99,7 @@ exports.getRecallByRecallingFirm = function (req, res) {
  * @param {String[]} [req.query.keywords]
  * @param res
  */
-exports.search = function (req, res) {
+exports.getRecalls = function (req, res) {
 	var obj = {};
 
 	if (req.query.state) {
@@ -172,6 +108,18 @@ exports.search = function (req, res) {
 			return;
 		}
 		obj.state = req.query.state;
+	}
+
+	if (req.query.eventid) {
+		obj.eventid = _validateNumber(req.query.eventid);
+		if (_.isUndefined(obj.eventid)) {
+			_rejectArgument('Invalid eventid', res);
+			return;
+		}
+	}
+
+	if (req.query.firmname) {
+		obj.firmname = req.query.firmname;
 	}
 
 	if (req.query.from || req.query.to) {
@@ -237,5 +185,51 @@ exports.search = function (req, res) {
 		}
 	}
 
-	_processResponse(fdaAdapter.getFoodRecallBySearch(obj), res);
+	_processResponse(fdaAdapter.searchFoodRecalls(obj), res);
+};
+
+/**
+ * Gets counts
+ * @param req
+ * @param {String} req.query.field
+ * @param {String} [req.query.state]
+ * @param {String} [req.query.status]
+ * @param res
+ */
+exports.getRecallsCounts = function (req, res) {
+	var obj = {};
+
+	if (!fdaAdapter.isValidCountField(req.query.field)) {
+		_rejectArgument('Invalid field', res);
+		return;
+	}
+	obj.field = req.query.field;
+
+	if (req.query.state) {
+		if (!fdaAdapter.isValidState(req.query.state)) {
+			_rejectArgument('Invalid state', res);
+			return;
+		}
+		obj.state = req.query.state;
+	}
+
+	if (req.query.status) {
+		if (!fdaAdapter.isValidStatus(req.query.status)) {
+			_rejectArgument('Invalid status', res);
+			return;
+		}
+		obj.status = req.query.status;
+	}
+
+	if (req.query.skip) {
+		_rejectArgument('Invalid skip - not allowed', res);
+		return;
+	}
+
+	if (req.query.limit) {
+		_rejectArgument('Invalid limit - not allowed', res);
+		return;
+	}
+
+	_processResponse(fdaAdapter.getFoodRecallsCounts(obj), res);
 };
