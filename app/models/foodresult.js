@@ -1,9 +1,7 @@
 'use strict';
 
-var _ = require('underscore');
-
 function FoodResult(apiData) {
-	if (!this instanceof FoodResult) {
+	if (!(this instanceof FoodResult)) {
 		// Guard against calls without the new operator.
 		return new FoodResult(apiData);
 	}
@@ -11,9 +9,7 @@ function FoodResult(apiData) {
 	var _skip = apiData.meta.results.skip,
 		_limit = apiData.meta.results.limit,
 		_total = apiData.meta.results.total,
-		_data = _.map(apiData.results, function (foodrecall) {
-			return _.omit(foodrecall, ['@id', '@epoch', 'openfda']);
-		});
+		_data = apiData.results;
 
 	Object.defineProperties(this, {
 		skip: {

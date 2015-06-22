@@ -32,7 +32,7 @@ var path = require('path'),
  * @apiSuccess (SuccessHeader) {String} data.status The status of the recall.
  * @apiSuccess (SuccessHeader) {String} data.distribution_pattern The pattern for distribution of the recall.
  * @apiSuccess (SuccessHeader) {String} data.product_quantity The quantity distributed of the recall.
- * @apiSuccess (SuccessHeader) {String} data.recall_initiation_date The initial recall date.
+ * @apiSuccess (SuccessHeader) {Number} data.recall_initiation_date The timestamp of the initial recall date.
  * @apiSuccess (SuccessHeader) {String} data.state The state for the contact of the distribution firm.
  * @apiSuccess (SuccessHeader) {String} data.event_id The event ID of the recall.
  * @apiSuccess (SuccessHeader) {String} data.product_type The product type of the recall.
@@ -42,11 +42,15 @@ var path = require('path'),
  * @apiSuccess (SuccessHeader) {String} data.country The country for the contact of the distribution firm.
  * @apiSuccess (SuccessHeader) {String} data.city The city for the contact of the distribution firm.
  * @apiSuccess (SuccessHeader) {String} data.recalling_firm The recalling firm's name.
- * @apiSuccess (SuccessHeader) {String} data.report_date The date for the recall report.
+ * @apiSuccess (SuccessHeader) {Number} data.report_date The timestamp of the recall report date.
  * @apiSuccess (SuccessHeader) {String} data.voluntary_mandated The initiating party for the recall.
  * @apiSuccess (SuccessHeader) {String} data.classification The classification of the recall.
  * @apiSuccess (SuccessHeader) {String} data.code_info The descriptive markings of the recall.
  * @apiSuccess (SuccessHeader) {String} data.initial_firm_notification The initial method of notification from the recalling firm for the recall.
+ * @apiSuccess (SuccessHeader) {Number} data.classificationlevel The `classification` string expressed as a numerical level.
+ * @apiSuccess (SuccessHeader) {Boolean} data.mandated The `voluntary_mandated` expressed as a boolean.
+ * @apiSuccess (SuccessHeader) {String[]} data.affectedstates The `distribution_pattern` expressed as an array of state abbreviations.
+ * @apiSuccess (SuccessHeader) {Boolean} data.affectednationally The `distribution_pattern` expressed as matching a national keyword.
  */
 
 /**

@@ -16,15 +16,114 @@ var options = {
 		useQuerystring: true,
 		// override the encode function
 		qsStringifyOptions: {
-			encodeURIComponent: function identity(str) { return str; } // requires node 0.12
+			encodeURIComponent: function identity(str) { // requires node 0.12
+				return str;
+			}
 		}
 	},
-	limit = 100;
+	limit = 100,
+	stateMappings = {
+		AL: ['AL', 'Alabama'],
+		AK: ['AK', 'Alaska'],
+		AZ: ['AZ', 'Arizona'],
+		AR: ['AR', 'Arkansas'],
+		CA: ['CA', 'California'],
+		CO: ['CO', 'Colorado'],
+		CT: ['CT', 'Connecticut'],
+		DE: ['DE', 'Delaware'],
+		FL: ['FL', 'Florida'],
+		GA: ['GA', 'Georgia'],
+		HI: ['HI', 'Hawaii'],
+		ID: ['ID', 'Idaho'],
+		IL: ['IL', 'Illinois'],
+		IN: ['IN', 'Indiana'],
+		IA: ['IA', 'Iowa'],
+		KS: ['KS', 'Kansas'],
+		KY: ['KY', 'Kentucky'],
+		LA: ['LA', 'Louisiana'],
+		ME: ['ME', 'Maine'],
+		MD: ['MD', 'Maryland'],
+		MA: ['MA', 'Massachusetts'],
+		MI: ['MI', 'Michigan'],
+		MN: ['MN', 'Minnesota'],
+		MS: ['MS', 'Mississippi'],
+		MO: ['MO', 'Missouri'],
+		MT: ['MT', 'Montana'],
+		NE: ['NE', 'Nebraska'],
+		NV: ['NV', 'Nevada'],
+		NH: ['NH', 'New Hampshire'],
+		NJ: ['NJ', 'New Jersey'],
+		NM: ['NM', 'New Mexico'],
+		NY: ['NY', 'New York'],
+		NC: ['NC', 'North Carolina'],
+		ND: ['ND', 'North Dakota'],
+		OH: ['OH', 'Ohio'],
+		OK: ['OK', 'Oklahoma'],
+		OR: ['OR', 'Oregon'],
+		PA: ['PA', 'Pennsylvania'],
+		RI: ['RI', 'Rhode Island'],
+		SC: ['SC', 'South Carolina'],
+		SD: ['SD', 'South Dakota'],
+		TN: ['TN', 'Tennessee'],
+		TX: ['TX', 'Texas'],
+		UT: ['UT', 'Utah'],
+		VT: ['VT', 'Vermont'],
+		VA: ['VA', 'Virginia'],
+		WA: ['WA', 'Washington'],
+		WV: ['WV', 'West Virginia'],
+		WI: ['WI', 'Wisconsin'],
+		WY: ['WY', 'Wyoming'],
+		DC: ['DC', 'District of Columbia', 'D.C.']
+	},
+	stateAbbreviations = _.keys(stateMappings).sort(),
+	stateRegexes = _.reduce(stateMappings, function (memo, values, key) {
+		memo[key] = _.map(values, function (val) {
+			return new RegExp(val, 'i');
+		});
+		return memo;
+	}, {}),
+	nationalTerms = [
+		'nationwide', // misspellings in database will exclude 'natiowide'
+		'national distribution',
+		'nation wide',
+		'nationally',
+		'us',
+		'usa'
+	],
+	nationalRegexes = _.map(nationalTerms, function (val) {
+		return new RegExp(val, 'i');
+	}),
+	keywordMappings = {
+		'dairy': ['dairy', 'milk', 'cheese', 'cheeses', 'whey'],
+		'dye': ['dye', 'color', 'colors', 'red', 'yellow', 'pink', 'blue', 'green'],
+		'egg': ['egg', 'eggs'],
+		'fish': ['fish', 'shellfish', 'oyster', 'oysters'],
+		'gluten': ['gluten', 'wheat'],
+		'nut': ['nut', 'nuts', 'peanut', 'peanuts', 'seed', 'seeds', 'walnut', 'walnuts', 'almond', 'almonds', 'pistachio', 'pistachios', 'hazelnut', 'hazelnuts'],
+		'soy': ['soy', 'tofu']
+	};
 
+/**
+ * Format input for use in search
+ * @param {String} val
+ * @returns {String}
+ * @private
+ */
+function _formatValue(val) {
+	return val.replace(/ /g, '+');
+}
+
+/**
+ * Converts an array of values to query string using field
+ * @param {String[]} arr Values to match against
+ * @param {String} field Field to query on
+ * @returns {string}
+ * @private
+ */
 function _convertArrayToParam(arr, field) {
 	return '(' + _.map(arr, function (ele) {
-		return field + ':"' + ele.replace(/ /g, '+') + '"';
-	}).join('+') + ')';
+			return field + ':"' + _formatValue(ele) + '"';
+		}).join('+') + ')';
 }
 
 /**
@@ -54,7 +153,37 @@ function _makeRequest(obj) {
 		qs: obj
 	})).then(function (response) {
 		//console.log(response);
-		return new FoodResult(response.body);
+		var data = response.body;
+
+		data.results = _.map(data.results, function (foodrecall) {
+			foodrecall.recall_initiation_date = moment(foodrecall.recall_initiation_date, 'YYYY-MM-DD').unix();
+			foodrecall.report_date = moment(foodrecall.report_date, 'YYYY-MM-DD').unix();
+
+			foodrecall.classificationlevel = foodrecall.classification.match(/I/g).length;
+
+			// TODO Sometimes field is null, could parse reason for recall for some
+			foodrecall.mandated = foodrecall.voluntary_mandated ? foodrecall.voluntary_mandated.match(/mandated/i) !== null : false;
+
+			// If we match a national term, select all states
+			if (_.some(nationalRegexes, function (regex) {
+					return foodrecall.distribution_pattern.match(regex) !== null;
+				})) {
+				foodrecall.affectedstates = stateAbbreviations;
+				foodrecall.affectednationally = true;
+			} else {
+				// Otherwise, find the states that match
+				foodrecall.affectedstates = _.keys(_.pick(stateRegexes, function (regexs) {
+					return _.some(regexs, function (regex) {
+						return foodrecall.distribution_pattern.match(regex) !== null;
+					});
+				})).sort();
+				foodrecall.affectednationally = false;
+			}
+
+			return _.omit(foodrecall, ['@id', '@epoch', 'openfda']);
+		});
+
+		return new FoodResult(data);
 	}).catch(function (err) {
 		//console.log(err);
 		// TODO need better wrapper for error handling
@@ -67,6 +196,26 @@ function _makeRequest(obj) {
 }
 
 /**
+ * Validates state
+ * @param {String} state
+ * @returns {boolean}
+ */
+exports.isValidState = function (state) {
+	return stateMappings.hasOwnProperty(state.toUpperCase());
+};
+
+/**
+ * Validates keywords
+ * @param {String[]} keywords
+ * @returns {String|undefined} Returns first invalid element or undefined if all are valid
+ */
+exports.areValidKeywords = function (keywords) {
+	return _.find(keywords, function (keyword) {
+		return !keywordMappings.hasOwnProperty(keyword.toLowerCase());
+	});
+};
+
+/**
  * Gets food recall details for specific recall id
  * @param obj
  * @param {Number} obj.id
@@ -74,7 +223,7 @@ function _makeRequest(obj) {
  */
 exports.getFoodRecallById = function (obj) {
 	return _makeRequest({
-		search: 'recall_number:' + obj.id,
+		search: 'recall_number:"' + obj.id + '"',
 		limit: 1
 	});
 };
@@ -105,7 +254,7 @@ exports.getFoodRecallByEventId = function (obj) {
  */
 exports.getFoodRecallByRecallingFirm = function (obj) {
 	return _makeRequest({
-		search: 'recalling_firm:' + obj.name,
+		search: 'recalling_firm:"' + _formatValue(obj.name) + '"',
 		skip: obj.skip || null,
 		limit: obj.limit || null
 	});
@@ -126,8 +275,8 @@ exports.getFoodRecallByRecallingFirm = function (obj) {
 exports.getFoodRecallBySearch = function (obj) {
 	var search = [];
 
-	if (obj.locations) {
-		search.push(_convertArrayToParam(obj.locations, 'distribution_pattern'));
+	if (obj.state) {
+		search.push(_convertArrayToParam(stateMappings[obj.state.toUpperCase()].concat(nationalTerms), 'distribution_pattern'));
 	}
 
 	if (obj.from && obj.to) {
@@ -139,7 +288,9 @@ exports.getFoodRecallBySearch = function (obj) {
 	}
 
 	if (obj.keywords) {
-		search.push(_convertArrayToParam(obj.keywords, 'reason_for_recall'));
+		search.push(_convertArrayToParam(_.reduce(obj.keywords, function (arr, keyword) {
+			return arr.concat(keywordMappings[keyword.toLowerCase()]);
+		}, []), 'reason_for_recall'));
 	}
 
 	return _makeRequest({

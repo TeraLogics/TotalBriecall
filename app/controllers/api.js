@@ -5,78 +5,6 @@ var _ = require('underscore'),
 	path = require('path'),
 	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
 
-var stateMappings = {
-		AL: ['AL', 'Alabama'],
-		AK: ['AK', 'Alaska'],
-		AZ: ['AZ', 'Arizona'],
-		AR: ['AR', 'Arkansas'],
-		CA: ['CA', 'California'],
-		CO: ['CO', 'Colorado'],
-		CT: ['CT', 'Connecticut'],
-		DE: ['DE', 'Delaware'],
-		FL: ['FL', 'Florida'],
-		GA: ['GA', 'Georgia'],
-		HI: ['HI', 'Hawaii'],
-		ID: ['ID', 'Idaho'],
-		IL: ['IL', 'Illinois'],
-		IN: ['IN', 'Indiana'],
-		IA: ['IA', 'Iowa'],
-		KS: ['KS', 'Kansas'],
-		KY: ['KY', 'Kentucky'],
-		LA: ['LA', 'Louisiana'],
-		ME: ['ME', 'Maine'],
-		MD: ['MD', 'Maryland'],
-		MA: ['MA', 'Massachusetts'],
-		MI: ['MI', 'Michigan'],
-		MN: ['MN', 'Minnesota'],
-		MS: ['MS', 'Mississippi'],
-		MO: ['MO', 'Missouri'],
-		MT: ['MT', 'Montana'],
-		NE: ['NE', 'Nebraska'],
-		NV: ['NV', 'Nevada'],
-		NH: ['NH', 'New Hampshire'],
-		NJ: ['NJ', 'New Jersey'],
-		NM: ['NM', 'New Mexico'],
-		NY: ['NY', 'New York'],
-		NC: ['NC', 'North Carolina'],
-		ND: ['ND', 'North Dakota'],
-		OH: ['OH', 'Ohio'],
-		OK: ['OK', 'Oklahoma'],
-		OR: ['OR', 'Oregon'],
-		PA: ['PA', 'Pennsylvania'],
-		RI: ['RI', 'Rhode Island'],
-		SC: ['SC', 'South Carolina'],
-		SD: ['SD', 'South Dakota'],
-		TN: ['TN', 'Tennessee'],
-		TX: ['TX', 'Texas'],
-		UT: ['UT', 'Utah'],
-		VT: ['VT', 'Vermont'],
-		VA: ['VA', 'Virginia'],
-		WA: ['WA', 'Washington'],
-		WV: ['WV', 'West Virginia'],
-		WI: ['WI', 'Wisconsin'],
-		WY: ['WY', 'Wyoming'],
-		DC: ['DC', 'District of Columbia', 'D.C.']
-	},
-	nationalTerms = [
-		'nationwide', // misspellings in database will exclude 'natiowide'
-		'national distribution',
-		'nation wide',
-		'nationally',
-		'us',
-		'usa'
-	],
-// TODO expand keyword mappings
-	keywordMappings = {
-		'dairy': ['dairy', 'milk', 'cheese', 'cheeses', 'whey'],
-		'dye': ['dye', 'color', 'colors', 'red', 'yellow', 'pink', 'blue', 'green'],
-		'egg': ['egg', 'eggs'],
-		'fish': ['fish', 'shellfish', 'oyster', 'oysters'],
-		'gluten': ['gluten', 'wheat'],
-		'nut': ['nut', 'nuts', 'peanut', 'peanuts', 'seed', 'seeds', 'walnut', 'walnuts', 'almond', 'almonds', 'pistachio', 'pistachios', 'hazelnut', 'hazelnuts'],
-		'soy': ['soy', 'tofu']
-	};
-
 /**
  * Converts input to a valid integer or undefined
  * @param input
@@ -239,11 +167,11 @@ exports.search = function (req, res) {
 	var obj = {};
 
 	if (req.query.state) {
-		if (!stateMappings.hasOwnProperty(req.query.state.toUpperCase())) {
+		if (!fdaAdapter.isValidState(req.query.state)) {
 			_rejectArgument('Invalid state', res);
 			return;
 		}
-		obj.locations = stateMappings[req.query.state.toUpperCase()].concat(nationalTerms);
+		obj.state = req.query.state;
 	}
 
 	if (req.query.from || req.query.to) {
@@ -280,16 +208,12 @@ exports.search = function (req, res) {
 			_rejectArgument('Invalid keywords', res);
 			return;
 		}
-		var invalid = _.find(req.query.keywords, function (keyword) {
-			return !keywordMappings.hasOwnProperty(keyword.toLowerCase());
-		});
-		if (invalid) {
+		var invalid = fdaAdapter.areValidKeywords(req.query.keywords);
+		if (invalid !== undefined) {
 			_rejectArgument('Invalid keywords - could not match keyword ' + invalid, res);
 			return;
 		}
-		obj.keywords = _.reduce(req.query.keywords, function (arr, keyword) {
-			return arr.concat(keywordMappings[keyword.toLowerCase()]);
-		}, []);
+		obj.keywords = req.query.keywords;
 	}
 
 	if (_.size(obj) === 0) {
