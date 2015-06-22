@@ -10,6 +10,7 @@
   "dependencies": {
     "bluebird": "^2.9.30",
     "body-parser": "^1.13.1",
+    "bower": "1.4.1",
     "colors": "^1.1.2",
     "compression": "^1.5.0",
     "connect-mongo": "^0.8.1",
@@ -21,6 +22,10 @@
     "express": "^4.12.4",
     "express-session": "^1.11.3",
     "express-validator": "^2.12.1",
+    "grunt-cli": "0.1.13",
+    "grunt": "0.4.5",
+    "grunt-sass": "1.0.0",
+    "grunt-contrib-copy": "0.8.0",
     "method-override": "^2.3.3",
     "mime": "^1.3.4",
     "moment": "^2.10.3",
@@ -48,6 +53,7 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^3.0.0",
+		"grunt-contrib-watch": "0.6.1",
     "mocha": "^2.2.5"
   },
   "homepage": "https://github.com/TeraLogics/TotalBriecall",

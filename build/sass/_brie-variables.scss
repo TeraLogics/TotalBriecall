@@ -1,0 +1,42 @@
+$text-direction: ltr !default;
+$bg-default: #fff !default;
+$bg-void: darken($bg-default, 10%) !default;
+
+//
+// Avatars
+// --------------------------------------------------
+$avatar-thumbnail-width: 40px;
+$avatar-thumbnail-height: 40px;
+
+// Import custom Bootstrap variables
+@import "bootstrap-variables";
+
+//
+// Recall class
+// --------------------------------------------------
+$recall-class-i-text: $state-danger-text;
+$recall-class-i-bg: $state-danger-bg;
+$recall-class-ii-text: $state-warning-text;
+$recall-class-ii-bg: $state-warning-bg;
+$recall-class-iii-text: $state-info-text;
+$recall-class-iii-bg: $state-info-bg;
+
+//
+// Recall status
+// --------------------------------------------------
+$recall-status-ongoing-text: $state-success-text;
+$recall-status-ongoing-bg: $state-success-bg;
+$recall-status-pending-text: $state-success-text;
+$recall-status-pending-bg: $state-success-bg;
+$recall-status-terminated-text: $gray-darker;
+$recall-status-terminated-bg: $gray-dark;
+$recall-status-completed-text: $gray-darker;
+$recall-status-completed-bg: $gray-dark;
+
+//
+// Recall-action
+// --------------------------------------------------
+$recall-action-voluntary-text: $state-success-text;
+$recall-action-voluntary-bg: $state-success-bg;
+$recall-action-mandated-text: $state-danger-text;
+$recall-action-mandated-bg: $state-danger-bg;

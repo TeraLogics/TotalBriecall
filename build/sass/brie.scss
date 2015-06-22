@@ -1,0 +1,276 @@
+@import 'brie-variables';
+
+// Import Bootstrap for Sass
+@import 'bootstrap-sass-official/assets/stylesheets/bootstrap';
+
+
+@import 'bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/text-overflow';
+
+// Brie mixins
+@import 'brie/mixins/valign';
+@import 'brie/mixins/aspect_box';
+
+.bg-void {
+  background-color: $bg-void;
+}
+
+//
+// Drop down
+// --------------------------------------------------
+
+.dropdown.no-clip {
+  direction: ltr; // switch draw direction
+  position: static; // prevents clipping of the view
+
+  &.dropdown-anchor-right {
+    direction: rtl;
+  }
+
+  > * {
+    direction: $text-direction; // switch to default direction
+  }
+
+  & > .dropdown-menu {
+    left: auto;
+    right: auto;
+    top: auto;
+  }
+}
+
+//
+// Aspect ratio box
+// --------------------------------------------------
+.aspect-box{
+  position: relative;
+  width: 100%;
+
+  &:before{
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+
+  &.aspect-ratio-2x1:before{
+    padding-top: 50%;
+  }
+  &.aspect-ratio-1x2:before{
+    padding-top: 200%;
+  }
+  &.aspect-ratio-4x3:before{
+    padding-top: 75%;
+  }
+  &.aspect-ratio-6x9:before{
+    padding-top: 56.25%;
+  }
+
+  > .aspect-content {
+    @include aspect-content();
+  }
+}
+
+//
+// Vertical align helper
+// --------------------------------------------------
+.valign-helper {
+  white-space: nowrap;
+
+  &:before {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    content: '';
+  }
+
+  > .valign {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+//
+// Panels
+// --------------------------------------------------
+
+.panel-expanded {
+  border-radius: 0;
+  border: none;
+  @include box-shadow(none);
+}
+
+.panel-title {
+  font-weight: bold;
+}
+
+// Panel subtitle
+.panel-subtitle {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: ceil(($font-size-base * .975));
+  color: lighten($text-color, 35%);
+
+  > a,
+  > small,
+  > .small,
+  > small > a,
+  > .small > a {
+    color: inherit;
+  }
+}
+
+.panel-title + .panel-subtitle {
+  margin-top: 7px;
+}
+
+//
+// List View
+// --------------------------------------------------
+.list-view {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  @include list-unstyled();
+
+  & + .list-view-messages > .list-view-empty-message,
+  & + .list-view-messages > .list-view-error-message {
+      display: none;
+  }
+
+  &:empty,
+  &.empty {
+    display: none;
+  }
+
+  &.error + .list-view-messages > .list-view-empty-message {
+    display: none;
+  }
+
+  &:empty + .list-view-messages > .list-view-empty-message,
+  &.empty + .list-view-messages > .list-view-empty-message {
+    display: block;
+    margin: 10px 0;
+    font-style: italic;
+    font-size: 1em;
+    text-align: center;
+    vertical-align: middle;
+    color: $text-muted;
+  }
+
+  & > .divider {
+    position: relative;
+    padding: 0;
+    z-index: 0;
+
+    & > hr {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      margin: 0;
+      top: 1.1rem;
+      z-index: -1;
+      border-top: 1px solid;
+    }
+
+    & > .divider-label {
+      padding: 0 1em;
+    }
+  }
+}
+
+//
+// Avatar
+// --------------------------------------------------
+.avatar {
+  width: $avatar-thumbnail-width;
+  height: $avatar-thumbnail-height;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
+
+//
+// Spinners
+// --------------------------------------------------
+
+//
+// Auxiliary
+// --------------------------------------------------
+.hidden-overflow {
+  overflow: hidden;
+}
+
+.visible-overflow {
+  overflow:visible;
+}
+
+//
+// Briecall specific classes
+// --------------------------------------------------
+
+.recall-class {
+  &-i.recall-class-bg {
+    background-color: $recall-class-i-bg;
+  }
+  &-i.recall-class-text {
+    color: $recall-class-i-text;
+  }
+
+  &-ii.recall-class-bg {
+    background-color: $recall-class-ii-bg;
+  }
+  &-ii.recall-class-text {
+    color: $recall-class-ii-text;
+  }
+
+  &-iii.recall-class-bg {
+    background-color: $recall-class-iii-bg;
+  }
+  &-iii.recall-class-text {
+    color: $recall-class-iii-text;
+  }
+}
+
+.recall-status {
+  &-ongoing {
+
+  }
+
+  &-completed {
+
+  }
+
+  &-terminated {
+
+  }
+
+  &-pending {
+
+  }
+}
+
+.recall-action {
+  &-voluntary {
+
+  }
+
+  &-mendated {
+
+  }
+}
+
+
+.recall-summary-card {
+  .panel-title, .panel-subtitle {
+    @include text-overflow();
+  }
+
+  .recall-hud {
+    overflow: auto;
+    margin-bottom: 16px;
+  }
+
+  .recall-reason {
+    margin: 0;
+  }
+}
+
+@import 'brie/shame';

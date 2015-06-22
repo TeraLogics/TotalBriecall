@@ -1,0 +1,64 @@
+@function extract-shorthand-top($shorthand-list) {
+  $shorthand-length: length($shorthand-list);
+
+  @if $shorthand-length >= 1 {
+    @return nth($shorthand-list, 1);
+  }
+  @else {
+    @return 0
+  }
+}
+
+@function extract-shorthand-bottom($shorthand-list) {
+  $shorthand-length: length($shorthand-list);
+
+  @if $shorthand-length > 2 {
+    @return nth($shorthand-list, 3);
+  }
+  @else if ($shorthand-length >= 1) {
+    @return nth($shorthand-list, 1);
+  }
+  @else {
+    @return 0
+  }
+}
+
+@function extract-shorthand-left($shorthand-list) {
+  $shorthand-length: length($shorthand-list);
+
+  @if $shorthand-length >= 4 {
+    @return nth($shorthand-list, 4);
+  }
+  @else if ($shorthand-length == 3) {
+    @return nth($shorthand-list, 2);
+  }
+  @else if($shorthand-length == 2) {
+    @return nth($shorthand-list, 2);
+  }
+  @else if($shorthand-length == 1) {
+    @return nth($shorthand-list, 1);
+  }
+  @else {
+    @return 0
+  }
+}
+
+@function extract-shorthand-right($shorthand-list) {
+  $shorthand-length: length($shorthand-list);
+
+  @if $shorthand-length >= 4 {
+    @return nth($shorthand-list, 2);
+  }
+  @else if ($shorthand-length == 3) {
+    @return nth($shorthand-list, 2);
+  }
+  @else if($shorthand-length == 2) {
+    @return nth($shorthand-list, 2);
+  }
+  @else if($shorthand-length == 1) {
+    @return nth($shorthand-list, 1);
+  }
+  @else {
+    @return 0
+  }
+}

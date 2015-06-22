@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Total Briecall</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1">
+
+    <link rel="stylesheet" href="css/brie.css">
+    <noscript>
+        <link rel="stylesheet" href="css/no-js.css">
+    </noscript>
+
+    <script data-main="js/app-browse" src="/js/require.js"></script>
+</head>
+<body class="bg-void">
+    <div class="navmenu navmenu-default">
+        <!-- off-canvas menu goes here -->
+    </div>
+    <div class="container-flexible">
+        <div class="panel panel-default panel-expanded">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6 col-md-8">
+                        <h1>Maryland</h1>
+                        <div>
+                            <!-- widgets / graphs go here -->
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <select>
+                            <option>Nuts</option>
+                            <option>Dairy</option>
+                        </select>
+                        <div class="input-group">
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary active">
+                                <input type="checkbox" autocomplete="off" checked> Class I
+                            </label>
+                            <label class="btn btn-primary active">
+                                <input type="checkbox" autocomplete="off" checked> Class II
+                            </label>
+                            <label class="btn btn-primary active">
+                                <input type="checkbox" autocomplete="off" checked> Class III
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ol id="pinned-recalls" class="list-view empty">
+                <!-- recall cards placeholder -->
+            </ol>
+            <div class="list-view-messages">
+                <p class="list-view-empty-message">You have not pinned any recalls.</p>
+                <p class="list-view-error-message">Oh no! We could not retrieve your pinned recalls!</p>
+            </div>
+        </div>
+        <div>
+            <ol id="recent-recalls" class="list-view empty">
+                <!-- recall cards placeholder -->
+                <li class="col-xs-12 col-sm-6 col-lg-4"></li>
+            </ol>
+            <div class="list-view-messages">
+                <p class="list-view-empty-message">There are no recent recalls.</p>
+                <p class="list-view-error-message">Oops, we had trouble retrieving recent recalls!</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

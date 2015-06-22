@@ -1,0 +1,15 @@
+@mixin valign-helper() {
+  white-space: nowrap;
+
+  &:before {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    content: '';
+  }
+}
+
+@mixin valign() {
+    display: inline-block;
+    vertical-align: middle;
+}

@@ -5,7 +5,10 @@ var path = require('path'),
 
 module.exports = function (app, passport, middleware) {
 	app.route('/')
-		.get(siteCtrl.index);
+		.get(siteCtrl.landing);
+
+	app.route('/browse')
+		.get(siteCtrl.browse);
 
 	app.route('/details/:id')
 		.get(siteCtrl.details);
