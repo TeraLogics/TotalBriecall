@@ -1,18 +1,19 @@
-<html>
-<head>
+<% include ./common/header.ejs %>
+	<link rel="stylesheet" href="/css/leaflet.css" />
+</head>
+<body>
+	<div id="map">
+	</div>
 	<script src="/js/jquery-2.1.4.min.js"></script>
 	<script src="/js/underscore-min.js"></script>
-	<link rel="stylesheet" href="/css/leaflet.css" />
 	<script src="/js/leaflet.js"></script>
 	<script src="/js/us-states.js"></script>
 	<script src="/js/MapApp.js"></script>
-</head>
-<body>
 	<script>
 		$(document).ready(function(){
 			var map = new MapApp({
 				height: 250,
-				width: 500,
+				width: 500
 			});
 			map.create();
 			var style = function(feature) {
@@ -32,7 +33,7 @@
 
 			var map_location = new MapApp({
 				height: 200,
-				width: 200,
+				width: 200
 			});
 			map_location.create();
 			map_location.add('marker', {
@@ -43,7 +44,5 @@
 
 		});
 	</script>
-	<div id="map">
-	</div>
 </body>
 </html>
