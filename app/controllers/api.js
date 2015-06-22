@@ -164,11 +164,6 @@ exports.getRecalls = function (req, res) {
 		obj.keywords = req.query.keywords;
 	}
 
-	if (_.size(obj) === 0) {
-		_rejectArgument('No parameters supplied', res);
-		return;
-	}
-
 	if (req.query.skip) {
 		obj.skip = _validateNumber(req.query.skip);
 		if (_.isUndefined(obj.skip)) {

@@ -1,5 +1,5 @@
 SOURCES ?= app/*.js
-TESTS ?= test/*.test.js
+TESTS ?= test/
 
 test: test-mocha
 test-cov: test-istanbul-mocha

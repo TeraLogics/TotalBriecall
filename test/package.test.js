@@ -1,2 +1,0 @@
-describe('TotalBriecall', function() {
-});
