@@ -2,7 +2,6 @@
 
 var _ = require('underscore'),
 	bodyParser = require('body-parser'),
-	cluster = require('cluster'),
 	colors = require('colors'),
 	compression = require('compression'),
 	consolidate = require('consolidate'),
@@ -14,7 +13,6 @@ var _ = require('underscore'),
 	fs = require('fs'),
 	methodOverride = require('method-override'),
 	moment = require('moment'),
-	os = require('os'),
 	path = require('path'),
 	Promise = require('bluebird'),
 	session = require('express-session'),
@@ -44,163 +42,138 @@ global.__adptsdir = path.join(global.__appdir, 'adapters');
 // Load application configuration
 global.config = require(path.join(global.__basedir, 'conf', 'config')).get();
 
-//if (cluster.isMaster) {
-//	console.info('OS: [%s %s] | CPUs: [%s] | Versions: [%j]', os.type() + ' ' + os.release(), process.arch, os.cpus().length + 'x ' + os.cpus()[0].model.replace('  ', ''), process.versions);
-//
-//	setInterval(function () {
-//		console.info('V8 Memory [%j] | Uptime: [%s]', process.memoryUsage(), moment.duration(process.uptime() * 1000).format("d[ days], hh:mm:ss", { trim: false, forceLength: true }));
-//	}, 30000);
-//
-//	// Create a workers
-//	for (var i = 0; i < global.config.portal.workers; i++) {
-//		cluster.fork();
-//	}
-//
-//	// Listen for dying workers
-//	cluster.on('exit', function (worker, code, signal) {
-//		console.warn('Worker ' + worker.process.pid + ':' + ' Died ('.red + colors.red(signal || code) + ')'.red + ' Restarting...');
-//		cluster.fork(); // Replace the dead worker, we're not sentimental
-//	}).on('online', function (worker) {
-//		console.info('Worker ' + worker.process.pid + ':' + ' Online'.green);
-//	}).on('disconnect', function (worker) {
-//		console.warn('Worker ' + worker.process.pid + ':' + ' Disconnected'.yellow);
-//	});
-//
-//} else { // Code to run if we're in a worker process
+var app = express(),
+	readDir = Promise.promisify(fs.readdir);
 
-	var app = express(),
-		readDir = Promise.promisify(fs.readdir);
+app.set('port', (process.env.PORT || 5000));
+app.set('showStackError', true);
 
-	app.set('port', (process.env.PORT || global.config.portal.port || 5000));
-	app.set('showStackError', true);
+// Should be placed before express.static to ensure that all assets and data are compressed (utilize bandwidth)
+app.use(compression({
+	level: 9 // Levels are specified in a range of 0 to 9, where-as 0 is no compression and 9 is best compression, but slowest
+}));
 
-	// Should be placed before express.static to ensure that all assets and data are compressed (utilize bandwidth)
-	app.use(compression({
-		level: 9 // Levels are specified in a range of 0 to 9, where-as 0 is no compression and 9 is best compression, but slowest
-	}));
+app.locals._ = _; // use underscore in views
+app.locals.moment = moment; // use moment in views
+app.enable('trust proxy');
 
-	app.locals._ = _; // use underscore in views
-	app.locals.moment = moment; // use moment in views
-	app.enable('trust proxy');
+// assign the template engine to .ejs files
+app.engine('ejs', consolidate.ejs);
 
-	// assign the template engine to .ejs files
-	app.engine('ejs', consolidate.ejs);
+// set .ejs as the default extension
+app.set('view engine', 'ejs');
 
-	// set .ejs as the default extension
-	app.set('view engine', 'ejs');
+// Set the views directory
+app.set('views', global.__viewsdir);
 
-	// Set the views directory
-	app.set('views', global.__viewsdir);
+app.use(express.static(global.__assetsdir));
 
-	app.use(express.static(global.__assetsdir));
+// Set the favicon
+var faviconPath = path.join(global.__assetsdir, 'img', 'favicon.ico');
+if (fs.exists(faviconPath)) {
+	app.use(favicon(faviconPath));
+}
 
-	// Set the favicon
-	var faviconPath = path.join(global.__assetsdir, 'img', 'favicon.ico');
-	if (fs.exists(faviconPath)) {
-		app.use(favicon(faviconPath));
+// The cookieParser should be above session
+app.use(cookieParser(process.env.SECRET));
+
+// Request body parsing middleware should be above methodOverride
+app.use(expressValidator());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+
+// Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it
+app.use(methodOverride());
+app.use(function (req, res, next) {
+	req.remoteAddress = req.hostname || req.ip;
+	return next();
+});
+
+// Express/Mongo session storage
+app.use(session({
+	proxy: true,
+	secret: process.env.SECRET || 'foobarbaz',
+	cookie: {
+		maxAge: process.env.SESSIONLENGTH || 3600000
+	},
+	store: new mongoStore({
+		url: global.config.connections.mongodb.buildConnectionString()
+	}),
+	resave: true,
+	saveUninitialized: true
+}));
+
+app.use(function (req, res, next) {
+	res.locals.session = req.session;
+	return next();
+});
+
+app.use(function (req, res, next) {
+	console.log('IP: '.yellow + colors.grey(req.headers['x-forwarded-for'] || req.connection.remoteAddress));
+	console.log('Url: '.yellow + colors.green(req.method) + ' ' + colors.grey(req.url));
+
+	if (req.headers && !_.isEmpty(req.headers)) {
+		console.log('Headers: '.yellow + '%j'.grey, req.headers);
+	}
+	if (req.params && !_.isEmpty(req.params)) {
+		console.log('Params: '.yellow + '%j'.grey, req.params);
+	}
+	if (req.body && !_.isEmpty(_.object(req.body))) {
+		console.log('Body: '.yellow + '%j'.grey, req.body);
+	}
+	return next();
+});
+
+readDir(path.join(global.__appdir, 'routes')).then(function (routes) {
+	// load each resource
+	routes.sort();
+
+	routes.forEach(function (route) {
+		if (path.extname(route) === '.js') {
+			route = route.slice(0, route.length - 3); // Remove extension
+			require(path.join(global.__appdir, 'routes', route))(app); // Include the route file
+		} else {
+			console.warn('Skipped loading route: ' + route + ' because it is not a route file');
+		}
+	});
+
+	// Assume "not found" in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.
+	app.use(function (err, req, res, next) {
+		if (err.message.indexOf('not found') !== -1) { // Treat as 404
+			return next();
+		} else {
+			console.error(err.stack);
+			return res.status(500).render('500', {
+				error: err.stack
+			});
+		}
+	});
+
+	app.use(function (req, res) { // Assume 404 since no middleware responded
+		return res.status(404).render('404', {
+			url: req.originalUrl,
+			error: 'Not found'
+		});
+	});
+
+	if (process.env.NODE_ENV === 'development') { // Error handler - has to be last
+		app.use(errorHandler());
 	}
 
-	// The cookieParser should be above session
-	app.use(cookieParser(global.config.connections.secret));
-
-	// Request body parsing middleware should be above methodOverride
-	app.use(expressValidator());
-	app.use(bodyParser.json());
-	app.use(bodyParser.urlencoded({
-		extended: true
-	}));
-
-	// Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it
-	app.use(methodOverride());
-	app.use(function (req, res, next) {
-		req.remoteAddress = req.hostname || req.ip;
-		return next();
-	});
-
-	//// Express/Mongo session storage
-	//app.use(session({
-	//	proxy: true,
-	//	secret: global.config.connections.secret,
-	//	cookie: {
-	//		maxAge: global.config.portal.sessionlength
-	//	},
-	//	store: new mongoStore({
-	//		url: global.config.connections.mongodb.buildConnectionString()
-	//	}),
-	//	resave: true,
-	//	saveUninitialized: true
-	//}));
-
-	app.use(function (req, res, next) {
-		res.locals.session = req.session;
-		return next();
-	});
-
-	app.use(function (req, res, next) {
-		console.log('IP: '.yellow + colors.grey(req.headers['x-forwarded-for'] || req.connection.remoteAddress));
-		console.log('Url: '.yellow + colors.green(req.method) + ' ' + colors.grey(req.url));
-
-		if (req.headers && !_.isEmpty(req.headers)) {
-			console.log('Headers: '.yellow + '%j'.grey, req.headers);
-		}
-		if (req.params && !_.isEmpty(req.params)) {
-			console.log('Params: '.yellow + '%j'.grey, req.params);
-		}
-		if (req.body && !_.isEmpty(_.object(req.body))) {
-			console.log('Body: '.yellow + '%j'.grey, req.body);
-		}
-		return next();
-	});
-
-	readDir(path.join(global.__appdir, 'routes')).then(function (routes) {
-		// load each resource
-		routes.sort();
-
-		routes.forEach(function (route) {
-			if (path.extname(route) === '.js') {
-				route = route.slice(0, route.length - 3); // Remove extension
-				require(path.join(global.__appdir, 'routes', route))(app); // Include the route file
-			} else {
-				console.warn('Skipped loading route: ' + route + ' because it is not a route file');
-			}
-		});
-
-		// Assume "not found" in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.
-		app.use(function (err, req, res, next) {
-			if (err.message.indexOf('not found') !== -1) { // Treat as 404
-				return next();
-			} else {
-				console.error(err.stack);
-				return res.status(500).render('500', {
-					error: err.stack
+	app.listen(app.get('port'), function () {
+		_.each(app._router.stack, function (r) {
+			if (r.route) {
+				_.each(_.keys(r.route.methods), function (method) {
+					console.log('%s\t%s', method.toUpperCase(), r.route.path);
 				});
 			}
 		});
 
-		app.use(function (req, res) { // Assume 404 since no middleware responded
-			return res.status(404).render('404', {
-				url: req.originalUrl,
-				error: 'Not found'
-			});
-		});
-
-		if (process.env.NODE_ENV === 'development') { // Error handler - has to be last
-			app.use(errorHandler());
-		}
-
-		app.listen(app.get('port'), function () {
-			_.each(app._router.stack, function (r) {
-				if (r.route) {
-					_.each(_.keys(r.route.methods), function (method) {
-						console.log('%s\t%s', method.toUpperCase(), r.route.path);
-					});
-				}
-			});
-
-			console.log('Node app is running on port', app.get('port'));
-		});
-	}).catch(function (err) {
-		console.error(err);
-		throw err;
-	}).done();
-//}
+		console.log('Node app is running on port', app.get('port'));
+	});
+}).catch(function (err) {
+	console.error(err);
+	throw err;
+}).done();

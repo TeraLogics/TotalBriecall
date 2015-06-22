@@ -20,14 +20,13 @@ This table indicates in what version each of these deprecated settings will be r
 
 The remainder of this document contains each configuration setting, grouped into sections the nodes in its full dotted path. 
 
-* `environment` - The environment. (**default** = ``"production"``)
-   * `"production"` - When set to `"production"`, services will not run in debug mode and will respect their `workers` settings.
-   * `"development"` - When set to `"development"`, services will...
-      * ...start with one worker, regardless of their `workers` settings.
-      * ...start in debug mode, with the master and worker processes' debuggers listening on the ports configured in the `debug.port` settings.
+# *Environment Variables*
+* `ENV` - The environment. (**default** = ``"production"``)
+* `PORT` - The port to listen on. (**default** = `5000`)
+* `SECRET` - The secret to use for encryption. (**varies**)
+* `SESSIONLENGTH` - The session length in milliseconds. (**default** = `3600000`)
 
 # **Connections**
-* `connections.secret` - The secret to use for encryption. (**varies**)
 
 ## **MongoDB**
 * `connections.mongodb.host` - The host to connect to. (**default** = `"localhost"`)
@@ -35,27 +34,3 @@ The remainder of this document contains each configuration setting, grouped into
 * `connections.mongodb.user` - The user to connect as. (**default** = `""`)
 * `connections.mongodb.database` - The database to connect to. (**default** = `""`)
 * `connections.mongodb.password` - The postgres password to use. (**varies**)
-
-# **Portal**
-* `portal.version` - The version.
-* `portal.host` - The hostname to listen on. (**default** = `"localhost"`)
-* `portal.port` - The port to listen on. (**default** = `5000`)
-* `portal.name` - The internal name of the service. (**default** = `"TOTAL-BRIECALL"`)
-* `portal.workers` - The number of workers, not including the master worker process. At most, this should be one less than the number of CPUs in the system. (**default** = `3`)
-* `portal.default` - The default page to which to redirect HTTP requests to "/". (**default** = `"/"`)
-* `portal.sessionlength` - The session length in milliseconds. (**default** = `3600000`)
-
-## **Logging**
-* `portal.logging.title` - The title to log for each portal log entry. (**default** = `"total-briecall"`)
-* `portal.logging.level` - The log level. (**default** = `"debug"`)
-   * `"alert"`
-   * `"critical"`
-   * `"error"`
-   * `"warning"`
-   * `"notice"`
-   * `"info"`
-   * `"debug"`
-
-## **Website**
-* `portal.website.name` - The name to put in the title of the website. (**default** = `"Total Briecall"`)
-* `portal.website.cookie_domain` - The domain for the Express session cookie. (**default** = `""`)

@@ -15,22 +15,35 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 exports.path = path.resolve(__dirname, 'config.json');
 
-function buildConnectionString(conf) {
-	var s = 'mongodb://';
+function buildConnectionString (conf) {
+	if (process.env.MONGOLAB_URI) {
+		return process.env.MONGOLAB_URI;
+	} else {
+		var s = 'mongodb://';
 
-	if (conf.connections.mongodb.user && conf.connections.mongodb.password) {
-		s += conf.connections.mongodb.user + ':' + crypto.decrypt(key, conf.connections.mongodb.password) + '@';
+		if (conf.connections.mongodb.user && conf.connections.mongodb.password) {
+			s += conf.connections.mongodb.user + ':' + crypto.decrypt(key, conf.connections.mongodb.password) + '@';
+		}
+
+		s += conf.connections.mongodb.host
+
+		if (conf.connections.mongodb.port) {
+			s += ':' + conf.connections.mongodb.port;
+		}
+
+		s += '/' + conf.connections.mongodb.database;
+
+		return s;
 	}
+}
 
-	s += conf.connections.mongodb.host;
+function extendConfiguration (conf) {
+	conf.connections.mongodb.buildConnectionString = function () {
+		// We build it every time so we don't hold it in memory (STIG)
+		return buildConnectionString(conf);
+	};
 
-	if (conf.connections.mongodb.port) {
-		s += ':' + conf.connections.mongodb.port;
-	}
-
-	s += '/' + conf.connections.mongodb.database;
-
-	return s;
+	conf.connections.secret = process.env.SECRET || conf.connections.secret;
 }
 
 /**
@@ -41,13 +54,11 @@ function buildConnectionString(conf) {
 exports.read = function (extend) {
 	return readFile(exports.path, 'UTF-8').then(function (conf) {
 		conf = JSON.parse(conf);
-		conf.environment = conf.environment || process.env.NODE_ENV;
+		conf.environment = process.env.NODE_ENV;
 
 		// Extend by default
 		if (_.isUndefined(extend) || _.isNull(extend) || (_.isBoolean(extend) && extend === true)) {
-			conf.connections.mongodb.buildConnectionString = function () {
-				return buildConnectionString(conf);
-			};
+			extendConfiguration(conf);
 		}
 
 		return conf;
@@ -66,14 +77,11 @@ exports.readSync = function (extend) {
 	try {
 		// Read the config from the file
 		var conf = JSON.parse(fs.readFileSync(exports.path, 'UTF-8'));
-		conf.environment = conf.environment || process.env.NODE_ENV;
+		conf.environment = process.env.NODE_ENV;
 
 		// Extend by default
 		if (_.isUndefined(extend) || _.isNull(extend) || (_.isBoolean(extend) && extend === true)) {
-			conf.connections.mongodb.buildConnectionString = function () {
-				// We build it every time so we don't hold it in memory (STIG)
-				return buildConnectionString(conf);
-			};
+			extendConfiguration(conf);
 		}
 
 		return conf;
