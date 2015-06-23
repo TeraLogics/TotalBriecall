@@ -49,11 +49,14 @@ define(['jquery', 'underscore', 'leaflet'], function ($, _, visible, leaflet) {
 			if (self._map) { //if already created, do nothing
 				return false;
 			}
+
 			var div = $('<div id="' + self._options.name + '"></div>') //create a new div
 				.height(self._options.height) //set the div height and width
 				.width(self._options.width)
 				.appendTo($('#' + self._options.div)) //add it to the one provided by the user
 				.get(0); //and get the DOM object
+			options = options || {};
+			options.attributionControl = false;
 			self._map = L.map(div, options); //create the Leaflet map
 
 			L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
