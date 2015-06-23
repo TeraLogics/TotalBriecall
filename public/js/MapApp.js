@@ -7,9 +7,8 @@
  GeoCode
  */
 
-L.Icon.Default.imagePath = '/img/leaflet';
-
 function MapApp(options) {
+	L.Icon.Default.imagePath = '/img/leaflet';
 	var self = this;
 	self._options = _.extend({
 		name: 'MapApp' + Date.now(), //give each map instance its own name
@@ -142,7 +141,7 @@ MapApp.prototype.remove = function (obj) {
 	}
 };
 
-var GeoCode = {
+MapApp.GeoCode = {
 	latlon: function (obj) {
 		var deferred = $.Deferred();
 

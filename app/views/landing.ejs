@@ -2,18 +2,122 @@
 </head>
 <body>
 	<div class="container">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<form>
-					<div class="input-group">
-						<span class="input-group-addon" id="zipcode-label">Zip</span>
-						<input class="form-control" pattern="\d{5}(-\d{4})?" placeholder="Zip code" aria-describedby="zipcode-label">
+		<div id="status">Getting geolocation...</div>
+		<div id="map"></div>
+		<div id="modal"></div>
+		<form class="col-md-4" id="zipcodeForm" name="zipcodeForm" action="javascript:void(0);">
+			<div class="modal fade" id="zipcodeModal" tabindex="-1" role="dialog" aria-labelledby="zipcodeModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">Help us show recalls affecting your area</h4>
+						</div>
+						<div class="modal-body">
+							<div class="input-group input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+								<input type="text" tabindex="1" class="form-control" id="zipcodeInput" name="zipcodeInput" maxlength="5" placeholder="Enter Zipcode"/>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" id="zipcodeFormButton" class="btn btn-primary" tabindex="2">Submit</button>
+						</div>
 					</div>
-					<input class="btn btn-primary" type="submit" value="Go">
-				</form>
+				</div>
 			</div>
-		</div>
+		</form>
 	</div>
-	<script data-main="/js/app-landing" src="/js/require.js"></script>
+	<script src="/js/jquery-2.1.4.min.js"></script>
+	<script src="/js/underscore-min.js"></script>
+	<script src="/js/ejs-2.3.1.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/us-states.js"></script>
+	<script src="/js/MapApp.js"></script>
+	<script>
+		/* globals
+		 */
+
+		var uspsuser = '<%= uspsuser %>';
+
+		function handleGeoLocError() {
+			$('#status').hide();
+			PromptForZip();
+		}
+
+		$(document).ready(function () {
+			if ('geolocation' in navigator) {
+				navigator.geolocation.getCurrentPosition(GetLatLon, handleGeoLocError, { timeout: 1500, enableHighAccuracy: false, maximumAge: 30000 });
+			} else {
+				handleGeoLocError();
+			}
+		});
+
+		function GetLatLon(location) {
+			$('#status').hide();
+			MapApp.GeoCode.latlon({
+				lat: location.coords.latitude,
+				lon: location.coords.longitude
+			}).then(function (state) {
+				HidePromptForZip();
+				SaveState(state).then(function(){
+					window.location = '/browse';
+				}).fail(function(err){
+					PromptForZip();
+				});
+			}).fail(function () {
+				PromptForZip();
+			});
+		}
+
+		function GetZipcode(zipcode) {
+			MapApp.GeoCode.zipcode(zipcode).then(function (state) {
+				HidePromptForZip();
+				SaveState(state).then(function(){
+					window.location = '/browse';
+				}).fail(function(err){
+					PromptForZip();
+				});
+			}).fail(function () {
+				alert('sorry failed zipcode');
+				$('#zipcodeInput').val("");
+				PromptForZip();
+			});
+		}
+
+		function SaveState(state) {
+			var deferred = $.Deferred();
+
+			$.ajax({
+				type: 'POST',
+				url: '/preferences',
+				data: {
+					state: state
+				},
+				dataType: 'JSON'
+			}).then(function () {
+				return deferred.resolve();
+			}).fail(function (err) {
+				return deferred.reject(err);
+			});
+
+			return deferred;
+		}
+
+		function PromptForZip() {
+			$('#zipcodeModal').modal('show');
+		}
+
+		function HidePromptForZip() {
+			$('#zipcodeModal').modal('hide');
+		}
+
+		$('#zipcodeModal').on('shown.bs.modal', function () {
+			$('#zipcodeInput').focus();
+		});
+
+		$('#zipcodeForm').submit(function () {
+			GetZipcode($('#zipcodeInput').val());
+		});
+	</script>
 </body>
 </html>

@@ -9,8 +9,10 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-sm-6 col-md-8">
-						<h1>Maryland</h1>
-
+						<h1><%= state %></h1>
+						<div id="header-map">
+							<!-- map does here -->
+						</div>
 						<div>
 							<!-- widgets / graphs go here -->
 						</div>
@@ -67,5 +69,8 @@
 	</div>
 
 	<script data-main="/js/app-browse" src="/js/require.js"></script>
+	<script>
+		var state = '<%= state %>';
+	</script>
 </body>
 </html>

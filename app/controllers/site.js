@@ -5,13 +5,19 @@ var _ = require('underscore'),
 	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
 
 exports.landing = function (req, res) {
-	return res.render('landing', {
-		state: req.session.preferences.state
-	});
+	if(req.session.preferences && req.session.preferences.state) {
+		return res.redirect('/browse');
+	} else {
+		return res.render('landing', {
+			uspsuser: global.config.USPS_USER || ''
+		});
+	}
 };
 
 exports.browse = function (req, res) {
-	return res.render('browse');
+	return res.render('browse', {
+		state: req.session.preferences.state
+	});
 };
 
 exports.details = function (req, res) {
@@ -56,12 +62,6 @@ exports.details = function (req, res) {
 
 exports.map = function (req, res) {
 	return res.render('map', {
-		uspsuser: global.config.USPS_USER || ''
-	});
-};
-
-exports.geocode = function (req, res) {
-	return res.render('geocode', {
 		uspsuser: global.config.USPS_USER || ''
 	});
 };

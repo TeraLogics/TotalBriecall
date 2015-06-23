@@ -86,6 +86,8 @@ requirejs([
                 meta.skip += meta.limit;
             }
 
+			meta.state = state;
+
             return $.ajax({
                 url: '/api/recalls',
                 data: meta

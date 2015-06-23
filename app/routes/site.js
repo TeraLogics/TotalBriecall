@@ -16,9 +16,6 @@ module.exports = function (app, passport, middleware) {
 	app.route('/map')
 		.get(siteCtrl.map);
 
-	app.route('/geocode')
-		.get(siteCtrl.geocode);
-
 	app.route('/preferences')
 		.get(siteCtrl.preferencesGet)
 		.post(siteCtrl.preferencesSet);
