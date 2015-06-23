@@ -61,6 +61,8 @@ app.enable('trust proxy');
 
 // assign the template engine to .ejs files
 app.engine('ejs', consolidate.ejs);
+// also allow straight html; use the EJS renderer
+app.engine('html', consolidate.ejs);
 
 // set .ejs as the default extension
 app.set('view engine', 'ejs');

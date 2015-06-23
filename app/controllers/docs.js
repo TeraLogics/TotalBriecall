@@ -4,7 +4,7 @@ var mime = require('mime'),
 	path = require('path'),
 	outputHelper = require(path.join(global.__libdir, 'outputHelper'));
 
-exports.api = function (req, res, next) {
+exports.api = function (req, res) {
 	if (req.originalUrl === '/docs/api/') {
 		// allow express to find the index based on configuration
 		return res.render('docs/api/index.html');
@@ -24,12 +24,12 @@ exports.api = function (req, res, next) {
 	}
 };
 
-exports.apiRedirect = function (req, res, next) {
+exports.apiRedirect = function (req, res) {
 	// redirect /api to /api/
 	return res.redirect(301, req.url + "/");
 };
 
-exports.index = function (req, res, next) {
+exports.index = function (req, res) {
 	// TODO implement docs page
 	return res.redirect(302, req.url + "/");
 };

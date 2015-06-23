@@ -18,7 +18,7 @@ lint-tests: lint-tests-jshint
 submit-cov: submit-istanbul-lcov-to-coveralls
 
 # CONTINUOUS INTEGRATION
-ci-travis: apidoc lint lint-tests test test-cov
+ci-travis: lint lint-tests test-cov
 
 # CLEAN
 clean:

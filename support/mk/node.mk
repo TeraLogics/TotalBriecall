@@ -1,4 +1,4 @@
-GLOBAL_NPM_PACKAGES ?= istanbul coveralls jshint apidoc
+GLOBAL_NPM_PACKAGES ?= istanbul jshint apidoc
 
 npm-install-global:
 	npm install --global $(GLOBAL_NPM_PACKAGES)

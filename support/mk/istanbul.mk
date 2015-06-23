@@ -8,7 +8,7 @@ test-istanbul-mocha: npm-install-global npm-install
 	--dir $(ISTANBUL_OUT) \
 	--report $(ISTANBUL_REPORT) \
 	$(_MOCHA) -- \
-		--reporter min \
+		--reporter $(MOCHA_REPORTER) \
 		--require $(MOCHA_REQUIRE) \
 		--recursive \
 		$(TESTS)
