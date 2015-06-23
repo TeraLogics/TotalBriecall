@@ -1,6 +1,6 @@
 APIDOC ?= ./node_modules/apidoc/bin/apidoc
 API_DIR ?= $(SOURCES)/routes/
-API_FILE_PATTERN ?= '^api.js$'
+API_FILE_PATTERN ?= "^api.js$"
 OUTPUT_DIR ?= $(SOURCES)/views/docs/api/
 
 apidoc: node_modules
