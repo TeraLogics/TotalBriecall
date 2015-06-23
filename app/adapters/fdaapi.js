@@ -101,7 +101,9 @@ var options = {
 		'soy': ['soy', 'tofu']
 	},
 	statusKeys = ['ongoing', 'completed', 'terminated', 'pending'],
-	supportedCountFields = ['classification'];
+	supportedCountFields = ['classification'],
+	protoPlusRegex = /\s+|,|%[0-9a-f]{2}/ig,
+	dedupPlusRegex = /\++/g;
 
 /**
  * Format input for use in search
@@ -127,6 +129,38 @@ function _convertArrayToParam(arr, field) {
 }
 
 /**
+ * Encodes select foodrecall object properties to base64
+ * @param {Object} foodrecall The food recall object to encode
+ * @returns {String}
+ * @private
+ */
+function _encodeFoodRecall(foodrecall) {
+	return new Buffer(JSON.stringify([
+		foodrecall.recall_number,
+		foodrecall.event_id,
+		foodrecall.recall_initiation_date,
+		encodeURIComponent(foodrecall.product_description.substr(0, 50)).replace(protoPlusRegex, '+').replace(dedupPlusRegex, '+').split('+').slice(0, -1).join('+')
+	])).toString('base64');
+}
+
+/**
+ * Decodes select foodrecall object properties from base64
+ * @param {String} val The food recall object to decode
+ * @returns {Object} foodrecall decoded properties
+ * @private
+ */
+function _decodeFoodRecall(val) {
+	var arr = JSON.parse(new Buffer(val, 'base64').toString('utf8'));
+
+	return {
+		recall_number: arr[0],
+		event_id: arr[1],
+		recall_initiation_date: arr[2],
+		product_description: arr[3]
+	};
+}
+
+/**
  * Takes openFDA results data and modifies it to have the desired output format
  * @param data
  * @returns {Object}
@@ -134,6 +168,8 @@ function _convertArrayToParam(arr, field) {
  */
 function _formatRecallResults(data) {
 	data.results = _.map(data.results, function (foodrecall) {
+		foodrecall.id = _encodeFoodRecall(foodrecall);
+
 		foodrecall.recall_initiation_date = moment(foodrecall.recall_initiation_date, 'YYYY-MM-DD').unix();
 		foodrecall.report_date = moment(foodrecall.report_date, 'YYYY-MM-DD').unix();
 
@@ -250,13 +286,41 @@ exports.isValidCountField = function (field) {
 /**
  * Gets food recall details for specific recall id
  * @param obj
- * @param {Number} obj.id
+ * @param {String} obj.data
  * @returns {Promise}
  */
 exports.getFoodRecallById = function (obj) {
+	var data = _decodeFoodRecall(obj.id),
+		search = [
+			'event_id:' + data.event_id,
+			'recall_initiation_date:"' + data.recall_initiation_date + '"',
+			'product_description:"' + data.product_description + '"'
+		];
 	return _makeRequest({
-		search: 'recall_number:"' + obj.id + '"',
+		search: search.join('+AND+'),
 		limit: 1
+	}).then(function (response) {
+		if (response.results.length > 1) {
+			var item = _.find(response.results, function (ele) {
+				return ele.recall_number === data.recall_number;
+			});
+			if (!item) {
+				throw {
+					statusCode: 404,
+					body: {
+						error: {
+							code: 'NOT_FOUND',
+							message: 'No matches found!'
+						}
+					}
+				};
+			}
+			response.results = [
+				item
+			];
+		}
+		response.meta.results.total = 1;
+		return response;
 	}).then(_formatRecallResults);
 };
 

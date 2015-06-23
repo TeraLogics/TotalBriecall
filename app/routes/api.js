@@ -129,7 +129,7 @@ module.exports = function (app) {
 	 * @apiUse ResourceNotFoundErrorExample
 	 * @apiUse InvalidArgumentErrorExample
 	 */
-	app.route('/api/recalls/:id(F\\-\\d+\\-\\d+)')
+	app.route('/api/recalls/:id')
 		.get(apiCtrl.getRecallById);
 
 	/**
@@ -174,7 +174,7 @@ module.exports = function (app) {
 		.get(apiCtrl.getRecalls);
 
 	/**
-	 * @api {get} /recalls/counts Count Distinct Values
+	 * @api {get} /counts/recalls Count Distinct Values
 	 * @apiName CountDistinctValues
 	 * @apiVersion 1.0.0
 	 *
@@ -208,6 +208,6 @@ module.exports = function (app) {
 	 * @apiUse ResourceNotFoundErrorExample
 	 * @apiUse InvalidArgumentErrorExample
 	 */
-	app.route('/api/recalls/counts')
+	app.route('/api/counts/recalls')
 		.get(apiCtrl.getRecallsCounts);
 };

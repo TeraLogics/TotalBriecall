@@ -503,7 +503,7 @@ module.exports = function () {
 
 			it('should return a 409 when field is invalid', function (done) {
 				request(app)
-					.get('/api/recalls/counts')
+					.get('/api/counts/recalls')
 					.query({ field: 'somethingsilly' })
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid field'))
@@ -517,7 +517,7 @@ module.exports = function () {
 				var field = 'classification';
 
 				request(app)
-					.get('/api/recalls/counts')
+					.get('/api/counts/recalls')
 					.query({ field: field })
 					.expect(200)
 					.expect(EMPTY_COUNT_RESULT)
@@ -530,7 +530,7 @@ module.exports = function () {
 
 			it('should return a 409 when state is invalid', function (done) {
 				request(app)
-					.get('/api/recalls/counts')
+					.get('/api/counts/recalls')
 					.query({ field: 'classification', state: 'OF MIND' })
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid state'))
@@ -544,7 +544,7 @@ module.exports = function () {
 				var state = 'VA';
 
 				request(app)
-					.get('/api/recalls/counts')
+					.get('/api/counts/recalls')
 					.query({ field: 'classification', state: state })
 					.expect(200)
 					.expect(EMPTY_COUNT_RESULT)
@@ -557,7 +557,7 @@ module.exports = function () {
 
 			it('should return a 409 when status is invalid', function (done) {
 				request(app)
-					.get('/api/recalls/counts')
+					.get('/api/counts/recalls')
 					.query({ field: 'classification', status: 'OF MIND' })
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid status'))
@@ -570,7 +570,7 @@ module.exports = function () {
 			_.each(['ongoing', 'completed', 'terminated', 'pending'], function (status) {
 				it('should succeed with a valid status (' + status + ')', function (done) {
 					request(app)
-						.get('/api/recalls/counts')
+						.get('/api/counts/recalls')
 						.query({ field: 'classification', status: status })
 						.expect(200)
 						.expect(EMPTY_COUNT_RESULT)
@@ -584,7 +584,7 @@ module.exports = function () {
 
 			it('should return a 409 when skip is provided', function (done) {
 				request(app)
-					.get('/api/recalls/counts')
+					.get('/api/counts/recalls')
 					.query({ field: 'classification', skip: 1 })
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid skip - not allowed'))
@@ -596,7 +596,7 @@ module.exports = function () {
 
 			it('should return a 409 when limit is provided', function (done) {
 				request(app)
-					.get('/api/recalls/counts')
+					.get('/api/counts/recalls')
 					.query({ field: 'classification', limit: 1 })
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid limit - not allowed'))

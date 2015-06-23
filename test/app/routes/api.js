@@ -59,12 +59,12 @@ module.exports = function (common) {
 
 		});
 
-		describe('/recalls/counts', function () {
+		describe('/counts/recalls', function () {
 
 			it('should call getRecallsCounts on the API controller', function (done) {
 
 				request(app)
-					.get('/api/recalls/counts')
+					.get('/api/counts/recalls')
 					.expect(function () {
 						assert(apiCtrl.getRecallsCounts.called, 'getRecallsCounts was not called on the API controller');
 					})
