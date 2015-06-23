@@ -4,9 +4,10 @@ node_js:
 before_install:
 - npm install istanbul -g
 - npm install coveralls -g
+- npm install jshint -g
 script: make ci-travis
 after_success:
-- make submit-cov-to-coveralls
+- make submit-cov
 deploy:
   provider: heroku
   api_key:

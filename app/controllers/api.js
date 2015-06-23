@@ -2,7 +2,6 @@
 
 var _ = require('underscore'),
 	moment = require('moment'),
-	http = require('http'),
 	path = require('path'),
 	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
 

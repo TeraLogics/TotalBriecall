@@ -1,12 +1,11 @@
-SOURCES ?= app/*.js
+SOURCES ?= app/
 TESTS ?= test/
 
 test: test-mocha
 test-cov: test-istanbul-mocha
-view-cov: view-istanbul-report
 lint: lint-jshint
 lint-tests: lint-tests-jshint
-
+submit-cov: submit-istanbul-lcov-to-coveralls
 
 # ==============================================================================
 # Node.js
@@ -14,6 +13,7 @@ lint-tests: lint-tests-jshint
 include support/mk/node.mk
 include support/mk/mocha.mk
 include support/mk/istanbul.mk
+include support/mk/apidoc.mk
 
 # ==============================================================================
 # Analysis
@@ -29,10 +29,7 @@ include support/mk/coveralls.mk
 # ==============================================================================
 # Continuous Integration
 # ==============================================================================
-submit-cov-to-coveralls: submit-istanbul-lcov-to-coveralls
-
-# Travis CI
-ci-travis: test test-cov
+ci-travis: apidoc lint lint-tests test test-cov
 
 # ==============================================================================
 # Clean
@@ -40,8 +37,9 @@ ci-travis: test test-cov
 clean:
 	rm -rf build
 	rm -rf reports
+	rm -rf app/views/docs/api
 
 clobber: clean clobber-node
 
 
-.PHONY: test test-cov view-cov lint lint-tests submit-cov-to-coveralls ci-travis clean clobber
+.PHONY: test test-cov view-cov lint lint-tests submit-cov ci-travis clean clobber
