@@ -1,5 +1,5 @@
-MOCHA ?= mocha
-_MOCHA ?= _mocha
+MOCHA ?= /usr/bin/mocha
+_MOCHA ?= /usr/bin/_mocha
 MOCHA_REPORTER ?= spec
 MOCHA_REQUIRE ?= ./test/bootstrap
 
