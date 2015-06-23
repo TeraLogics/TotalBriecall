@@ -92,7 +92,8 @@ requirejs([
 
 			return $.ajax({
 				url: '/api/recalls',
-				data: meta
+				data: meta,
+				cache: false
 			});
 		},
 		onProcess: function (result, meta, sisyphus) {
