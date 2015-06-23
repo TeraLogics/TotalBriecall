@@ -1,11 +1,8 @@
 language: node_js
 node_js:
 - '0.12'
-before_install:
-- npm install istanbul -g
-- npm install coveralls -g
-- npm install jshint -g
-- npm install apidoc -g
+before_install: make clobber
+install: make npm-install-global
 script: make ci-travis
 after_success:
 - make submit-cov
@@ -18,6 +15,9 @@ deploy:
     repo: TeraLogics/TotalBriecall
   run:
   - npm install --production
+  - npm install --global apidoc
+  - npm run apidoc
+  - npm uninstall --global apidoc
   - restart
 notifications:
   slack:

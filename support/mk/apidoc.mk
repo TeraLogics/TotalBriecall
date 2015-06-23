@@ -3,7 +3,7 @@ API_DIR ?= $(SOURCES)/routes
 API_FILE_PATTERN ?= "^api.js$$"
 OUTPUT_DIR ?= $(SOURCES)/views/docs/api
 
-apidoc: node_modules
+apidoc: npm-install-global
 	$(APIDOC) \
 		--file-filters $(API_FILE_PATTERN) \
 		--input $(API_DIR) \

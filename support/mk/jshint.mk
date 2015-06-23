@@ -1,9 +1,9 @@
 JSHINT ?= jshint
 
-lint-jshint:
+lint-jshint: npm-install-global
 	$(JSHINT) $(SOURCES)
 
-lint-tests-jshint:
+lint-tests-jshint: npm-install-global
 	$(JSHINT) $(TESTS)
 
 

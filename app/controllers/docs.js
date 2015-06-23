@@ -5,11 +5,11 @@ var mime = require('mime'),
 	outputHelper = require(path.join(global.__libdir, 'outputHelper'));
 
 exports.api = function (req, res, next) {
-	if (req._parsed.pathname === '/docs/api/') {
+	if (req.originalUrl === '/docs/api/') {
 		// allow express to find the index based on configuration
 		return res.render('docs/api/index.html');
 	} else {
-		var filePath = path.join(global.__viewsdir, req._parsed.pathname);
+		var filePath = path.join(global.__viewsdir, req.originalUrl);
 
 		outputHelper
 			.outputFile(res, 200, {

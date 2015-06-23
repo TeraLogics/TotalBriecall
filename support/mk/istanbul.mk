@@ -3,7 +3,7 @@ ISTANBUL_OUT ?= ./reports/coverage
 ISTANBUL_REPORT ?= lcovonly
 ISTANBUL_LCOV_INFO_PATH ?= $(ISTANBUL_OUT)/lcov.info
 
-test-istanbul-mocha: node_modules
+test-istanbul-mocha: npm-install-global npm-install
 	$(ISTANBUL) cover \
 	--dir $(ISTANBUL_OUT) \
 	--report $(ISTANBUL_REPORT) \
@@ -14,4 +14,4 @@ test-istanbul-mocha: node_modules
 		$(TESTS)
 
 
-.PHONY: test-istanbul-mocha view-istanbul-report
+.PHONY: test-istanbul-mocha
