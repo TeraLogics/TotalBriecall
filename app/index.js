@@ -15,6 +15,7 @@ var _ = require('underscore'),
 	fs = require('fs'),
 	methodOverride = require('method-override'),
 	moment = require('moment'),
+	mongoose = require('mongoose'),
 	path = require('path'),
 	Promise = require('bluebird'),
 	session = require('express-session'),
@@ -46,6 +47,12 @@ global.config = require(path.join(global.__basedir, 'conf', 'config'));
 
 var app = express(),
 	readDir = Promise.promisify(fs.readdir);
+
+// Mongo & Mongoose Configuration
+mongoose.set('debug', process.env.NODE_ENV === 'development');
+mongoose.connect(process.env.MONGOLAB_URI);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
 app.set('port', (global.config.PORT));
 app.set('showStackError', true);

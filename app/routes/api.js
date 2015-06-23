@@ -45,6 +45,28 @@ var path = require('path'),
 
 module.exports = function (app) {
 	/**
+	 * @api {put} /comments Add comment
+	 * @apiName AddCommentToRecall
+	 * @apiVersion 1.0.0
+	 *
+	 * @apiDescription Add a comment to the recall.
+	 *
+	 * @apiParam {String} recallnumber The recall number.
+	 * @apiParam {String} location The location of the user.
+	 * @apiParam {String} comment The comment.
+	 *
+	 * @apiUse SuccessResponse
+	 *
+	 * @apiUse SuccessExample
+	 *
+	 * @apiError (FailureHeader) InvalidArgumentError `recallnumber` or `location` or `comment` was not provided or was invalid.
+	 *
+	 * @apiUse InvalidArgumentErrorExample
+	 */
+	app.route('/api/comments')
+		.put(apiCtrl.addCommentForRecall);
+
+	/**
 	 * @api {get} /recalls/:recallid Get Recall By ID
 	 * @apiName GetRecallByID
 	 * @apiVersion 1.0.0

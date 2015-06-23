@@ -3,6 +3,7 @@
 var _ = require('underscore'),
 	moment = require('moment'),
 	path = require('path'),
+	commentsAdapter = require(path.join(global.__adptsdir, 'mongocomments')),
 	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
 
 /**
@@ -39,8 +40,24 @@ function _rejectArgument(message, res) {
  * @private
  */
 function _processResponse(promise, res) {
+	var results = [];
+
 	promise.then(function (foodResult) {
-		res.json(foodResult);
+		results = foodResult;
+		return commentsAdapter.get(_.pluck(foodResult.data, 'recall_number'));
+	}).then(function (comments) {
+		results.data = _.map(results.data, function (r) {
+			r.comments = _.chain(comments)
+							.where({ recallnumber: r.recall_number })
+							.map(function (comment) {
+								delete comment.recallnumber;
+								return comment;
+							})
+							.value();
+			return r;
+		});
+
+		res.json(results);
 	}).catch(function (err) {
 		if (err instanceof Error) {
 			// errors raised by the adapter
@@ -65,6 +82,31 @@ function _processResponse(promise, res) {
 		}
 	}).done();
 }
+
+/**
+ * Adds a comment to a recall
+ * @param req
+ * @param {String} req.body.recallnumber The recall number.
+ * @param {String} [req.body.location] The location of the user.
+ * @param {String} req.body.comment The comment.
+ * @param res
+ */
+exports.addCommentForRecall = function (req, res) {
+	// TODO validate recall number against pattern?
+	if (!req.body.recallnumber || !_.isString(req.body.recallnumber)) {
+		_rejectArgument('Invalid recallnumber', res);
+	} else if (req.body.location && !_.isString(req.body.location)) {
+		_rejectArgument('Invalid location', res);
+	} else if (!req.body.comment || !_.isString(req.body.comment)) {
+		_rejectArgument('Invalid comment', res);
+	} else {
+		_processResponse(commentsAdapter.add({
+			recallnumber: req.body.recallnumber,
+			location: req.body.location,
+			comment: req.body.comment
+		}), res);
+	}
+};
 
 /**
  * Gets recall for specific id
