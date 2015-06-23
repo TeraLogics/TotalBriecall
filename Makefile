@@ -1,6 +1,6 @@
 SOURCES ?= ./app
 TESTS ?= ./test
-NPM_BIN ?= $(npm bin)
+NPM_BIN ?= ./node_modules/.bin
 
 include support/mk/node.mk
 include support/mk/mocha.mk
