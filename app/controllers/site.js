@@ -16,7 +16,7 @@ exports.browse = function (req, res, next) {
 
 exports.details = function (req, res, next) {
 	fdaAdapter.getFoodRecallById({id: req.params.id}).then(function (recall) {
-		return res.render('details', {
+		return res.render('recall', {
 			recall: recall
 		});
 	}).catch(function (err) {
