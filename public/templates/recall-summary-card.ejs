@@ -4,33 +4,38 @@
  * @param {RecallSummaryProvider} summaryProvider Provider of recall summary information.
  */
 %>
-<div class="panel <%=summaryProvider.getCardType()%> recall-summary-card recall-class-i">
-    <div class="panel-heading">
-        <div class="recall-card-toggle" data-toggle="collapse" data-target="#collapse-<%=summaryProvider.getRecallId()%>">
-            <i class="glyphicon"></i>
-        </div>
-        <h3 class="panel-title"><%=summaryProvider.getProductDescription()%></h3>
-        <h4 class="panel-subtitle">
-            <a data-toggle="tooltip" data-placement="bottom" title="<%=summaryProvider.getFirmName()%>" href="">
-                <%=summaryProvider.getFirmAddress()%>
-            </a> &nbsp;-&nbsp;
-            <small>
-                <%=summaryProvider.getRecallInitiationDate('MMMM Do, YYYY')%>
-            </small>
-        </h4>
-    </div>
-    <div id="collapse-<%=summaryProvider.getRecallId()%>" class="panel-collapse collapse in">
-        <div class="panel-body">
-            <p class="recall-reason"><%=summaryProvider.getReasonForRecall()%></p>
-        </div>
-        <div class="panel-footer clearfix">
-            <ul class="list-inline pull-left">
-                <li><a class="btn btn-link" href="<%=summaryProvider.getRecallDetailsLink()%>"><i class="glyphicon glyphicon-info-sign"></i> Info</a></li>
-            </ul>
-            <ul class="list-inline pull-right">
-                <li><div class="btn btn-link"><i class="glyphicon glyphicon-pushpin"></i> Pin</div></li>
-                <li><a class="btn btn-link" href="<%=summaryProvider.getFacebookShareLink()%>" target="_blank"><i class="glyphicon glyphicon-share-alt"></i> Share</a></li>
-            </ul>
-        </div>
-    </div>
+<div class="panel <%= summaryProvider.getCardType() %> recall-summary-card recall-class-i">
+	<div class="panel-heading">
+		<div class="recall-card-toggle" data-toggle="collapse"
+			 data-target="#collapse-<%= summaryProvider.getRecallId() %>">
+			<i class="glyphicon"></i>
+		</div>
+		<h3 class="panel-title"><%= summaryProvider.getProductDescription() %></h3>
+		<h4 class="panel-subtitle">
+			<a data-toggle="tooltip" data-placement="bottom" title="<%= summaryProvider.getFirmName() %>" href="">
+				<%= summaryProvider.getFirmAddress() %>
+			</a> &nbsp;-&nbsp;
+			<small>
+				<%= summaryProvider.getRecallInitiationDate('MMMM Do, YYYY') %>
+			</small>
+		</h4>
+	</div>
+	<div id="collapse-<%= summaryProvider.getRecallId() %>" class="panel-collapse collapse in">
+		<div class="panel-body">
+			<p class="recall-reason"><%= summaryProvider.getReasonForRecall() %></p>
+		</div>
+		<div class="panel-footer clearfix">
+			<ul class="list-inline pull-left">
+				<li><a class="btn btn-link" href="<%= summaryProvider.getRecallDetailsLink() %>"><i
+								class="glyphicon glyphicon-info-sign"></i> Info</a></li>
+			</ul>
+			<ul class="list-inline pull-right">
+				<li>
+					<div class="btn btn-link"><i class="glyphicon glyphicon-pushpin"></i> Pin</div>
+				</li>
+				<li><a class="btn btn-link" href="<%= summaryProvider.getFacebookShareLink() %>" target="_blank"><i
+								class="glyphicon glyphicon-share-alt"></i> Share</a></li>
+			</ul>
+		</div>
+	</div>
 </div>
