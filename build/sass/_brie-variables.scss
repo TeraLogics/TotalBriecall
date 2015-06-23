@@ -15,28 +15,28 @@ $avatar-thumbnail-height: 40px;
 // Recall class
 // --------------------------------------------------
 $recall-class-i-text: $state-danger-text;
-$recall-class-i-bg: $state-danger-bg;
+$recall-class-i-bg: darken($state-danger-bg, 50%);
 $recall-class-ii-text: $state-warning-text;
-$recall-class-ii-bg: $state-warning-bg;
+$recall-class-ii-bg: darken($state-warning-bg, 50%);
 $recall-class-iii-text: $state-info-text;
-$recall-class-iii-bg: $state-info-bg;
+$recall-class-iii-bg: darken($state-info-bg, 50%);
 
 //
 // Recall status
 // --------------------------------------------------
 $recall-status-ongoing-text: $state-success-text;
-$recall-status-ongoing-bg: $state-success-bg;
+$recall-status-ongoing-bg: darken($state-success-bg, 50%);
 $recall-status-pending-text: $state-success-text;
-$recall-status-pending-bg: $state-success-bg;
+$recall-status-pending-bg: darken($state-success-bg, 50%);
 $recall-status-terminated-text: $gray-darker;
-$recall-status-terminated-bg: $gray-dark;
+$recall-status-terminated-bg: darken($gray-lighter, 50%);
 $recall-status-completed-text: $gray-darker;
-$recall-status-completed-bg: $gray-dark;
+$recall-status-completed-bg: darken($gray-light, 50%);
 
 //
 // Recall-action
 // --------------------------------------------------
-$recall-action-voluntary-text: $state-success-text;
-$recall-action-voluntary-bg: $state-success-bg;
+$recall-action-voluntary-text: $state-info-text;
+$recall-action-voluntary-bg: darken($state-info-bg, 50%);
 $recall-action-mandated-text: $state-danger-text;
-$recall-action-mandated-bg: $state-danger-bg;
+$recall-action-mandated-bg: darken($state-danger-bg, 50%);

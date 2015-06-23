@@ -230,35 +230,63 @@
 }
 
 .recall-status {
-  &-ongoing {
-
+  &-ongoing.recall-status-bg {
+    background-color: $recall-status-ongoing-bg;
+  }
+  &-ongoing.recall-status-text {
+    color: $recall-status-ongoing-text;
   }
 
-  &-completed {
-
+  &-completed.recall-status-bg {
+    background-color: $recall-status-completed-bg;
+  }
+  &-completed.recall-status-text {
+    color: $recall-status-completed-text;
   }
 
-  &-terminated {
-
+  &-terminated.recall-status-bg {
+    background-color: $recall-status-terminated-bg;
+  }
+  &-terminated.recall-status-text {
+    color: $recall-status-terminated-text;
   }
 
-  &-pending {
-
+  &-pending.recall-status-bg {
+    background-color: $recall-status-pending-bg;
+  }
+  &-pending.recall-status-text {
+    color: $recall-status-pending-text;
   }
 }
 
 .recall-action {
-  &-voluntary {
-
+  &-voluntary.recall-action-bg {
+    background-color: $recall-action-voluntary-bg;
+  }
+  &-voluntary.recall-action-text {
+    color: $recall-action-voluntary-text;
   }
 
-  &-mendated {
-
+  &-mandated.recall-action-bg {
+    background-color: $recall-action-mandated-bg;
+  }
+  &-mandated.recall-action-text {
+    color: $recall-action-mandated-text;
   }
 }
 
 
 .recall-summary-card {
+  .recall-card-toggle {
+    @extend .close;
+
+    & > .glyphicon:before {
+      content: "\e106";
+    }
+    &.collapsed > .glyphicon:before {
+      content: "\e105";
+    }
+  }
   .panel-title, .panel-subtitle {
     @include text-overflow();
   }
@@ -270,6 +298,22 @@
 
   .recall-reason {
     margin: 0;
+  }
+}
+
+.summary-symbol {
+  border-radius: $border-radius-base;
+  display: inline-block;
+  padding: $padding-base-vertical $padding-base-horizontal;
+  color: #fff;
+
+  .sybmol-type, .symbol-description {
+    text-transform: capitalize;
+  }
+  .symbol {
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 8px 0;
   }
 }
 

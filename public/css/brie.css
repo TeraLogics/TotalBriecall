@@ -4438,7 +4438,7 @@ a.thumbnail.active {
 
 .alert-dismissable, .alert-dismissible {
   padding-right: 35px; }
-  .alert-dismissable .close, .alert-dismissible .close {
+  .alert-dismissable .close, .alert-dismissable .recall-summary-card .recall-card-toggle, .recall-summary-card .alert-dismissable .recall-card-toggle, .alert-dismissible .close, .alert-dismissible .recall-summary-card .recall-card-toggle, .recall-summary-card .alert-dismissible .recall-card-toggle {
     position: relative;
     top: -2px;
     right: -21px;
@@ -5096,7 +5096,7 @@ a.list-group-item-danger {
   padding: 9px;
   border-radius: 3px; }
 
-.close {
+.close, .recall-summary-card .recall-card-toggle {
   float: right;
   font-size: 21px;
   font-weight: bold;
@@ -5106,14 +5106,15 @@ a.list-group-item-danger {
   opacity: 0.2;
   filter: alpha(opacity=20); }
   .close:hover,
-  .close:focus {
+  .recall-summary-card .recall-card-toggle:hover,
+  .close:focus, .recall-summary-card .recall-card-toggle:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
     opacity: 0.5;
     filter: alpha(opacity=50); }
 
-button.close {
+button.close, .recall-summary-card button.recall-card-toggle {
   padding: 0;
   cursor: pointer;
   background: transparent;
@@ -5189,7 +5190,7 @@ button.close {
   border-bottom: 1px solid #e5e5e5;
   min-height: 16.428571429px; }
 
-.modal-header .close {
+.modal-header .close, .modal-header .recall-summary-card .recall-card-toggle, .recall-summary-card .modal-header .recall-card-toggle {
   margin-top: -2px; }
 
 .modal-title {
@@ -5981,22 +5982,64 @@ button.close {
   overflow: visible; }
 
 .recall-class-i.recall-class-bg {
-  background-color: #f2dede; }
+  background-color: #963b3b; }
 
 .recall-class-i.recall-class-text {
   color: #a94442; }
 
 .recall-class-ii.recall-class-bg {
-  background-color: #fcf8e3; }
+  background-color: #caad16; }
 
 .recall-class-ii.recall-class-text {
   color: #8a6d3b; }
 
 .recall-class-iii.recall-class-bg {
-  background-color: #d9edf7; }
+  background-color: #247fad; }
 
 .recall-class-iii.recall-class-text {
   color: #31708f; }
+
+.recall-status-ongoing.recall-status-bg {
+  background-color: #529138; }
+
+.recall-status-ongoing.recall-status-text {
+  color: #3c763d; }
+
+.recall-status-completed.recall-status-bg {
+  background-color: black; }
+
+.recall-status-completed.recall-status-text {
+  color: #222222; }
+
+.recall-status-terminated.recall-status-bg {
+  background-color: #6f6f6f; }
+
+.recall-status-terminated.recall-status-text {
+  color: #222222; }
+
+.recall-status-pending.recall-status-bg {
+  background-color: #529138; }
+
+.recall-status-pending.recall-status-text {
+  color: #3c763d; }
+
+.recall-action-voluntary.recall-action-bg {
+  background-color: #247fad; }
+
+.recall-action-voluntary.recall-action-text {
+  color: #31708f; }
+
+.recall-action-mandated.recall-action-bg {
+  background-color: #963b3b; }
+
+.recall-action-mandated.recall-action-text {
+  color: #a94442; }
+
+.recall-summary-card .recall-card-toggle > .glyphicon:before {
+  content: "\e106"; }
+
+.recall-summary-card .recall-card-toggle.collapsed > .glyphicon:before {
+  content: "\e105"; }
 
 .recall-summary-card .panel-title, .recall-summary-card .panel-subtitle {
   overflow: hidden;
@@ -6009,6 +6052,18 @@ button.close {
 
 .recall-summary-card .recall-reason {
   margin: 0; }
+
+.summary-symbol {
+  border-radius: 4px;
+  display: inline-block;
+  padding: 6px 12px;
+  color: #fff; }
+  .summary-symbol .sybmol-type, .summary-symbol .symbol-description {
+    text-transform: capitalize; }
+  .summary-symbol .symbol {
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 8px 0; }
 
 #recent-recalls {
   width: 100%;
