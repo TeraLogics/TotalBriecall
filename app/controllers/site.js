@@ -25,11 +25,15 @@ exports.details = function (req, res, next) {
 };
 
 exports.map = function (req, res, next) {
-	return res.render('map');
+	return res.render('map', {
+		uspsuser: global.config.USPS_USER || ''
+	});
 };
 
 exports.geocode = function (req, res, next) {
-	return res.render('geocode');
+	return res.render('geocode', {
+		uspsuser: global.config.USPS_USER || ''
+	});
 };
 
 exports.preferencesGet = function (req, res, next) {

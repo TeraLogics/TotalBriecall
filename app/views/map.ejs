@@ -11,7 +11,8 @@
 	<script src="/js/MapApp.js"></script>
 	<script>
 		var map = null,
-			recalls = null;
+			recalls = null,
+			uspsuser = <%= uspsuser %>;
 
 		$(document).ready(function() {
 			$.getJSON('/api/recalls', function (results) {
