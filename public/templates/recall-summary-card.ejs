@@ -12,15 +12,16 @@
 		</div>
 		<h3 class="panel-title"><%= summaryProvider.getProductDescription() %></h3>
 		<h4 class="panel-subtitle">
-			<a data-toggle="tooltip" data-placement="bottom" title="<%= summaryProvider.getFirmName() %>" href="">
-				<%= summaryProvider.getFirmAddress() %>
+			<a data-toggle="tooltip" data-placement="bottom" title="<%= summaryProvider.getFirmAddress() %>" href="">
+				<%= summaryProvider.getFirmName() %>
 			</a> &nbsp;-&nbsp;
 			<small>
 				<%= summaryProvider.getRecallInitiationDate('MMMM Do, YYYY') %>
 			</small>
 		</h4>
 	</div>
-	<div id="collapse-<%= summaryProvider.getRecallId() %>" class="panel-collapse collapse in">
+	<div id="collapse-<%= summaryProvider.getRecallId() %>" data-recall-id="<%= summaryProvider.getRecallId() %>"
+		 class="panel-collapse collapse in">
 		<div class="panel-body">
 			<p class="recall-reason"><%= summaryProvider.getReasonForRecall() %></p>
 		</div>
@@ -31,10 +32,41 @@
 			</ul>
 			<ul class="list-inline pull-right">
 				<li>
-					<div class="btn btn-link"><i class="glyphicon glyphicon-pushpin"></i> Pin</div>
+					<div data-action="recall-pin" data-recall-id="<%= summaryProvider.getRecallId() %>"
+						 class="btn btn-link"><i class="glyphicon glyphicon-pushpin"></i> Pin
+					</div>
 				</li>
-				<li><a class="btn btn-link" href="<%= summaryProvider.getFacebookShareLink() %>" target="_blank"><i
-								class="glyphicon glyphicon-share-alt"></i> Share</a></li>
+				<li>
+					<div class="dropup">
+						<span class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i
+									class="glyphicon glyphicon-option-vertical"></i></span>
+						<ul class="dropdown-menu dropdown-menu-right" role="menu">
+							<li role="presentation">
+								<a data-action="recall-copy"
+								   data-text="<%= summaryProvider.getShareLink() %>"
+								   role="menuitem" tabindex="-1" href="#">
+									<i class="glyphicon glyphicon-link"></i> Copy
+								</a>
+							</li>
+							<li role="presentation">
+								<a href="<%= summaryProvider.getEmailShareLink() %>"
+								   role="menuitem"
+								   tabindex="-1"
+								   href="#">
+									<i class="glyphicon glyphicon-envelope"></i> E-mail
+								</a>
+							</li>
+							<li role="presentation">
+								<a data-action="recall-share"
+								   data-href="<%= summaryProvider.getShareLink() %>"
+								   data-title="<%= summaryProvider.getShareTitle() %>"
+								   role="menuitem" tabindex="-1" href="#">
+									<i class="glyphicon glyphicon-share-alt"></i> Share
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
 			</ul>
 		</div>
 	</div>

@@ -28,14 +28,20 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 	RecallSummaryProvider.prototype.getRecallDetailsLink = function () {
 		return '/details/' + this._recall.id;
 	};
+	RecallSummaryProvider.prototype.getShareTitle = function () {
+		return this._recall.product_description;
+	};
 	RecallSummaryProvider.prototype.getShareLink = function () {
-		return (window.location.origin ? window.location.origin : (window.location.protocol + '//' + window.location.hostname + ':' + window.location.port)) + this.getRecallDetailsLink();
+		return Uri(window.location.href).authority() + '/details/' + Uri.encode(this._recall.id);
 	};
 	RecallSummaryProvider.prototype.getFacebookShareLink = function () {
 		return ejs.render('http://www.facebook.com/sharer/sharer.php?u=<%=url%>&title=<%=title%>', {
-			url: Uri(window.location.href).authority() + '/details/' + Uri.encode(this._recall.id),
-			title: Uri.encode(this._recall.product_description)
+			url: this.getShareLink(),
+			title: Uri.encode(this.getShareTitle())
 		});
+	};
+	RecallSummaryProvider.prototype.getEmailShareLink = function () {
+		return 'mailto:';
 	};
 	RecallSummaryProvider.prototype.getCardType = function () {
 		switch (this._recall.classificationlevel) {

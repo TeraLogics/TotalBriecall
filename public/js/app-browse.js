@@ -90,7 +90,7 @@ requirejs([
 			}
 
 			if (state) {
-				meta.state = state;
+			meta.state = state;
 			}
 
 			return $.ajax({
@@ -150,5 +150,24 @@ requirejs([
 
 	map.add('layer', getStateGeoJSON([state]), {
 		style: style
+	});
+
+	// Hook up general controls
+	appWindow.on('click', 'data-action=["recall-copy"]', function (event) {
+		var element = $(this),
+			text = element.data('text');
+	});
+	appWindow.on('click', 'data-action=["recall-share"]', function (event) {
+		var element = $(this),
+			href = element.data('href'),
+			title = element.data('title');
+	});
+	appWindow.on('click', 'data-action=["recall-pin"]', function (event) {
+		var element = $(this),
+			recallId = element.data('recallId');
+	});
+	appWindow.on('click', 'data-action=["recall-toggle"]', function (event) {
+		var element = $(this),
+			recallId = element.data('recallId');
 	});
 });
