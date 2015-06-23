@@ -1,5 +1,5 @@
-SOURCES ?= app/
-TESTS ?= test/
+SOURCES ?= ./app
+TESTS ?= ./test
 
 test: test-mocha
 test-cov: test-istanbul-mocha
