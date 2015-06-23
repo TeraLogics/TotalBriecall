@@ -5,8 +5,8 @@ OUTPUT_DIR ?= $(SOURCES)/views/docs/api/
 
 apidoc: node_modules
 	$(APIDOC) \
-		--file-filters $(API_FILE_PATTERN)
-		--input $(API_DIR)
+		--file-filters $(API_FILE_PATTERN) \
+		--input $(API_DIR) \
 		--output $(OUTPUT_DIR)
 
 
