@@ -7,9 +7,10 @@
     "start": "node app/index.js",
     "test": "mocha --require test/bootstrap --recursive --reporter spec ./test",
     "test-coverage": "istanbul cover --dir ./reports/coverage --report html _mocha -- --require test/bootstrap --recursive --reporter spec ./test",
-    "apidoc": "apidoc --file-filters '^api.js$' --input app/routes/ --output app/views/docs/api/"
+    "apidoc": "node ./node_modules/apidoc/bin/apidoc --file-filters '^api.js$' --input app/routes/ --output app/views/docs/api/"
   },
   "dependencies": {
+    "apidoc": "^0.13.1",
     "bluebird": "^2.9.30",
     "body-parser": "^1.13.1",
     "bower": "1.4.1",
@@ -56,7 +57,6 @@
   "devDependencies": {
     "chai": "^3.0.0",
     "grunt-contrib-watch": "0.6.1",
-    "mocha": "^2.2.5",
     "sinon": "^1.15.3",
     "supertest": "^1.0.1"
   },

@@ -12,9 +12,8 @@ deploy:
     master: total-briecall
     development: total-briecall-dev
   run:
-  - npm install --global apidoc
-  - npm run apidoc
-  - restart
+    - npm run apidoc
+    - restart
 notifications:
   slack:
     secure: RUOKymOPw0u47KLieUV8UUP9A74kAk5wKoQe+B7g64ZRgHUfq354t6ghqy8w11aqhwHibOxD8fjky/sJH39fypWKkJKIY9NiTOVE5ZFK2FwbQHJjRbGt538P0UQfD/2d7/hR9ImIvbMNMFPDoUpNHGK59vjLK+Brplk50FQXCmN3kRyh6bs/kwgPaNGnAVq+AeD9DX1q9ZTUnPeJdCVV3uf5ovjk+9dPVNQbYHMdgAfUd/BSKdcggdS8nQNOJG69OL8NB/8nF//yjj3xkKLifRfr5KXuTgK80Cb4gv2X/0GytRzV+Tt9TvMvkto1zxOm+zooyE3v5OFwIqw2G4Acwta9WfYwBJOoFdCEBxXGw+a98swp6lfsxdLXkaFpCjsgeb8BlIrwx6eQxXHOh6iUk6oinossE0+GklsRoMkO2BuNCEzW+mZRli3wptud1pD0RguHqFVqVEFEMz4GD46sC+Z9l5AIpgfceR1nVGtwK1kINa66eMqy6HosnpaE7ITHquzamyjpqFpG/fFHyF+LXHr3UmbA0j5/xtraRoDQlM2oBIEj1rQaaiSeIbMpQ+ppu0rZJM85hDcSWWgTeym2ny0k/bmvTGV0xie6bHfN4tsSXiqlx/LnoPkeZ9Pu5ikGUFenXWgMOX1LIdO7PUGRnSJWVSB6fxdj2vkXDMx6gCo=
