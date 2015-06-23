@@ -34,72 +34,18 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 			title: Uri.encode(this._recall.product_description)
 		});
 	};
-	RecallSummaryProvider.prototype.getClassSymbol = function () {
-		var level = new Array(this._recall.classificationlevel + 1).join('i'),
-			symbol = level,
-			description = ['dangerous', 'moderate', 'notification'][this._recall.classificationlevel - 1];
-
-		return RecallSummaryProvider._symbolTpl({
-			type: 'class',
-			baseClass: 'recall-class-text',
-			levelClass: 'recall-class-' + level,
-			symbol: symbol,
-			description: description
-		});
-	};
-	RecallSummaryProvider.prototype.getStatusSymbol = function () {
-		var status = null;
-
-		switch (this._recall.status) {
-			case 'Ongoing':
-				status = {
-					type: 'status',
-					baseClass: 'recall-status-text',
-					levelClass: 'recall-status-ongoing',
-					symbol: 'o',
-					description: 'on-going'
-				};
-				break;
-			case 'Pending':
-				status = {
-					type: 'status',
-					baseClass: 'recall-status-text',
-					levelClass: 'recall-status-Pending',
-					symbol: 'p',
-					description: 'pending'
-				};
-				break;
-			case 'Completed':
-				status = {
-					type: 'status',
-					baseClass: 'recall-status-text',
-					levelClass: 'recall-status-completed',
-					symbol: 'c',
-					description: 'completed'
-				};
-				break;
-			case 'Terminated':
-				status = {
-					type: 'status',
-					baseClass: 'recall-status-text',
-					levelClass: 'recall-status-terminated',
-					symbol: 't',
-					description: 'terminated'
-				};
-				break;
+	RecallSummaryProvider.prototype.getCardType = function () {
+		switch (this._recall.classificationlevel) {
+			case 1:
+				return 'panel-danger';
+			case 2:
+				return 'panel-warning';
+			case 3:
+				return 'panel-info';
+			default:
+				return 'panel-default';
 		}
-
-		return RecallSummaryProvider._symbolTpl(status);
-	};
-	RecallSummaryProvider.prototype.getActionSymbol = function () {
-		return RecallSummaryProvider._symbolTpl({
-			type: 'action',
-			baseClass: 'recall-action-text',
-			levelClass: 'recall-action-' + (this._recall.mandated ? 'mandated' : 'voluntary'),
-			symbol: (this._recall.mandated ? 'MA' : 'FI'),
-			description: (this._recall.mandated ? 'mandated' : 'voluntary')
-		});
-	};
+	}
 
 	return RecallSummaryProvider;
 });
