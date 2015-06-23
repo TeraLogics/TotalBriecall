@@ -2,6 +2,7 @@
 
 var path = require('path'),
 	express = require('express'),
+	_ = require('underscore'),
 	chai = require('chai'),
 	sinon = require('sinon'),
 	request = require('supertest'),
@@ -82,6 +83,100 @@ module.exports = function () {
 					.expect(_createInvalidArgumentResponse('Invalid limit - not allowed'))
 					.expect(function () {
 						assert(!fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was called in an error case.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when the adapter returns a rejected promise (error)', function (done) {
+
+				var message = 'something terrible happened';
+
+				// re-define the stub to return a rejected promise
+				fdaAdapter.getFoodRecallById.restore();
+				sinon.stub(fdaAdapter, 'getFoodRecallById', function () {
+					return Promise.reject(new Error(message));
+				});
+
+				request(app)
+					.get('/api/recalls/F-1234-5678')
+					.expect(409)
+					.expect(_createInvalidArgumentResponse(message))
+					.expect(function () {
+						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to process the response.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when the adapter returns a rejected promise (response)', function (done) {
+
+				var response = {
+					statusCode: 426,
+					body: {
+						error: {
+							code: 'SOAP_DISH',
+							message: 'Dirty soap dish.'
+						}
+					}
+				};
+
+				// re-define the stub to return a rejected promise
+				fdaAdapter.getFoodRecallById.restore();
+				sinon.stub(fdaAdapter, 'getFoodRecallById', function () {
+					return Promise.reject(response);
+				});
+
+				request(app)
+					.get('/api/recalls/F-1234-5678')
+					.expect(response.statusCode)
+					.expect(response.body)
+					.expect(function () {
+						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to process the response.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when the adapter returns a rejected promise (string)', function (done) {
+
+				// re-define the stub to return a rejected promise
+				fdaAdapter.getFoodRecallById.restore();
+				sinon.stub(fdaAdapter, 'getFoodRecallById', function () {
+					return Promise.reject('just a string');
+				});
+
+				request(app)
+					.get('/api/recalls/F-1234-5678')
+					.expect(500)
+					.expect({
+						error: {
+							code: 'INTERNAL_ERROR',
+							message: 'An unknown error occurred.'
+						}
+					})
+					.expect(function () {
+						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to process the response.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when the adapter returns a rejected promise (null)', function (done) {
+
+				// re-define the stub to return a rejected promise
+				fdaAdapter.getFoodRecallById.restore();
+				sinon.stub(fdaAdapter, 'getFoodRecallById', function () {
+					return Promise.reject(null);
+				});
+
+				request(app)
+					.get('/api/recalls/F-1234-5678')
+					.expect(500)
+					.expect({
+						error: {
+							code: 'INTERNAL_ERROR',
+							message: 'An unknown error occurred.'
+						}
+					})
+					.expect(function () {
+						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to process the response.');
 					})
 					.end(done);
 			});
@@ -175,6 +270,221 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ firmname: firmname }), 'searchFoodRecalls was not called with the firmname.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when from is invalid', function (done) {
+				// `from` and `to` are both required when one is provided
+				request(app)
+					.get('/api/recalls')
+					.query({ from: 'a long time ago', to: 200000 })
+					.expect(409)
+					.expect(_createInvalidArgumentResponse('Invalid from'))
+					.expect(function () {
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when to is invalid', function (done) {
+				// `from` and `to` are both required when one is provided
+				request(app)
+					.get('/api/recalls')
+					.query({ from: 100000, to: 'far into the future' })
+					.expect(409)
+					.expect(_createInvalidArgumentResponse('Invalid to'))
+					.expect(function () {
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when from is greater than to', function (done) {
+				// `from` and `to` are both required when one is provided
+				request(app)
+					.get('/api/recalls')
+					.query({ from: 200000, to: 100000 })
+					.expect(409)
+					.expect(_createInvalidArgumentResponse('Invalid from/to - from must be before to'))
+					.expect(function () {
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+					})
+					.end(done);
+			});
+
+			it('should succeed with a valid to and from', function (done) {
+				var from = 100000,
+					to = 200000;
+
+				request(app)
+					.get('/api/recalls')
+					.query({ from: from, to: to })
+					.expect(200)
+					.expect(EMPTY_RECALL_RESULT)
+					.expect(function () {
+						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({ from: from, to: to }), 'searchFoodRecalls was not called with the from.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when classificationlevels is invalid', function (done) {
+				request(app)
+					.get('/api/recalls')
+					.query({ classificationlevels: ',' })
+					.expect(409)
+					.expect(_createInvalidArgumentResponse('Invalid classificationlevels'))
+					.expect(function () {
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+					})
+					.end(done);
+			});
+
+			_.each([0, 4], function (level) {
+				it('should return a 409 when classificationlevels is out of range (' + level + ')', function (done) {
+					request(app)
+						.get('/api/recalls')
+						.query({ classificationlevels: level })
+						.expect(409)
+						.expect(_createInvalidArgumentResponse('Invalid classificationlevels - must be 1, 2, or 3'))
+						.expect(function () {
+							assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+						})
+						.end(done);
+				});
+			});
+
+			it('should succeed with valid classificationlevels', function (done) {
+				var classificationlevels = '1,2,3',
+					classificationlevelsParsed = [1, 2, 3];
+
+				request(app)
+					.get('/api/recalls')
+					.query({ classificationlevels: classificationlevels })
+					.expect(200)
+					.expect(EMPTY_RECALL_RESULT)
+					.expect(function () {
+						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({ classificationlevels: classificationlevelsParsed }), 'searchFoodRecalls was not called with the classificationlevels.');
+					})
+					.end(done);
+			});
+
+			it('should succeed with classificationlevels provided as multiple query parameters', function (done) {
+				var classificationlevelsParsed = [1, 2, 3];
+
+				request(app)
+					.get('/api/recalls')
+					.query({
+						'classificationlevels[0]': 1,
+						'classificationlevels[1]': 2,
+						'classificationlevels[2]': 3
+					})
+					.expect(200)
+					.expect(EMPTY_RECALL_RESULT)
+					.expect(function () {
+						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({ classificationlevels: classificationlevelsParsed }), 'searchFoodRecalls was not called with the classificationlevels.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when keywords is invalid', function (done) {
+				request(app)
+					.get('/api/recalls')
+					.query({ keywords: 'clogs' })
+					.expect(409)
+					.expect(_createInvalidArgumentResponse('Invalid keywords - could not match keyword clogs'))
+					.expect(function () {
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+					})
+					.end(done);
+			});
+
+			_.each(['dairy', 'dye', 'egg', 'fish', 'gluten', 'nut', 'soy'], function (keyword) {
+				it('should succeed with valid keywords (' + keyword + ')', function (done) {
+					request(app)
+						.get('/api/recalls')
+						.query({ keywords: keyword })
+						.expect(200)
+						.expect(EMPTY_RECALL_RESULT)
+						.expect(function () {
+							assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
+							assert(fdaAdapter.searchFoodRecalls.calledWith({ keywords: [keyword] }), 'searchFoodRecalls was not called with the keywords.');
+						})
+						.end(done);
+				});
+			});
+
+			it('should succeed with keywords provided as multiple query parameters', function (done) {
+				var keywordsParsed = ['dye', 'egg'];
+
+				request(app)
+					.get('/api/recalls')
+					.query({
+						'keywords[0]': 'dye',
+						'keywords[1]': 'egg'
+					})
+					.expect(200)
+					.expect(EMPTY_RECALL_RESULT)
+					.expect(function () {
+						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({ keywords: keywordsParsed }), 'searchFoodRecalls was not called with the keywords.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when skip is invalid', function (done) {
+				request(app)
+					.get('/api/recalls')
+					.query({ skip: 'a few' })
+					.expect(409)
+					.expect(_createInvalidArgumentResponse('Invalid skip'))
+					.expect(function () {
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+					})
+					.end(done);
+			});
+
+			it('should succeed with a valid skip', function (done) {
+				var skip = 123456;
+
+				request(app)
+					.get('/api/recalls')
+					.query({ skip: skip })
+					.expect(200)
+					.expect(EMPTY_RECALL_RESULT)
+					.expect(function () {
+						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({ skip: skip }), 'searchFoodRecalls was not called with the skip.');
+					})
+					.end(done);
+			});
+
+			it('should return a 409 when limit is invalid', function (done) {
+				request(app)
+					.get('/api/recalls')
+					.query({ limit: 'a few' })
+					.expect(409)
+					.expect(_createInvalidArgumentResponse('Invalid limit'))
+					.expect(function () {
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+					})
+					.end(done);
+			});
+
+			it('should succeed with a valid limit', function (done) {
+				var limit = 123456;
+
+				request(app)
+					.get('/api/recalls')
+					.query({ limit: limit })
+					.expect(200)
+					.expect(EMPTY_RECALL_RESULT)
+					.expect(function () {
+						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({ limit: limit }), 'searchFoodRecalls was not called with the skip.');
 					})
 					.end(done);
 			});
