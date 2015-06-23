@@ -1,4 +1,4 @@
-GLOBAL_NPM_PACKAGES ?= istanbul jshint apidoc
+GLOBAL_NPM_PACKAGES ?= istanbul jshint apidoc mocha
 
 npm-install-global:
 	npm install --global $(GLOBAL_NPM_PACKAGES)
