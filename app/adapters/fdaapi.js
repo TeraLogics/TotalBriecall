@@ -76,7 +76,7 @@ var options = {
 	stateAbbreviations = _.keys(stateMappings).sort(),
 	stateRegexes = _.reduce(stateMappings, function (memo, values, key) {
 		memo[key] = _.map(values, function (val) {
-			return new RegExp('\\b' + val + '\\b', 'i');
+			return new RegExp('\\b' + val + '\\b');
 		});
 		return memo;
 	}, {}),
