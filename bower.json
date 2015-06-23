@@ -1,9 +1,10 @@
 {
-	"name": "SassTotalBriecall",
-	"version": "0.0.1",
-	"description": "SASS build for Total Briecall",
-	"private": true,
-	"dependencies": {
-		"bootstrap-sass-official": "3.3.4"
-	}
+  "name": "SassTotalBriecall",
+  "version": "0.0.1",
+  "description": "SASS build for Total Briecall",
+  "private": true,
+  "dependencies": {
+	"bootstrap-sass-official": "3.3.4",
+    "components-font-awesome": "4.3.0"
+  }
 }

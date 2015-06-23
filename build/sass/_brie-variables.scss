@@ -2,6 +2,9 @@ $text-direction: ltr !default;
 $bg-default: #fff !default;
 $bg-void: darken($bg-default, 10%) !default;
 
+// Font-awesome path
+$fa-font-path: "../fonts" !default;
+
 //
 // Avatars
 // --------------------------------------------------

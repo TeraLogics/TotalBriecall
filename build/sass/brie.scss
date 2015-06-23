@@ -2,6 +2,8 @@
 // Import Bootstrap for Sass
 @import 'bootstrap-sass-official/assets/stylesheets/bootstrap';
 @import 'bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/text-overflow';
+// Import Font-Awesome
+@import "components-font-awesome/scss/font-awesome";
 // Brie mixins
 @import 'brie/mixins/valign';
 @import 'brie/mixins/aspect_box';
