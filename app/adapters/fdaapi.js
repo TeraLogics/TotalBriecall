@@ -146,18 +146,31 @@ function _encodeFoodRecall(foodrecall) {
 /**
  * Decodes select foodrecall object properties from base64
  * @param {String} val The food recall object to decode
- * @returns {Object} foodrecall decoded properties
+ * @returns {Promise<Object>} foodrecall decoded properties
  * @private
  */
 function _decodeFoodRecall(val) {
-	var arr = JSON.parse(new Buffer(val, 'base64').toString('utf8'));
+	return Promise.try(function (val) {
+		var arr;
+		try {
+			arr = JSON.parse(new Buffer(val, 'base64').toString('utf8'));
+		} catch (e) {
+			throw {
+				statusCode: 404,
+				error: {
+					code: 'NOT_FOUND',
+					message: 'No matches found!'
+				}
+			};
+		}
 
-	return {
-		recall_number: arr[0],
-		event_id: arr[1],
-		recall_initiation_date: arr[2],
-		product_description: arr[3]
-	};
+		return {
+			recall_number: arr[0],
+			event_id: arr[1],
+			recall_initiation_date: arr[2],
+			product_description: arr[3]
+		};
+	}, val);
 }
 
 /**
@@ -292,15 +305,16 @@ exports.isValidCountField = function (field) {
  * @returns {Promise}
  */
 exports.getFoodRecallById = function (obj) {
-	var data = _decodeFoodRecall(obj.id),
-		search = [
+	return _decodeFoodRecall(obj.id).then(function (data) {
+		var search = [
 			'event_id:' + data.event_id,
 			'recall_initiation_date:"' + data.recall_initiation_date + '"',
 			'product_description:"' + data.product_description + '"'
 		];
-	return _makeRequest({
-		search: search.join('+AND+'),
-		limit: 1
+		return _makeRequest({
+			search: search.join('+AND+'),
+			limit: 1
+		});
 	}).then(function (response) {
 		if (response.results.length > 1) {
 			var item = _.find(response.results, function (ele) {
@@ -309,11 +323,9 @@ exports.getFoodRecallById = function (obj) {
 			if (!item) {
 				throw {
 					statusCode: 404,
-					body: {
-						error: {
-							code: 'NOT_FOUND',
-							message: 'No matches found!'
-						}
+					error: {
+						code: 'NOT_FOUND',
+						message: 'No matches found!'
 					}
 				};
 			}
@@ -400,7 +412,7 @@ exports.getFoodRecallsCounts = function (obj) {
 		search: search.join('+AND+'),
 		count: obj.field + '.exact'
 	}).then(function (data) {
-		var stats = {total: 0, counts: {}};
+		var stats = { total: 0, counts: {} };
 
 		_.each(data.results, function (result) {
 			var key = result.term,

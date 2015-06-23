@@ -109,15 +109,16 @@ module.exports = function () {
 
 			it('should return a 409 when the adapter returns a rejected promise (response)', function (done) {
 
-				var response = {
-					statusCode: 426,
-					body: {
+				var error = {
 						error: {
 							code: 'SOAP_DISH',
 							message: 'Dirty soap dish.'
 						}
-					}
-				};
+					},
+					response = {
+						statusCode: 426,
+						error: error.error
+					};
 
 				// re-define the stub to return a rejected promise
 				fdaAdapter.getFoodRecallById.restore();
@@ -126,9 +127,9 @@ module.exports = function () {
 				});
 
 				request(app)
-					.get('/api/recalls/F-1234-5678')
+					.get('/api/recalls/ad123e121')
 					.expect(response.statusCode)
-					.expect(response.body)
+					.expect(error)
 					.expect(function () {
 						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to process the response.');
 					})
@@ -144,7 +145,7 @@ module.exports = function () {
 				});
 
 				request(app)
-					.get('/api/recalls/F-1234-5678')
+					.get('/api/recalls/12easc2123')
 					.expect(500)
 					.expect({
 						error: {
@@ -167,7 +168,7 @@ module.exports = function () {
 				});
 
 				request(app)
-					.get('/api/recalls/F-1234-5678')
+					.get('/api/recalls/asf12eas2')
 					.expect(500)
 					.expect({
 						error: {
@@ -407,12 +408,12 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/recalls')
-					.query({keywords: keywords.join(',')})
+					.query({ keywords: keywords.join(',') })
 					.expect(200)
 					.expect(EMPTY_RECALL_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({keywords: keywords}), 'searchFoodRecalls was not called with the keywords.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({ keywords: keywords }), 'searchFoodRecalls was not called with the keywords.');
 					})
 					.end(done);
 			});

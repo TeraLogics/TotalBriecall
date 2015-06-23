@@ -1,61 +1,63 @@
 <% include ./common/header.ejs %>
+<% if (recall) { %>
 <meta property="og:site_name" content="Total Briecall"/>
-<meta property="og:locale" content="en_US" />
-<meta property="og:title" content="Some title" />
-<meta property="og:url" content="https://totalbriecall.com" />
-<meta property="og:description" content="Workday, a provider of cloud-based
-applications for human resources, said on Monday that it would seek to price
-its initial public offering at $21 to $24 a share.  At the midpoint of that
-range, the offering would value the company at $3.6 billion. Like many other
-technology start-ups, Workday, founded in 2005, will have a dual-class share
-structure, with each Class B share having 10 votes. Its co-chief executives,
-David Duffield, the founder of PeopleSoft, and Aneel Bhusri, who was chief
-strategist at PeopleSoft, will have 67 percent of the voting rights after
-the I.P.O., according to the prospectus." />
-<meta property="fb:app_id" content="[FB_APP_ID]" />
-<meta property="og:type" content="article" />
-<meta property="og:image" content="http://graphics.myfavnews.com/images/logo-100x100.jpg" />
-<meta property="article:author" content="https://www.facebook.com/fareedzakaria" />
-<meta property="article:publisher" content="https://www.facebook.com/cnn" />
+<meta property="og:locale" content="en_US"/>
+<meta property="og:title" content="<%= recall.product_description %>"/>
+<meta property="og:url" content="https://totalbriecall.com"/>
+<meta property="og:description" content="<%= recall.reason_for_recall %>"/>
+<meta property="fb:app_id" content="[FB_APP_ID]"/>
+<meta property="og:type" content="article"/>
+<meta property="og:image" content="http://graphics.myfavnews.com/images/logo-100x100.jpg"/>
+<meta property="article:author" content="https://www.facebook.com/XXX"/>
+<meta property="article:publisher" content="https://www.facebook.com/XXX"/>
 
 </head>
 <body class="bg-void">
-    <div class="navmenu navmenu-default">
-        <!-- off-canvas menu goes here -->
-    </div>
-    <div class="container-flexible">
-        <!-- placeholder for recall details -->
-    </div>
-    <section class="container">
-        <div class="panel">
-            <div class="text-center visible-xs hidden-sm hidden-md hidden-lg">
-                <button data-action="load-comments" type="button" class="btn btn-link"><i class="glyphicon glyphicon-eye-open"></i> Load comments</button>
-            </div>
-            <div class="comment-log-container hidden-xs visible-sm visible-md visible-lg">
-                <header class="panel-heading">
-                    <h3 style="margin-bottom: 20px; margin-top: 13px;">Recall comments</h3>
-                </header>
-                <div class="panel-body">
-                    <ol id="recall-comments" class="list-view empty">
-                        <!-- recall cards placeholder -->
-                        <li class="comment-entry">
-                            <a href="#" title="Bell, Mike">Mike Bell</a>
-                            <small class="event-subtitle text-muted" title="MMM Do YYYY, h:mm:ssa">MMM Do [at] h:mmA</small>
-                            <p class="comment-body">Sample comment by a state user.</p>
-                        </li>
-                    </ol>
-                    <div class="list-view-messages">
-                        <p class="list-view-loading-message">Loading...</p>
-                        <p class="list-view-empty-message">There are no recall comments.</p>
-                        <p class="list-view-error-message">Oops, we had trouble retrieving recent recall comments!</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-success hidden" data-action="load-more-comments"><i class="glyphicon glyphicon-chevron-down"></i> Load more</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <script data-main="/js/app-recall" src="/js/require.js"></script>
+<div class="navmenu navmenu-default">
+	<!-- off-canvas menu goes here -->
+</div>
+<div class="container-flexible">
+	<!-- placeholder for recall details -->
+</div>
+<section class="container">
+	<div class="panel">
+		<div class="text-center visible-xs hidden-sm hidden-md hidden-lg">
+			<button data-action="load-comments" type="button" class="btn btn-link"><i class="glyphicon glyphicon-eye-open"></i> Load comments</button>
+		</div>
+		<div class="comment-log-container hidden-xs visible-sm visible-md visible-lg">
+			<header class="panel-heading">
+				<h3 style="margin-bottom: 20px; margin-top: 13px;">Recall comments</h3>
+			</header>
+			<div class="panel-body">
+				<ol id="recall-comments" class="list-view empty">
+					<!-- recall cards placeholder -->
+					<li class="comment-entry">
+						<a href="#" title="Bell, Mike">Mike Bell</a>
+						<small class="event-subtitle text-muted" title="MMM Do YYYY, h:mm:ssa">MMM Do [at] h:mmA</small>
+						<p class="comment-body">Sample comment by a state user.</p>
+					</li>
+				</ol>
+				<div class="list-view-messages">
+					<p class="list-view-loading-message">Loading...</p>
+
+					<p class="list-view-empty-message">There are no recall comments.</p>
+
+					<p class="list-view-error-message">Oops, we had trouble retrieving recent recall comments!</p>
+				</div>
+				<div class="text-center">
+					<button type="button" class="btn btn-success hidden" data-action="load-more-comments"><i class="glyphicon glyphicon-chevron-down"></i> Load more</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script data-main="/js/app-recall" src="/js/require.js"></script>
+<% } else { %>
+</head>
+<body class="bg-void">
+<div>
+	Error encountered. <%= error.statusCode %> - <%= error.message %>
+</div>
+<% } %>
 </body>
 </html>

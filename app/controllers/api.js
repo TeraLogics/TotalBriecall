@@ -45,10 +45,10 @@ function _processResponse(promise, res) {
 		if (err instanceof Error) {
 			// errors raised by the adapter
 			_rejectArgument(err.message, res);
-		} else if (err && err.statusCode && err.body && err.body.error) {
+		} else if (err && err.statusCode && err.error) {
 			// errors probably in a ServerResponse from the FDA API
 			res.status(err.statusCode).json({
-				error: err.body.error
+				error: err.error
 			});
 		} else {
 			// anything else
