@@ -175,6 +175,8 @@ function _formatRecallResults(data) {
 
 		foodrecall.classificationlevel = foodrecall.classification.match(/I/g).length;
 
+		foodrecall.event_id = parseInt(foodrecall.event_id, 10);
+
 		// TODO Sometimes field is null, could parse reason for recall for some
 		foodrecall.mandated = foodrecall.voluntary_mandated ? foodrecall.voluntary_mandated.match(/mandated/i) !== null : false;
 
@@ -321,7 +323,9 @@ exports.getFoodRecallById = function (obj) {
 		}
 		response.meta.results.total = 1;
 		return response;
-	}).then(_formatRecallResults);
+	}).then(_formatRecallResults).then(function (results) {
+		return results.data[0];
+	});
 };
 
 /**
