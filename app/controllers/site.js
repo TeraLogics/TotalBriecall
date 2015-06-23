@@ -1,6 +1,8 @@
 'use strict';
 
-var _ = require('underscore');
+var _ = require('underscore'),
+	path = require('path'),
+	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
 
 exports.landing = function (req, res, next) {
 	return res.render('landing', {
@@ -13,9 +15,13 @@ exports.browse = function (req, res, next) {
 };
 
 exports.details = function (req, res, next) {
-	return res.render('details', {
-		id: req.params.id
-	});
+	fdaAdapter.getFoodRecallById({id: req.params.id}).then(function (recall) {
+		return res.render('details', {
+			recall: recall
+		});
+	}).catch(function (err) {
+		res.status(500).send('Could not retrieve recall information.');
+	}).done();
 };
 
 exports.map = function (req, res, next) {
