@@ -1,5 +1,5 @@
-MOCHA ?= ./node_modules/.bin/mocha
-_MOCHA ?= ./node_modules/.bin/_mocha
+MOCHA ?= mocha
+_MOCHA ?= _mocha
 MOCHA_REPORTER ?= spec
 MOCHA_REQUIRE ?= ./test/bootstrap
 
