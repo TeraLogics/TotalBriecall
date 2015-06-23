@@ -6,7 +6,7 @@ var _ = require('underscore'),
 
 exports.landing = function (req, res, next) {
 	return res.render('landing', {
-		state: req.session.state
+		state: req.session.preferences.state
 	});
 };
 
