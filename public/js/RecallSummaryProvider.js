@@ -14,7 +14,7 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		return this._recall.recalling_firm;
 	};
 	RecallSummaryProvider.prototype.getRecallId = function () {
-		return this._recall.recall_number;
+		return this._recall.id;
 	};
 	RecallSummaryProvider.prototype.getProductDescription = function () {
 		return this._recall.product_description;
@@ -26,11 +26,11 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		return this._recall.reason_for_recall;
 	};
 	RecallSummaryProvider.prototype.getRecallDetailsLink = function () {
-		return '/details/' + this._recall.recall_number;
+		return '/details/' + this._recall.id;
 	};
 	RecallSummaryProvider.prototype.getFacebookShareLink = function () {
 		return ejs.render('http://www.facebook.com/sharer/sharer.php?u=<%=url%>&title=<%=title%>', {
-			url: Uri(window.location.href).authority() + '/details/' + Uri.encode(this._recall.recall_number),
+			url: Uri(window.location.href).authority() + '/details/' + Uri.encode(this._recall.id),
 			title: Uri.encode(this._recall.product_description)
 		});
 	};

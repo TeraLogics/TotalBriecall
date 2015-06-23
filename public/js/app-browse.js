@@ -99,7 +99,7 @@ requirejs([
             }
             else {
                 addRecentRecalls(result.data);
-                //sisyphus.rebind();
+                sisyphus.rebind();
             }
         }
 	});

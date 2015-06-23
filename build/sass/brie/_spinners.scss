@@ -1,14 +1,4 @@
 .spinner.spinner-pulsation {
-  text-indent: -9999em;
-  margin: 88px auto;
-  position: relative;
-  font-size: 11px;
-  -webkit-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-animation-delay: -0.16s;
-  animation-delay: -0.16s;
-
   &,
   &:before,
   &:after {
@@ -18,18 +8,83 @@
     width: 1em;
     height: 4em;
   }
-  &:before,
-  &:after {
+  &.spinner-success {
+    &,
+    &:before,
+    &:after {
+      background: $brand-success;
+      -webkit-animation: pulsation-success 1s infinite ease-in-out;
+      animation: pulsation-success 1s infinite ease-in-out;
+    }
+  }
+  &.spinner-info {
+    &,
+    &:before,
+    &:after {
+      background: $brand-info;
+      -webkit-animation: pulsation-info 1s infinite ease-in-out;
+      animation: pulsation-info 1s infinite ease-in-out;
+    }
+  }
+  &.spinner-primary {
+    &,
+    &:before,
+    &:after {
+      background: $brand-primary;
+      -webkit-animation: pulsation-primary 1s infinite ease-in-out;
+      animation: pulsation-primary 1s infinite ease-in-out;
+    }
+  }
+  &.spinner-danger {
+    &,
+    &:before,
+    &:after {
+      background: $brand-danger;
+      -webkit-animation: pulsation-danger 1s infinite ease-in-out;
+      animation: pulsation-danger 1s infinite ease-in-out;
+    }
+  }
+  &.spinner-warning {
+    &,
+    &:before,
+    &:after {
+      background: $brand-warning;
+      -webkit-animation: pulsation-warning 1s infinite ease-in-out;
+      animation: pulsation-warning 1s infinite ease-in-out;
+    }
+  }
+  &.spinner-muted {
+    &,
+    &:before,
+    &:after {
+      background: $gray-light;
+      -webkit-animation: pulsation-muted 1s infinite ease-in-out;
+      animation: pulsation-muted 1s infinite ease-in-out;
+    }
+  }
+
+  &.spinner:before,
+  &.spinner:after {
     position: absolute;
     top: 0;
     content: '';
   }
-  &:before {
+  &.spinner:before {
     left: -1.5em;
     -webkit-animation-delay: -0.32s;
     animation-delay: -0.32s;
   }
-
+  &.spinner {
+    text-indent: -9999em;
+    margin: 2em auto;
+    position: relative;
+    font-size: 11px;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
   &:after {
     left: 1.5em;
   }
@@ -56,6 +111,131 @@
   }
   40% {
 	box-shadow: 0 -2em #ffffff;
+	height: 5em;
+  }
+}
+
+@-webkit-keyframes pulsation-info {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0 $brand-info;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em $brand-info;
+    height: 5em;
+  }
+}
+@keyframes pulsation-info {
+  0%,
+  80%,
+  100% {
+	box-shadow: 0 0 $brand-info;
+	height: 4em;
+  }
+  40% {
+	box-shadow: 0 -2em $brand-info;
+	height: 5em;
+  }
+}
+
+@-webkit-keyframes pulsation-primary {
+  0%,
+  80%,
+  100% {
+	box-shadow: 0 0 $brand-primary;
+	height: 4em;
+  }
+  40% {
+	box-shadow: 0 -2em $brand-primary;
+	height: 5em;
+  }
+}
+@keyframes pulsation-primary {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0 $brand-primary;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em $brand-primary;
+    height: 5em;
+  }
+}
+
+@-webkit-keyframes pulsation-danger {
+  0%,
+  80%,
+  100% {
+	box-shadow: 0 0 $brand-danger;
+	height: 4em;
+  }
+  40% {
+	box-shadow: 0 -2em $brand-danger;
+	height: 5em;
+  }
+}
+@keyframes pulsation-danger {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0 $brand-danger;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em $brand-danger;
+    height: 5em;
+  }
+}
+
+@-webkit-keyframes pulsation-warning {
+  0%,
+  80%,
+  100% {
+	box-shadow: 0 0 $brand-warning;
+	height: 4em;
+  }
+  40% {
+	box-shadow: 0 -2em $brand-warning;
+	height: 5em;
+  }
+}
+@keyframes pulsation-warning {
+  0%,
+  80%,
+  100% {
+	box-shadow: 0 0 $brand-warning;
+	height: 4em;
+  }
+  40% {
+	box-shadow: 0 -2em $brand-warning;
+	height: 5em;
+  }
+}
+
+@keyframes pulsation-muted {
+  0%,
+  80%,
+  100% {
+	box-shadow: 0 0 $gray-light;
+	height: 4em;
+  }
+  40% {
+	box-shadow: 0 -2em $gray-light;
+	height: 5em;
+  }
+}
+@-webkit-keyframes pulsation-muted {
+  0%,
+  80%,
+  100% {
+	box-shadow: 0 0 $gray-light;
+	height: 4em;
+  }
+  40% {
+	box-shadow: 0 -2em $gray-light;
 	height: 5em;
   }
 }
