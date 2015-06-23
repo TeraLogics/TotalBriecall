@@ -26,6 +26,36 @@ the I.P.O., according to the prospectus." />
     <div class="container-flexible">
         <!-- placeholder for recall details -->
     </div>
-    <script data-main="js/app-recall" src="/js/require.js"></script>
+    <section class="container">
+        <div class="panel">
+            <div class="text-center visible-xs hidden-sm hidden-md hidden-lg">
+                <button data-action="load-comments" type="button" class="btn btn-link"><i class="glyphicon glyphicon-eye-open"></i> Load comments</button>
+            </div>
+            <div class="comment-log-container hidden-xs visible-sm visible-md visible-lg">
+                <header class="panel-heading">
+                    <h3 style="margin-bottom: 20px; margin-top: 13px;">Recall comments</h3>
+                </header>
+                <div class="panel-body">
+                    <ol id="recall-comments" class="list-view empty">
+                        <!-- recall cards placeholder -->
+                        <li class="comment-entry">
+                            <a href="#" title="Bell, Mike">Mike Bell</a>
+                            <small class="event-subtitle text-muted" title="MMM Do YYYY, h:mm:ssa">MMM Do [at] h:mmA</small>
+                            <p class="comment-body">Sample comment by a state user.</p>
+                        </li>
+                    </ol>
+                    <div class="list-view-messages">
+                        <p class="list-view-loading-message">Loading...</p>
+                        <p class="list-view-empty-message">There are no recall comments.</p>
+                        <p class="list-view-error-message">Oops, we had trouble retrieving recent recall comments!</p>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-success hidden" data-action="load-more-comments"><i class="glyphicon glyphicon-chevron-down"></i> Load more</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script data-main="/js/app-recall" src="/js/require.js"></script>
 </body>
 </html>

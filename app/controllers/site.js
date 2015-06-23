@@ -20,7 +20,33 @@ exports.details = function (req, res, next) {
 			recall: recall
 		});
 	}).catch(function (err) {
-		res.status(500).send('Could not retrieve recall information.');
+		//res.status(500).send('Could not retrieve recall information.');
+		return res.render('recall', {
+			recall: {
+				recall_number: 'F-1355-2015',
+				reason_for_recall: 'Product may contain undeclared allergen (Hazelnuts)',
+				status: 'Completed',
+				distribution_pattern: 'MA, ME , NH, NJ, NY',
+				product_quantity: '19 units',
+				recall_initiation_date: 1422334800,
+				state: 'NH',
+				event_id: '70421',
+				product_type: 'Food',
+				product_description: 'Lindt Chocolate Specialties Milk Chocolate Covered Almonds,6.4 oz.  packaged in a stand up bag (resealable pouch)\nItem Number: #8698 (or #8379)',
+				country: 'US',
+				city: 'Stratham',
+				recalling_firm: 'Lindt & Sprungli USA',
+				report_date: 1425445200,
+				voluntary_mandated: 'Voluntary: Firm Initiated',
+				classification: 'Class I',
+				code_info: 'Lot Code: L2975',
+				initial_firm_notification: 'Two or more of the following: Email, Fax, Letter, Press Release, Telephone, Visit',
+				classificationlevel: 1,
+				mandated: false,
+				affectedstates: ['MA','ME','NH','NJ','NY'],
+				affectednationally: false
+			}
+		});
 	}).done();
 };
 

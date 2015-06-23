@@ -1,82 +1,119 @@
 'use strict';
 
 requirejs.config({
-	baseUrl: 'js',
-	shim: {
-		bootstrap: {'deps': ['jquery']},
-		ejs: {exports: 'ejs'},
-		URI: {deps: ['jquery']}
-	},
-	paths: {
-		jquery: 'jquery-2.1.4.min',
-		bootstrap: 'bootstrap.min',
-		ejs: 'ejs-2.3.1.min',
-		moment: 'moment.min',
-		masonry: 'masonry.pkgd.min',
-		underscore: 'underscore-min'
-	}
+    baseUrl: '/js',
+    shim : {
+        bootstrap: {'deps': ['jquery']},
+        ejs: {exports: 'ejs'},
+        URI: {deps: ['jquery']},
+        visible: {deps: ['jquery']}
+    },
+    paths: {
+        jquery: 'jquery-2.1.4.min',
+        bootstrap: 'bootstrap.min',
+        ejs: 'ejs-2.3.1.min',
+        moment: 'moment.min',
+        masonry: 'masonry.pkgd.min',
+        underscore: 'underscore-min',
+        visible: 'jquery.visible.min',
+        bluebird: 'bluebird.min'
+    }
 });
 
 requirejs([
-	'jquery',
-	'bootstrap',
-	'ejs',
-	'moment',
-	'masonry',
-	'RecallSummaryProvider',
-	'Sisyphus',
-	'SyncFileReader'
-], function ($,
-			 bootstrap,
-			 ejs,
-			 moment,
-			 Masonry,
-			 RecallSummaryProvider,
-			 Sisyphus,
-			 SyncFileReader) {
-	var recallCardTemplate = ejs.compile(SyncFileReader.request('/templates/recall-summary-card.ejs')),
-		pinnedRecallsView = $('#pinned-recalls'),
-		pinnedRecallMasonry = new Masonry(pinnedRecallsView[0], {
-			itemSelector: '.recall-card'
-		}),
-		recentRecallsView = $('#recent-recalls'),
-		recentRecallsMasonry = new Masonry(recentRecallsView[0], {
-			itemSelector: '.recall-card'
-		});
+    'bluebird',
+    'bootstrap',
+    'ejs',
+    'jquery',
+    'moment',
+    'masonry',
+    'RecallSummaryProvider',
+    'Sisyphus',
+    'SyncFileReader'
+], function (
+    Promise,
+    bootstrap,
+    ejs,
+    $,
+    moment,
+    Masonry,
+    RecallSummaryProvider,
+    Sisyphus,
+    SyncFileReader
+) {
+    function addRecentRecalls(recalls) {
+        recentRecallsView.removeClass('empty');
+        var recallCards = [];
 
-	// Setup infini-scroll
-	new Sisyphus(recentRecallsView, {
-		autoTrigger: true,
-		onTrigger: function () {
+        for (var i = 0, l = recalls.length; i < l; i++) {
+            var cardView = $('<li class="recall-card col-xs-12 col-sm-6 col-lg-4">').append(
+                recallCardTemplate({summaryProvider: new RecallSummaryProvider(recalls[i])}));
 
-		},
-		onRender: function () {
+            recallCards.push(cardView.get(0));
 
-		}
+            recentRecallsView.append(cardView);
+            recentRecallsMasonry.appended(cardView.get(0));
+        }
+
+        recentRecallsMasonry.layout();
+    };
+
+    var appWindow = $(window),
+        recallCardTemplate = ejs.compile(SyncFileReader.request('/templates/recall-summary-card.ejs')),
+        pinnedRecallsView = $('#pinned-recalls'),
+        pinnedRecallMasonry = new Masonry(pinnedRecallsView[0], {
+           itemSelector: '.recall-card'
+        }),
+        recentRecallsView = $('#recent-recalls'),
+        recentRecallsMasonry = new Masonry(recentRecallsView[0], {
+            itemSelector: '.recall-card'
+        }),
+        recentRecallLoadingView = $('#recent-recalls + .list-view-messages > .list-view-loading-message'),
+        eventTrolley = $({});
+
+    // Setup infini-scroll
+    new Sisyphus(appWindow, {
+        trigger: recentRecallLoadingView,
+        autoTrigger: true,
+        onFetch: function (meta, sisyphus) {
+            if (typeof meta.skip === 'undefined') {
+                meta.skip = 0;
+                meta.limit = 10;
+            }
+            else {
+                meta.skip += meta.limit;
+            }
+
+            return $.ajax({
+                url: '/api/recalls',
+                data: meta
+            });
+        },
+        onProcess: function (result, meta, sisyphus) {
+            if (result.data.length === 0) {
+                sisyphus.stop();
+            }
+            else {
+                addRecentRecalls(result.data);
+                sisyphus.rebind();
+            }
+        }
 	});
 
-	$.ajax({
-		url: '/api/recalls',
-		data: {
-			skip: 0,
-			limit: 15
-		}
-	}).then(function (data) {
-		try {
-			recentRecallsView.removeClass('empty');
-			for (var i = 0, l = data.data.length; i < l; i++) {
-				var cardView = $(recallCardTemplate({summaryProvider: new RecallSummaryProvider(data.data[i])})),
-					blah = $('<li class="recall-card col-xs-12 col-sm-6 col-lg-4">').append(cardView);
+    eventTrolley.on('hidden.recall.pinned', function () {
+       pinnedRecallMasonry.layout();
+    }).on('shown.recall.pinned', function () {
+        pinnedRecallMasonry.layout();
+    }).on('hidden.recall.recent', function () {
+        recentRecallsMasonry.layout();
+    }).on('shown.recall.recent', function () {
+        recentRecallsMasonry.layout();
+    });
 
-				blah.appendTo(recentRecallsView);
-				recentRecallsMasonry.appended(blah);
-				recentRecallsMasonry.layout();
-			}
-		}
-		catch (e) {
-			console.error(e);
-		}
-	}, function (error) {
-
-	});
+    pinnedRecallsView.on('shown.bs.collapse hidden.bs.collapse', '.recall-card .collapse', function (event) {
+        eventTrolley.triggerHandler(event.type === 'hidden' ? 'hidden.recall.pinned' : 'shown.recall.pinned');
+    })
+    recentRecallsView.on('shown.bs.collapse hidden.bs.collapse', '.recall-card .collapse', function (event) {
+        eventTrolley.triggerHandler(event.type === 'hidden' ? 'hidden.recall.recent' : 'shown.recall.recent');
+    })
 });
