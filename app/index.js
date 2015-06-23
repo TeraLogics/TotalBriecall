@@ -108,6 +108,9 @@ app.use(session({
 }));
 
 app.use(function (req, res, next) {
+	if (!req.session.hasOwnProperty('preferences')) {
+		req.session.preferences = {};
+	}
 	res.locals.session = req.session;
 	return next();
 });

@@ -37,13 +37,10 @@ exports.geocode = function (req, res, next) {
 };
 
 exports.preferencesGet = function (req, res, next) {
-	res.json(req.session.preferences || {});
+	res.json(req.session.preferences);
 };
 
 exports.preferencesSet = function (req, res, next) {
-	if (!req.session.hasOwnProperty('preferences')) {
-		req.session.preferences = {};
-	}
 	_.each(req.body, function (val, key) {
 		req.session.preferences[key] = val;
 	});
