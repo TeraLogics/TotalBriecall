@@ -67,7 +67,7 @@
 				$('#modal').append(modal);
 
 				if ('geolocation' in navigator) {
-					navigator.geolocation.getCurrentPosition(GetLatLon, handleGeoLocError, { timeout : 1500 });
+					navigator.geolocation.getCurrentPosition(GetLatLon, handleGeoLocError, { timeout: 1500, enableHighAccuracy: false, maximumAge: 30000 });
 				} else {
 					handleGeoLocError();
 				}
