@@ -11,7 +11,8 @@ requirejs.config({
         bootstrap: 'bootstrap.min',
         ejs: 'ejs-2.3.1.min',
         moment: 'moment.min',
-        masonry: 'masonry.pkgd.min'
+        masonry: 'masonry.pkgd.min',
+        underscore: 'underscore-min'
     }
 });
 
@@ -21,6 +22,7 @@ requirejs([
     'ejs',
     'moment',
     'masonry',
+    'Sisyphus',
     'SyncFileReader'
 ], function(
     $,
@@ -28,6 +30,7 @@ requirejs([
     ejs,
     moment,
     Masonry,
+    Sisyphus,
     SyncFileReader
 ) {
     var recallCardTemplate = ejs.compile(SyncFileReader.request('/templates/recall-summary-card.ejs')),
@@ -40,8 +43,19 @@ requirejs([
             itemSelector: '.recall-card'
         });
 
+    // Setup infini-scroll
+    new Sisyphus(recentRecallsView, {
+        autoTrigger: true,
+        onTrigger: function () {
+
+        },
+        onRender: function () {
+
+        }
+    })
+
     $.ajax({
-        url: '/api/search',
+        url: '/api/recalls',
         data: {
             skip: 0,
             limit: 15,
