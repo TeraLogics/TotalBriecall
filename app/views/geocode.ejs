@@ -16,11 +16,18 @@
 	<script src="/js/us-states.js"></script>
 	<script src="/js/MapApp.js"></script>
 	<script>
+		/* globals
+		 PromptForZip, HidePromptForZip
+		 */
 		$(document).ready(function () {
 			var modal = new EJS({url: '/templates/zipcode.ejs'}).render();
 			$('#modal').append(modal);
 
-			navigator.geolocation.getCurrentPosition(GetLatLon, PromptForZip);
+			if ('geolocation' in navigator) {
+				navigator.geolocation.getCurrentPosition(GetLatLon, PromptForZip);
+			} else {
+				PromptForZip();
+			}
 		});
 
 		function GetLatLon(location) {

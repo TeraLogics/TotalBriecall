@@ -141,26 +141,31 @@ exports.getRecalls = function (req, res) {
 
 	if (req.query.classificationlevels) {
 		if (!_.isArray(req.query.classificationlevels)) {
-			if (!_.isString(req.query.classificationlevels)) {
-				_rejectArgument('Invalid classificationlevels', res);
-				return;
-			}
 			req.query.classificationlevels = req.query.classificationlevels.split(',');
 		}
+
 		obj.classificationlevels = [];
+
+		var isInvalid = false;
 		_.each(req.query.classificationlevels, function (level) {
 			var temp = _validateNumber(level);
 			if (_.isUndefined(temp)) {
 				_rejectArgument('Invalid classificationlevels', res);
-				return;
+				isInvalid = true;
+				return null;
 			}
 
 			if (temp < 1 || temp > 3) {
 				_rejectArgument('Invalid classificationlevels - must be 1, 2, or 3', res);
+				isInvalid = true;
+				return null;
 			}
 
 			obj.classificationlevels.push(temp);
 		});
+		if (isInvalid) {
+			return;
+		}
 	}
 
 	if (req.query.keywords) {
