@@ -8,7 +8,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['total-briecall-example'],
+  app_name: ['total-briecall', 'total-briecall-dev', 'total-briecall-example'],
   /**
    * Your New Relic license key.
    */
