@@ -1,7 +1,6 @@
 'use strict';
 
 var _ = require('underscore'),
-	path = require('path'),
 	Promise = require('bluebird'),
 	Comments = require('./models/comments');
 
