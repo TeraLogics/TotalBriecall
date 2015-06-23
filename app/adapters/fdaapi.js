@@ -100,8 +100,8 @@ var options = {
 		'nut': ['nut', 'nuts', 'peanut', 'peanuts', 'seed', 'seeds', 'walnut', 'walnuts', 'almond', 'almonds', 'pistachio', 'pistachios', 'hazelnut', 'hazelnuts'],
 		'soy': ['soy', 'tofu']
 	},
-	statusKeys = ["ongoing", "completed", "terminated", "pending"],
-	supportedCountFields = ["classification"];
+	statusKeys = ['ongoing', 'completed', 'terminated', 'pending'],
+	supportedCountFields = ['classification'];
 
 /**
  * Format input for use in search

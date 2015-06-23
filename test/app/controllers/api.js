@@ -402,19 +402,19 @@ module.exports = function () {
 					.end(done);
 			});
 
-			_.each(['dairy', 'dye', 'egg', 'fish', 'gluten', 'nut', 'soy'], function (keyword) {
-				it('should succeed with valid keywords (' + keyword + ')', function (done) {
-					request(app)
-						.get('/api/recalls')
-						.query({ keywords: keyword })
-						.expect(200)
-						.expect(EMPTY_RECALL_RESULT)
-						.expect(function () {
-							assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-							assert(fdaAdapter.searchFoodRecalls.calledWith({ keywords: [keyword] }), 'searchFoodRecalls was not called with the keywords.');
-						})
-						.end(done);
-				});
+			it('should succeed with valid keywords', function (done) {
+				var keywords = ['dairy', 'dye', 'egg', 'fish', 'gluten', 'nut', 'soy'];
+
+				request(app)
+					.get('/api/recalls')
+					.query({keywords: keywords.join(',')})
+					.expect(200)
+					.expect(EMPTY_RECALL_RESULT)
+					.expect(function () {
+						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({keywords: keywords}), 'searchFoodRecalls was not called with the keywords.');
+					})
+					.end(done);
 			});
 
 			it('should succeed with keywords provided as multiple query parameters', function (done) {
@@ -567,22 +567,22 @@ module.exports = function () {
 					.end(done);
 			});
 
-			it('should succeed with a valid status', function (done) {
-				var status = 'ongoing';
-
-				request(app)
-					.get('/api/recalls/counts')
-					.query({ field: 'classification', status: status })
-					.expect(200)
-					.expect(EMPTY_COUNT_RESULT)
-					.expect(function () {
-						assert(fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was not called on the FDA adapter.');
-						assert(fdaAdapter.getFoodRecallsCounts.calledWith({ field: 'classification', status: status }), 'getFoodRecallsCounts was not called with the status.');
-					})
-					.end(done);
+			_.each(['ongoing', 'completed', 'terminated', 'pending'], function (status) {
+				it('should succeed with a valid status (' + status + ')', function (done) {
+					request(app)
+						.get('/api/recalls/counts')
+						.query({ field: 'classification', status: status })
+						.expect(200)
+						.expect(EMPTY_COUNT_RESULT)
+						.expect(function () {
+							assert(fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was not called on the FDA adapter.');
+							assert(fdaAdapter.getFoodRecallsCounts.calledWith({ field: 'classification', status: status }), 'getFoodRecallsCounts was not called with the status.');
+						})
+						.end(done);
+				});
 			});
 
-			it('should return a 409 when skip is invalid', function (done) {
+			it('should return a 409 when skip is provided', function (done) {
 				request(app)
 					.get('/api/recalls/counts')
 					.query({ field: 'classification', skip: 1 })
@@ -594,7 +594,7 @@ module.exports = function () {
 					.end(done);
 			});
 
-			it('should return a 409 when limit is invalid', function (done) {
+			it('should return a 409 when limit is provided', function (done) {
 				request(app)
 					.get('/api/recalls/counts')
 					.query({ field: 'classification', limit: 1 })
