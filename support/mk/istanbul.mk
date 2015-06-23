@@ -8,7 +8,7 @@ test-istanbul-mocha: node_modules
 	--dir $(ISTANBUL_OUT) \
 	--report $(ISTANBUL_REPORT) \
 	$(_MOCHA) -- \
-		--reporter $(MOCHA_REPORTER) \
+		--reporter min \
 		--require $(MOCHA_REQUIRE) \
 		--recursive \
 		$(TESTS)
