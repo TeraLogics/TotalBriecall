@@ -5,6 +5,7 @@ before_install:
 - npm install istanbul -g
 - npm install coveralls -g
 - npm install jshint -g
+- npm install apidoc -g
 script: make ci-travis
 after_success:
 - make submit-cov
