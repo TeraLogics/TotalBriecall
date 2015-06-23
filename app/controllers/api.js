@@ -146,32 +146,26 @@ exports.getRecalls = function (req, res) {
 
 		obj.classificationlevels = [];
 
-		var isInvalid = false;
-		_.each(req.query.classificationlevels, function (level) {
-			var temp = _validateNumber(level);
+		var i = 0;
+		for (; i < req.query.classificationlevels.length; i++) {
+			var temp = _validateNumber(req.query.classificationlevels[i]);
 			if (_.isUndefined(temp)) {
 				_rejectArgument('Invalid classificationlevels', res);
-				isInvalid = true;
-				return null;
+				return;
 			}
 
 			if (temp < 1 || temp > 3) {
 				_rejectArgument('Invalid classificationlevels - must be 1, 2, or 3', res);
-				isInvalid = true;
-				return null;
+				return;
 			}
 
 			obj.classificationlevels.push(temp);
-		});
-		if (isInvalid) {
-			return;
 		}
 	}
 
 	if (req.query.keywords) {
 		if (!_.isArray(req.query.keywords)) {
-			_rejectArgument('Invalid keywords', res);
-			return;
+			req.query.keywords = req.query.keywords.split(',');
 		}
 		var invalid = fdaAdapter.areValidKeywords(req.query.keywords);
 		if (invalid !== undefined) {
