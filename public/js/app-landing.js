@@ -1,3 +1,5 @@
+'use strict';
+
 requirejs.config({
     baseUrl: 'js',
     shim : {

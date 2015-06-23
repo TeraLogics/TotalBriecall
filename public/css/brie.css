@@ -6009,3 +6009,7 @@ button.close {
 
 .recall-summary-card .recall-reason {
   margin: 0; }
+
+#recent-recalls {
+  width: 100%;
+  display: block; }
