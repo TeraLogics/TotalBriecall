@@ -41,7 +41,11 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		});
 	};
 	RecallSummaryProvider.prototype.getEmailShareLink = function () {
-		return 'mailto:';
+		return Uri('mailto:?').query({
+			subject: this.getFirmName() + ' recalls ' + this.getProductDescription(),
+			body: 'On ' + this.getRecallInitiationDate('MMM Do, YYYY') + ' ' + this.getFirmName() +
+				' initiated recall of ' + this.getProductDescription() + ' due to ' + this.getReasonForRecall()
+		});
 	};
 	RecallSummaryProvider.prototype.getCardType = function () {
 		switch (this._recall.classificationlevel) {
