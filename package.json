@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node app/index.js",
-    "test": "node ./node_modules/mocha/bin/mocha --require test/bootstrap --recursive --reporter spec ./test",
-    "test-coverage": "node ./node_modules/istanbul/lib/cli.js cover --dir ./reports/coverage --report html ./node_modules/mocha/bin/_mocha -- --require test/bootstrap --recursive --reporter spec ./test",
-    "apidoc": "node ./node_modules/apidoc/bin/apidoc --file-filters '^api.js$' --input app/routes/ --output app/views/docs/api/"
+    "test": "mocha --require test/bootstrap --recursive --reporter spec ./test",
+    "test-coverage": "istanbul cover --dir ./reports/coverage --report html _mocha -- --require test/bootstrap --recursive --reporter spec ./test",
+    "apidoc": "apidoc --file-filters '^api.js$' --input app/routes/ --output app/views/docs/api/"
   },
   "dependencies": {
     "bluebird": "^2.9.30",

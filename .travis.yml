@@ -12,10 +12,8 @@ deploy:
     master: total-briecall
     development: total-briecall-dev
   run:
-  - npm install --production
   - npm install --global apidoc
   - npm run apidoc
-  - npm uninstall --global apidoc
   - restart
 notifications:
   slack:
