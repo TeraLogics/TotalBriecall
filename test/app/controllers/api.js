@@ -7,7 +7,8 @@ var path = require('path'),
 	sinon = require('sinon'),
 	request = require('supertest'),
 	Promise = require('bluebird'),
-	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
+	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi')),
+	commentsAdapter = require(path.join(global.__adptsdir, 'mongocomments'));
 
 var app = express(),
 	assert = chai.assert;
@@ -39,6 +40,14 @@ module.exports = function () {
 				counts: {}
 			};
 
+		beforeEach(function () {
+			sinon.stub(commentsAdapter, 'get').returns([]);
+		});
+
+		afterEach(function () {
+			commentsAdapter.get.restore();
+		});
+
 		describe('getRecallById', function () {
 
 			beforeEach(function () {
@@ -50,7 +59,7 @@ module.exports = function () {
 			});
 
 			it('should succeed', function (done) {
-				var recallId = 'F-1234-5678';
+				var recallId = '0123456798abcdef';
 
 				request(app)
 					.get('/api/recalls/' + recallId)
@@ -59,30 +68,34 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called on the FDA adapter.');
 						assert(fdaAdapter.getFoodRecallById.calledWith({ id: recallId }), 'getFoodRecalledById was not called with the recall ID.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
 
 			it('should return a 409 when skip is provided', function (done) {
 				request(app)
-					.get('/api/recalls/F-1234-5678')
+					.get('/api/recalls/0123456798abcdef')
 					.query({ skip: 10 })
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid skip - not allowed'))
 					.expect(function () {
-						assert(!fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was called in an error case.');
+						assert(!fdaAdapter.getFoodRecallById.called, 'getFoodRecallById on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
 
 			it('should return a 409 when limit is provided', function (done) {
 				request(app)
-					.get('/api/recalls/F-1234-5678')
+					.get('/api/recalls/0123456798abcdef')
 					.query({ limit: 10 })
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid limit - not allowed'))
 					.expect(function () {
-						assert(!fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was called in an error case.');
+						assert(!fdaAdapter.getFoodRecallById.called, 'getFoodRecallById on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -98,11 +111,12 @@ module.exports = function () {
 				});
 
 				request(app)
-					.get('/api/recalls/F-1234-5678')
+					.get('/api/recalls/0123456798abcdef')
 					.expect(409)
 					.expect(_createInvalidArgumentResponse(message))
 					.expect(function () {
 						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to process the response.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -127,11 +141,12 @@ module.exports = function () {
 				});
 
 				request(app)
-					.get('/api/recalls/ad123e121')
+					.get('/api/recalls/0123456798abcdef')
 					.expect(response.statusCode)
 					.expect(error)
 					.expect(function () {
-						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to process the response.');
+						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to get the response.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -145,7 +160,7 @@ module.exports = function () {
 				});
 
 				request(app)
-					.get('/api/recalls/12easc2123')
+					.get('/api/recalls/0123456798abcdef')
 					.expect(500)
 					.expect({
 						error: {
@@ -154,7 +169,8 @@ module.exports = function () {
 						}
 					})
 					.expect(function () {
-						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to process the response.');
+						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to to get the response.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -168,7 +184,7 @@ module.exports = function () {
 				});
 
 				request(app)
-					.get('/api/recalls/asf12eas2')
+					.get('/api/recalls/0123456798abcdef')
 					.expect(500)
 					.expect({
 						error: {
@@ -177,7 +193,8 @@ module.exports = function () {
 						}
 					})
 					.expect(function () {
-						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to process the response.');
+						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called to get the response.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -202,6 +219,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({}), 'searchFoodRecalls was not called with empty parameters.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -213,7 +232,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid state'))
 					.expect(function () {
-						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -229,6 +249,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ state: state }), 'searchFoodRecalls was not called with the state.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -240,7 +262,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid eventid'))
 					.expect(function () {
-						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -256,6 +279,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ eventid: eventid }), 'searchFoodRecalls was not called with the event ID.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -271,6 +296,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ firmname: firmname }), 'searchFoodRecalls was not called with the firmname.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -283,7 +310,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid from'))
 					.expect(function () {
-						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -296,7 +324,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid to'))
 					.expect(function () {
-						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -309,7 +338,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid from/to - from must be before to'))
 					.expect(function () {
-						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -326,6 +356,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ from: from, to: to }), 'searchFoodRecalls was not called with the from.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -337,7 +369,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid classificationlevels'))
 					.expect(function () {
-						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -350,7 +383,8 @@ module.exports = function () {
 						.expect(409)
 						.expect(_createInvalidArgumentResponse('Invalid classificationlevels - must be 1, 2, or 3'))
 						.expect(function () {
-							assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+							assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls on the FDA adapter was called in an error case.');
+							assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 						})
 						.end(done);
 				});
@@ -368,6 +402,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ classificationlevels: classificationlevelsParsed }), 'searchFoodRecalls was not called with the classificationlevels.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -387,6 +423,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ classificationlevels: classificationlevelsParsed }), 'searchFoodRecalls was not called with the classificationlevels.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -398,7 +436,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid keywords - could not match keyword clogs'))
 					.expect(function () {
-						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -414,6 +453,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ keywords: keywords }), 'searchFoodRecalls was not called with the keywords.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -432,6 +473,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ keywords: keywordsParsed }), 'searchFoodRecalls was not called with the keywords.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -443,7 +486,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid skip'))
 					.expect(function () {
-						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -459,6 +503,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ skip: skip }), 'searchFoodRecalls was not called with the skip.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -470,7 +516,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid limit'))
 					.expect(function () {
-						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was called in an error case.');
+						assert(!fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -486,6 +533,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({ limit: limit }), 'searchFoodRecalls was not called with the skip.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -509,7 +558,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid field'))
 					.expect(function () {
-						assert(!fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was called in an error case.');
+						assert(!fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -525,6 +575,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was not called on the FDA adapter.');
 						assert(fdaAdapter.getFoodRecallsCounts.calledWith({ field: field }), 'getFoodRecallsCounts was not called with the state.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -536,7 +588,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid state'))
 					.expect(function () {
-						assert(!fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was called in an error case.');
+						assert(!fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -552,6 +605,8 @@ module.exports = function () {
 					.expect(function () {
 						assert(fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was not called on the FDA adapter.');
 						assert(fdaAdapter.getFoodRecallsCounts.calledWith({ field: 'classification', state: state }), 'getFoodRecallsCounts was not called with the state.');
+						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -563,7 +618,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid status'))
 					.expect(function () {
-						assert(!fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was called in an error case.');
+						assert(!fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -578,6 +634,8 @@ module.exports = function () {
 						.expect(function () {
 							assert(fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was not called on the FDA adapter.');
 							assert(fdaAdapter.getFoodRecallsCounts.calledWith({ field: 'classification', status: status }), 'getFoodRecallsCounts was not called with the status.');
+							assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
+							assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 						})
 						.end(done);
 				});
@@ -590,7 +648,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid skip - not allowed'))
 					.expect(function () {
-						assert(!fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was called in an error case.');
+						assert(!fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});
@@ -602,7 +661,8 @@ module.exports = function () {
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid limit - not allowed'))
 					.expect(function () {
-						assert(!fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was called in an error case.');
+						assert(!fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts on the FDA adapter was called in an error case.');
+						assert(!commentsAdapter.get.called, 'get on the comments adapter was called in an error case.');
 					})
 					.end(done);
 			});

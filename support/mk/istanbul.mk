@@ -1,4 +1,4 @@
-ISTANBUL ?= istanbul
+ISTANBUL ?= $(NPM_BIN)/istanbul
 ISTANBUL_OUT ?= ./reports/coverage
 ISTANBUL_REPORT ?= lcovonly
 ISTANBUL_LCOV_INFO_PATH ?= $(ISTANBUL_OUT)/lcov.info

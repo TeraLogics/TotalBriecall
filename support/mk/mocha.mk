@@ -1,5 +1,5 @@
-MOCHA ?= mocha
-_MOCHA ?= _mocha
+MOCHA ?= $(NPM_BIN)/mocha
+_MOCHA ?= $(NPM_BIN)/_mocha
 MOCHA_REPORTER ?= spec
 MOCHA_REQUIRE ?= ./test/bootstrap
 

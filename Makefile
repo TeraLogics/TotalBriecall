@@ -1,5 +1,6 @@
 SOURCES ?= ./app
 TESTS ?= ./test
+NPM_BIN ?= $(npm bin)
 
 include support/mk/node.mk
 include support/mk/mocha.mk
@@ -26,7 +27,7 @@ clean:
 	rm -rf reports
 	rm -rf app/views/docs/api
 
-clobber: clean npm-uninstall npm-uninstall-global
+clobber: clean npm-uninstall
 
 
 .PHONY: test test-cov lint lint-tests submit-cov ci-travis clean clobber

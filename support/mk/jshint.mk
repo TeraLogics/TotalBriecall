@@ -1,4 +1,4 @@
-JSHINT ?= jshint
+JSHINT ?= $(NPM_BIN)/jshint
 
 lint-jshint: npm-install-global
 	$(JSHINT) $(SOURCES)
