@@ -5,7 +5,11 @@ var _ = require('underscore'),
 	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
 
 exports.landing = function (req, res) {
-	if(req.session.preferences && req.session.preferences.state) {
+	if (!req.session.preferences.haslanded) {
+		req.session.preferences.haslanded = true;
+	}
+
+	if (req.session.preferences.state) {
 		return res.redirect('/browse');
 	} else {
 		return res.render('landing', {
@@ -15,9 +19,13 @@ exports.landing = function (req, res) {
 };
 
 exports.browse = function (req, res) {
-	return res.render('browse', {
-		state: req.session.preferences.state
-	});
+	if (!req.session.preferences.state && !req.session.preferences.haslanded) {
+		return res.redirect('/');
+	} else {
+		return res.render('browse', {
+			state: req.session.preferences.state
+		});
+	}
 };
 
 exports.details = function (req, res) {

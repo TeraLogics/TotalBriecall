@@ -28,6 +28,9 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 	RecallSummaryProvider.prototype.getRecallDetailsLink = function () {
 		return '/details/' + this._recall.id;
 	};
+	RecallSummaryProvider.prototype.getShareLink = function () {
+		return (window.location.origin ? window.location.origin : (window.location.protocol + '//' + window.location.hostname + ':' + window.location.port)) + this.getRecallDetailsLink();
+	};
 	RecallSummaryProvider.prototype.getFacebookShareLink = function () {
 		return ejs.render('http://www.facebook.com/sharer/sharer.php?u=<%=url%>&title=<%=title%>', {
 			url: Uri(window.location.href).authority() + '/details/' + Uri.encode(this._recall.id),
@@ -45,7 +48,7 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 			default:
 				return 'panel-default';
 		}
-	}
+	};
 
 	return RecallSummaryProvider;
 });

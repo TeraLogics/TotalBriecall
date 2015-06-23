@@ -1,7 +1,7 @@
 'use strict';
 
 /* globals
- requirejs
+ requirejs, state
  */
 
 requirejs.config({
@@ -86,7 +86,9 @@ requirejs([
 				meta.skip += meta.limit;
 			}
 
-			meta.state = state;
+			if (state) {
+				meta.state = state;
+			}
 
 			return $.ajax({
 				url: '/api/recalls',
