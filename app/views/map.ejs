@@ -3,17 +3,34 @@
 <body>
 	<div id="map">
 	</div>
+	<button onclick="DrawNextState()">Next Recall</button>
 	<script src="/js/jquery-2.1.4.min.js"></script>
 	<script src="/js/underscore-min.js"></script>
 	<script src="/js/leaflet.js"></script>
 	<script src="/js/us-states.js"></script>
 	<script src="/js/MapApp.js"></script>
 	<script>
-		$(document).ready(function(){
-			var map = new MapApp({
+		var map = null,
+			recalls = null;
+
+		$(document).ready(function() {
+			$.getJSON('/api/recalls', function (results) {
+				recalls = results.data;
+				DrawNextState();
+			});
+		});
+
+		function DrawNextState() {
+			if(map) {
+				map.delete();
+			}
+
+			var states = recalls.shift().affectedstates;
+			map = new MapApp({
 				height: 250,
 				width: 500
 			});
+
 			map.create();
 			var style = function(feature) {
 				return {
@@ -26,11 +43,11 @@
 				};
 			};
 
-			map.add('layer', getStateGeoJSON(['TX', 'Virginia', 'Bad', 'MD']), {
+			map.add('layer', getStateGeoJSON(states), {
 				style: style
 			});
 
-			var map_location = new MapApp({
+			/*var map_location = new MapApp({
 				height: 200,
 				width: 200
 			});
@@ -39,9 +56,9 @@
 				lat: 39.06090,
 				lon: -77.46330,
 				message: 'A pretty CSS3 popup. <br> Easily customizable.'
-			});
+			});*/
 
-		});
+		};
 	</script>
 </body>
 </html>
