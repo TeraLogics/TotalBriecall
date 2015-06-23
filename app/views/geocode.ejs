@@ -1,79 +1,86 @@
 <% include ./common/header.ejs %>
-	<link rel="stylesheet" href="/css/leaflet.css"/>
-	<link rel="stylesheet" href="/css/bootstrap.min.css"/>
 </head>
 <body>
 	<div id="map">
 	</div>
 	<div id="modal">
 	</div>
+
 	<script src="/js/jquery-2.1.4.min.js"></script>
 	<script src="/js/underscore-min.js"></script>
 	<script src="/js/bluebird.min.js"></script>
 	<script src="/js/leaflet.js"></script>
-	<script src="/js/ejs-1.0.0.min.js"></script>
+	<script src="/js/ejs-2.3.1.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/us-states.js"></script>
 	<script src="/js/MapApp.js"></script>
+	<script src="/js/require.js"></script>
+	<!--<script src="/js/SyncFileReader.bad.js"></script>-->
 	<script>
-		/* globals
-		 PromptForZip, HidePromptForZip
-		 */
-		$(document).ready(function () {
-			var modal = new EJS({url: '/templates/zipcode.ejs'}).render();
-			$('#modal').append(modal);
-
-			if ('geolocation' in navigator) {
-				navigator.geolocation.getCurrentPosition(GetLatLon, PromptForZip);
-			} else {
-				PromptForZip();
-			}
+		requirejs.config({
+			baseUrl: 'js'
 		});
 
-		function GetLatLon(location) {
-			GeoCode.latlon({
-				lat: location.coords.latitude,
-				lon: location.coords.longitude
-			}).then(function (state) {
-				HidePromptForZip();
-				DrawMap(state);
-			}).fail(function () {
-				PromptForZip();
-			});
-		}
+		requirejs(['SyncFileReader'], function (SyncFileReader) {
+			/* globals
+			 PromptForZip, HidePromptForZip
+			 */
+			$(document).ready(function () {
+				var modal = ejs.render(SyncFileReader.request('/templates/zipcode.ejs'));
+				$('#modal').append(modal);
 
-		function GetZipcode(zipcode) {
-			GeoCode.zipcode(zipcode).then(function (state) {
-				HidePromptForZip();
-				DrawMap(state);
-			}).fail(function () {
-				alert('sorry failed zipcode');
-				$('#zipcodeInput').val("");
-				PromptForZip();
+				if ('geolocation' in navigator) {
+					navigator.geolocation.getCurrentPosition(GetLatLon, PromptForZip);
+				} else {
+					PromptForZip();
+				}
 			});
-		}
 
-		function DrawMap(state) {
-			var map = new MapApp({
-				height: 250,
-				width: 500
-			});
-			map.create();
-			var style = function (feature) {
-				return {
-					fillColor: '#800026', //feature.properties.name ? '#800026' : null,
-					weight: 1,
-					opacity: 1,
-					color: 'white',
-					//dashArray: '3',
-					fillOpacity: 0.7
+			function GetLatLon(location) {
+				GeoCode.latlon({
+					lat: location.coords.latitude,
+					lon: location.coords.longitude
+				}).then(function (state) {
+					HidePromptForZip();
+					DrawMap(state);
+				}).fail(function () {
+					PromptForZip();
+				});
+			}
+
+			function GetZipcode(zipcode) {
+				GeoCode.zipcode(zipcode).then(function (state) {
+					HidePromptForZip();
+					DrawMap(state);
+				}).fail(function () {
+					alert('sorry failed zipcode');
+					$('#zipcodeInput').val("");
+					PromptForZip();
+				});
+			}
+
+			function DrawMap(state) {
+				var map = new MapApp({
+					height: 250,
+					width: 500
+				});
+				map.create();
+				var style = function (feature) {
+					return {
+						fillColor: '#800026', //feature.properties.name ? '#800026' : null,
+						weight: 1,
+						opacity: 1,
+						color: 'white',
+						//dashArray: '3',
+						fillOpacity: 0.7
+					};
 				};
-			};
 
-			map.add('layer', getStateGeoJSON([state]), {
-				style: style
-			});
-		}
+				map.add('layer', getStateGeoJSON([state]), {
+					style: style
+				});
+			}
+		});
 	</script>
 </body>
 </html>

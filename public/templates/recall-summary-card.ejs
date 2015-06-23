@@ -14,33 +14,43 @@
  */
 %>
 <div class="panel panel-default recall-summary-card recall-class-i">
-    <div class="panel-heading">
-        <div class="close"><span>&times;</span></div>
-        <h3 class="panel-title"><%=recall.product_description%></h3>
-        <h4 class="panel-subtitle">
-            <a data-toggle="tooltip" data-placement="bottom" title="<%=recall.city + ', ' + recall.state + ', ' + recall.country%>" href="">
-                <%=recall.recalling_firm%>
-            </a> &nbsp;-&nbsp;
-            <small>
-                <%=moment.unix(recall.recall_initiation_date).format('MMMM Do, YYYY')%>
-            </small>
-        </h4>
-    </div>
-    <div class="panel-body">
-        <ul class="list-inline recall-hud">
-            <li class="recall-class-text recall-class-i text-center col-xs-4"><span>Class</span><h1>I</h1><span>Dangerous</span></li>
-            <li class="recall-status-text recall-status-terminated text-center col-xs-4"><span>Status</span><h1>T</h1><span>Terminated</span></li>
-            <li class="recall-action recall-action-voluntary text-center col-xs-4"><span>Recall</span><h1>FI</h1><span>Voluntary</span></li>
-        </ul>
-        <p class="recall-reason"><%=recall.reason_for_recall%></p>
-    </div>
-    <div class="panel-footer clearfix">
-        <ul class="list-inline pull-left">
-            <li><a class="btn btn-link" href="/details/<%=recall.recall_number%>"><i class="glyphicon glyphicon-info-sign"></i> Info</a></li>
-        </ul>
-        <ul class="list-inline pull-right">
-            <li><div class="btn btn-link"><i class="glyphicon glyphicon-pushpin"></i> Pin</div></li>
-            <li><div class="btn btn-link" data-href="<%=window.location.href + '/details/' + recall.recall_number%>"><i class="glyphicon glyphicon-share-alt"></i> Share</div></li>
-        </ul>
-    </div>
+	<div class="panel-heading">
+		<div class="close"><span>&times;</span></div>
+		<h3 class="panel-title"><%= recall.product_description %></h3>
+		<h4 class="panel-subtitle">
+			<a data-toggle="tooltip" data-placement="bottom" title="<%= recall.city + ', ' + recall.state + ', ' + recall.country %>" href="">
+				<%= recall.recalling_firm %>
+			</a> &nbsp;-&nbsp;
+			<small>
+				<%= moment.unix(recall.recall_initiation_date).format('MMMM Do, YYYY') %>
+			</small>
+		</h4>
+	</div>
+	<div class="panel-body">
+		<ul class="list-inline recall-hud">
+			<li class="recall-class-text recall-class-i text-center col-xs-4"><span>Class</span>
+
+				<h1>I</h1><span>Dangerous</span></li>
+			<li class="recall-status-text recall-status-terminated text-center col-xs-4"><span>Status</span>
+
+				<h1>T</h1><span>Terminated</span></li>
+			<li class="recall-action recall-action-voluntary text-center col-xs-4"><span>Recall</span>
+
+				<h1>FI</h1><span>Voluntary</span></li>
+		</ul>
+		<p class="recall-reason"><%= recall.reason_for_recall %></p>
+	</div>
+	<div class="panel-footer clearfix">
+		<ul class="list-inline pull-left">
+			<li><a class="btn btn-link" href="/details/<%= recall.recall_number %>"><i class="glyphicon glyphicon-info-sign"></i> Info</a></li>
+		</ul>
+		<ul class="list-inline pull-right">
+			<li>
+				<div class="btn btn-link"><i class="glyphicon glyphicon-pushpin"></i> Pin</div>
+			</li>
+			<li>
+				<div class="btn btn-link" data-href="<%= window.location.href + '/details/' + recall.recall_number %>"><i class="glyphicon glyphicon-share-alt"></i> Share</div>
+			</li>
+		</ul>
+	</div>
 </div>
