@@ -305,12 +305,14 @@ exports.isValidCountField = function (field) {
  * @returns {Promise}
  */
 exports.getFoodRecallById = function (obj) {
+	var recall_number;
 	return _decodeFoodRecall(obj.id).then(function (data) {
 		var search = [
 			'event_id:' + data.event_id,
 			'recall_initiation_date:"' + data.recall_initiation_date + '"',
 			'product_description:"' + data.product_description + '"'
 		];
+		recall_number = data.recall_number;
 		return _makeRequest({
 			search: search.join('+AND+'),
 			limit: 1
@@ -318,7 +320,7 @@ exports.getFoodRecallById = function (obj) {
 	}).then(function (response) {
 		if (response.results.length > 1) {
 			var item = _.find(response.results, function (ele) {
-				return ele.recall_number === data.recall_number;
+				return ele.recall_number === recall_number;
 			});
 			if (!item) {
 				throw {
