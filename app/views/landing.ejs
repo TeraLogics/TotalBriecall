@@ -32,7 +32,7 @@
 	<script src="/js/ejs-2.3.1.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/us-states.js"></script>
-	<script src="/js/MapApp.js"></script>
+	<script src="/js/Geocode.js"></script>
 	<script>
 		/* globals
 		 */
@@ -54,7 +54,7 @@
 
 		function GetLatLon(location) {
 			$('#status').hide();
-			MapApp.GeoCode.latlon({
+			GeoCode.latlon({
 				lat: location.coords.latitude,
 				lon: location.coords.longitude
 			}).then(function (state) {
@@ -70,7 +70,7 @@
 		}
 
 		function GetZipcode(zipcode) {
-			MapApp.GeoCode.zipcode(zipcode).then(function (state) {
+			GeoCode.zipcode(zipcode).then(function (state) {
 				HidePromptForZip();
 				SaveState(state).then(function(){
 					window.location = '/browse';

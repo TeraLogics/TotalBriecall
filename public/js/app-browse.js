@@ -29,15 +29,18 @@ requirejs([
 	'bootstrap',
 	'ejs',
 	'jquery',
+	'MapApp',
 	'moment',
 	'masonry',
 	'RecallSummaryProvider',
 	'Sisyphus',
-	'SyncFileReader'
+	'SyncFileReader',
+	'us-states'
 ], function (Promise,
 			 bootstrap,
 			 ejs,
 			 $,
+			 MapApp,
 			 moment,
 			 Masonry,
 			 RecallSummaryProvider,
@@ -122,5 +125,30 @@ requirejs([
 	});
 	recentRecallsView.on('shown.bs.collapse hidden.bs.collapse', '.recall-card .collapse', function (event) {
 		eventTrolley.triggerHandler(event.type === 'hidden' ? 'hidden.recall.recent' : 'shown.recall.recent');
+	});
+
+	var map = new MapApp({
+		height: 100,
+		width: 200,
+		div: 'header-map'
+	});
+
+	map.create({
+		zoomControl: false
+	});
+
+	var style = function(feature) {
+		return {
+			fillColor: '#800026', //feature.properties.name ? '#800026' : null,
+			weight: 1,
+			opacity: 1,
+			color: 'white',
+			//dashArray: '3',
+			fillOpacity: 0.7
+		};
+	};
+
+	map.add('layer', getStateGeoJSON([state]), {
+		style: style
 	});
 });
