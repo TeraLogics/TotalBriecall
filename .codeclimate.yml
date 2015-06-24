@@ -3,6 +3,7 @@ languages:
 exclude_paths:
   - "app/views/docs/api/**/*"
   - "public/js/bootstrap.js"
+  - "public/js/bootstrap-tour.js"
   - "public/js/bootstrap-tour-standalone.js"
   - "public/js/ejs-2.3.1.js"
   - "public/js/IPv6.js"

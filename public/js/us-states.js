@@ -10,7 +10,7 @@
  getStateGeoJSON
  */
 
-define(function (require) {
+define(function () {
 	var stateFeatures = {},
 		stateNameToAbbr = {
 			"Alabama": "AL",

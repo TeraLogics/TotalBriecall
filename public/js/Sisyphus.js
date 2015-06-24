@@ -1,4 +1,10 @@
-define(['jquery', 'underscore', 'visible'], function ($, _, visible, require) {
+'use strict';
+
+/* globals
+ define
+ */
+
+define(['jquery'], function ($) {
 	var Sisyphus = function (element, options) {
 		var self = this;
 

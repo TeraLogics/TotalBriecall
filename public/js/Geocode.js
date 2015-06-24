@@ -1,7 +1,7 @@
 'use strict';
 
 /* globals
- _, $
+ define, brie
  */
 
 /* exported
@@ -48,7 +48,7 @@ define(['jquery', 'underscore', 'UsStates'], function ($, _, UsStates, require) 
 					return deferred.reject();
 				}
 
-				var state = match[1].length === 2 ? match[1] : stateNameToAbbr[match[1]];
+				var state = match[1].length === 2 ? match[1] : UsStates.stateNameToAbbr[match[1]];
 				return deferred.resolve(state);
 			}).fail(function (err) {
 				return deferred.reject(err);

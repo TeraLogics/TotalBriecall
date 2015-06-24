@@ -1,3 +1,9 @@
+'use strict';
+
+/* globals
+ define, L
+ */
+
 define(['jquery', 'underscore', 'leaflet'], function ($, _, visible, leaflet) {
 	function MapApp(options) {
 		L.Icon.Default.imagePath = '/img/leaflet';

@@ -1,10 +1,14 @@
 'use strict';
 
+/* globals
+ requirejs, brie
+ */
+
 requirejs.config({
 	baseUrl: '/js',
 	shim: {
-		bootstrap: {'deps': ['jquery']},
-		ejs: {exports: 'ejs'}
+		bootstrap: { 'deps': ['jquery'] },
+		ejs: { exports: 'ejs' }
 	},
 	paths: {
 		jquery: 'jquery-2.1.4.min',
@@ -84,14 +88,14 @@ requirejs([
 			contentType: 'application/json',
 			data: JSON.stringify($this.serializeObject())
 		}).done(function (comment) {
-			$('#recall-comments').prepend(commentCardTemplate({commentProvider: new CommentProvider(comment)}));
+			$('#recall-comments').prepend(commentCardTemplate({ commentProvider: new CommentProvider(comment) }));
 		}).fail(function (err) {
 			// display a meaningful error
 		});
 	});
 
 	$form.find('textarea').keydown(function (e) {
-		if (e.ctrlKey && e.keyCode == 13) {
+		if (e.ctrlKey && e.keyCode === 13) {
 			$form.submit();
 		}
 	});

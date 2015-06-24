@@ -1,4 +1,10 @@
-define(function (require) {
+'use strict';
+
+/* globals
+ define, ActiveXObject
+ */
+
+define(function () {
 	return {
 		_newRequest: function () {
 			var factories = [
@@ -16,7 +22,7 @@ define(function (require) {
 			for (var i = 0; i < factories.length; i++) {
 				try {
 					var request = factories[i]();
-					if (request != null) {
+					if (request !== null) {
 						return request;
 					}
 				}
@@ -36,7 +42,7 @@ define(function (require) {
 				return null;
 			}
 
-			if (request.status == 404 || request.status == 2 || (request.status == 0 && request.responseText == '')) {
+			if (request.status === 404 || request.status === 2 || (request.status === 0 && request.responseText === '')) {
 				return null;
 			}
 

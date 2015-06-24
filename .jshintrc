@@ -14,5 +14,6 @@
 	"curly": true,
 	"undef": true,
 	"nonew": true,
-	"forin": true
+	"forin": true,
+	"devel": true
 }

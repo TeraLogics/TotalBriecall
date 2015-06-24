@@ -1,5 +1,7 @@
+'use strict';
+
 /* globals
- fbappid
+ define, brie
  */
 
 define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
@@ -8,7 +10,7 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 			this._states = states;
 		},
 		_getBaseURL = function () {
-			return window.location.origin ? window.location.origin : Uri(window.location.href).authority();
+			return window.location.origin ? window.location.origin : new Uri(window.location.href).authority();
 		};
 	RecallSummaryProvider.prototype.getFirmAddress = function () {
 		return this._recall.city + ', ' + this._recall.state + ', ' + this._recall.country;
@@ -41,7 +43,7 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		return this._recall.reason_for_recall;
 	};
 	RecallSummaryProvider.prototype.getRecallDetailsLink = function () {
-		return '/details/' + encodeURIComponent(this._recall.id);
+		return '/details/' + encodeURIComponent(this.getRecallId());
 	};
 	RecallSummaryProvider.prototype.getShareTitle = function () {
 		return this._recall.product_description;
@@ -71,7 +73,7 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		});
 	};
 	RecallSummaryProvider.prototype.getEmailShareLink = function () {
-		return Uri('mailto:?').query({
+		return new Uri('mailto:?').query({
 			subject: this.getFirmName() + ' recalls ' + this.getProductDescription(),
 			body: 'On ' + this.getRecallInitiationDate('MMM Do, YYYY') + ' ' + this.getFirmName() +
 				' initiated recall of ' + this.getProductDescription() + ' due to ' + this.getReasonForRecall()

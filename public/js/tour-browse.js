@@ -1,3 +1,9 @@
+'use strict';
+
+/* globals
+ define
+ */
+
 define(['jquery', 'Tour'], function ($, Tour, require) {
 	var recallTour = new Tour({
 		//storage: false,
