@@ -12,9 +12,9 @@ deploy:
     master: total-briecall
     development: total-briecall-dev
   run:
+    - cd / # At this point, for some reason, we're at /app. The npm script must be relative, so change to the root.
     - pwd
     - npm run apidoc
-    - pwd
     - restart
 notifications:
   slack:
