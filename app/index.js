@@ -54,7 +54,7 @@ mongoose.connect(process.env.MONGOLAB_URI);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
-app.set('port', (global.config.PORT));
+app.set('port', global.config.PORT);
 app.set('showStackError', true);
 
 // Should be placed before express.static to ensure that all assets and data are compressed (utilize bandwidth)

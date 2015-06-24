@@ -2,7 +2,13 @@
 
 var _ = require('underscore'),
 	path = require('path'),
+	url = require('url'),
 	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
+
+var defaultPorts = {
+	'http': 80,
+	'https': 443
+};
 
 exports.landing = function (req, res) {
 	if (!req.session.preferences.haslanded) {
@@ -31,8 +37,12 @@ exports.browse = function (req, res) {
 
 exports.details = function (req, res) {
 	fdaAdapter.getFoodRecallById({ id: req.params.id }).then(function (recall) {
+		var serverURL = req.protocol + '://' + req.get('host'),
+			urlObj = url.parse(serverURL);
 		return res.render('recall', {
-			recall: recall
+			recall: recall,
+			fbappid: global.config.FACEBOOK_APPID,
+			url: serverURL + (!urlObj.port && global.config.PORT !== defaultPorts[req.protocol] ? ':' + global.config.PORT : '')
 		});
 	}).catch(function (err) {
 		if (err instanceof Error) {

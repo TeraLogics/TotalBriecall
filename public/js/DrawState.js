@@ -7,7 +7,6 @@
  DrawState
  */
 
-
 function DrawState(state, options) {
 	options = options || {
 			height: 200,

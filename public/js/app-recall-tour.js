@@ -1,4 +1,10 @@
-var tour = new Tour({
+'use strict';
+
+/* globals
+ Tour
+ */
+
+var recallTour = new Tour({
 	steps: [
 		{
 			title: "Welcome",
@@ -15,7 +21,7 @@ var tour = new Tour({
 			},
 			reflex: true,
 			backdrop: true
-		},
+		}
 		// show a card
 
 		// focus on the title
@@ -36,4 +42,4 @@ var tour = new Tour({
 	]
 });
 
-tour.init();
+recallTour.init();

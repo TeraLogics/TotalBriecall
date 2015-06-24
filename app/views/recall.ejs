@@ -2,14 +2,14 @@
 <% if (recall) { %>
 <meta property="og:site_name" content="Total Briecall"/>
 <meta property="og:locale" content="en_US"/>
+<meta property="fb:app_id" content="<%= fbappid %>"/>
+<meta property="og:url" content="<%= url + '/details/' + recall.id %>"/>
 <meta property="og:title" content="<%= recall.product_description %>"/>
-<meta property="og:url" content="https://totalbriecall.com"/>
 <meta property="og:description" content="<%= recall.reason_for_recall %>"/>
-<meta property="fb:app_id" content="[FB_APP_ID]"/>
 <meta property="og:type" content="article"/>
 <meta property="og:image" content="http://graphics.myfavnews.com/images/logo-100x100.jpg"/>
-<meta property="article:author" content="https://www.facebook.com/XXX"/>
-<meta property="article:publisher" content="https://www.facebook.com/XXX"/>
+<meta property="article:author" content="<%= url %>"/>
+<meta property="article:publisher" content="https://open.fda.gov"/>
 
 </head>
 <body class="bg-void">

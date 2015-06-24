@@ -52,14 +52,16 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 				'link=<%=link%>',
 				'name=<%=name%>',
 				'caption=<%=caption%>',
-				'description=<%=description%>'
+				'description=<%=description%>',
+				'picture=<%=picture%>'
 			].join('&'), {
 			app_id: fbappid,
-			redirect_uri: encodeURIComponent(_getBaseURL()),
+			redirect_uri: encodeURIComponent(this.getShareLink()), // TODO: landing page for redirection?
 			link: encodeURIComponent(this.getShareLink()),
-			name: encodeURIComponent(this._recall.recall_number),
+			name: encodeURIComponent('Food Recall: ' + this._recall.recall_number),
 			caption: encodeURIComponent(this._recall.product_description),
-			description: encodeURIComponent(this._recall.reason_for_recall)
+			description: encodeURIComponent(this._recall.reason_for_recall),
+			picture: encodeURIComponent('http://canyoufreeze.com/wp-content/uploads/2014/09/brie-cheese.jpg')
 		});
 	};
 	RecallSummaryProvider.prototype.getEmailShareLink = function () {
