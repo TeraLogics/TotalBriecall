@@ -1,13 +1,12 @@
+'use strict';
+
 /* globals
- fbappid
+ define
  */
 
-define(['ejs', 'moment'], function (ejs, moment, require) {
+define(['ejs', 'moment'], function (ejs, moment) {
 	var CommentProvider = function (comment) {
 			this._comment = comment;
-		},
-		_getBaseURL = function () {
-			return window.location.origin ? window.location.origin : Uri(window.location.href).authority();
 		};
 	CommentProvider.prototype.getName = function () {
 		return this._comment.name || 'User';

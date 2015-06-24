@@ -1,7 +1,7 @@
 languages:
   JavaScript: true
 exclude_paths:
-  - "app/views/docs/api/**/*"
+  - "app/views/docs/**/*"
   - "public/js/bootstrap.js"
   - "public/js/bootstrap-tour.js"
   - "public/js/bootstrap-tour-standalone.js"
