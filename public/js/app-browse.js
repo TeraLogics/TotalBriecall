@@ -64,6 +64,7 @@ requirejs([
 	}
 
 	var appWindow = $(window),
+		appView = $('.application'),
 		recallCardTemplate = ejs.compile(SyncFileReader.request('/templates/recall-summary-card.ejs')),
 		pinnedRecallsView = $('#pinned-recalls'),
 		pinnedRecallMasonry = new Masonry(pinnedRecallsView[0], {
@@ -74,7 +75,12 @@ requirejs([
 			itemSelector: '.recall-card'
 		}),
 		recentRecallLoadingView = $('#recent-recalls + .list-view-messages > .list-view-loading-message'),
-		eventTrolley = $({});
+		eventTrolley = $({}),
+		recallLinkCopyModal = $('#recall-link-copy');
+
+	recallLinkCopyModal.find('[name="recall-link"]').on('click', function (event) {
+		this.select();
+	});
 
 	// Setup infini-scroll
 	new Sisyphus(appWindow, {
@@ -153,20 +159,23 @@ requirejs([
 	});
 
 	// Hook up general controls
-	appWindow.on('click', 'data-action=["recall-copy"]', function (event) {
+	appView.on('click', '[data-action="recall-copy"]', function (event) {
 		var element = $(this),
-			text = element.data('text');
+			text = element.data('text'),
+			recallLinkInput = recallLinkCopyModal.find('[name="recall-link"]').val(text);
+
+		recallLinkCopyModal.modal('show');
 	});
-	appWindow.on('click', 'data-action=["recall-share"]', function (event) {
+	appView.on('click', '[data-action="recall-share"]', function (event) {
 		var element = $(this),
 			href = element.data('href'),
 			title = element.data('title');
 	});
-	appWindow.on('click', 'data-action=["recall-pin"]', function (event) {
+	appView.on('click', '[data-action="recall-pin"]', function (event) {
 		var element = $(this),
 			recallId = element.data('recallId');
 	});
-	appWindow.on('click', 'data-action=["recall-toggle"]', function (event) {
+	appView.on('click', '[data-action="recall-toggle"]', function (event) {
 		var element = $(this),
 			recallId = element.data('recallId');
 	});
