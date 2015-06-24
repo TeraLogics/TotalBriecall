@@ -14,3 +14,6 @@ global.__ctrldir = path.join(global.__appdir, 'controllers');
 global.__libdir = path.join(global.__appdir, 'lib');
 global.__adptsdir = path.join(global.__appdir, 'adapters');
 global.__dalsdir = path.join(global.__appdir, 'dals');
+
+// Load application configuration
+global.config = require(path.join(global.__appdir, 'config'));

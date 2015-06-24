@@ -17,10 +17,10 @@ function _toNumber(input) {
 }
 
 /**
- * Sends invalid argument error to client
- * @param res
- * @param type
- * @param message
+ * Sends an error response to the client.
+ * @param {Object} res The HTTP response object.
+ * @param {String} [message] The error message.
+ * @param {String} [type] The error type.
  * @private
  */
 function _returnError(res, message, type) {
@@ -50,8 +50,8 @@ function _returnError(res, message, type) {
 
 /**
  * Handles error response output.
- * @param {Error} err The error.
  * @param {Object} res The HTTP response object.
+ * @param {Error} err The error.
  * @private
  */
 function _handleError(res, err) {
@@ -66,15 +66,6 @@ function _handleError(res, err) {
 	}
 }
 
-/**
- * Adds a comment to a recall
- * @param req
- * @param {String} req.body.recallnumber The recall number.
- * @param {String} req.body.name The user's name.
- * @param {String} [req.body.location] The location of the user.
- * @param {String} req.body.comment The comment.
- * @param res
- */
 exports.addCommentForRecall = function (req, res) {
 	commentsDal.add({
 		recallnumber: req.body.recallnumber,
@@ -88,12 +79,6 @@ exports.addCommentForRecall = function (req, res) {
 	}).done();
 };
 
-/**
- * Gets recall for specific id
- * @param req
- * @param {Number} req.params.id
- * @param res
- */
 exports.getRecallById = function (req, res) {
 	recallsDal.getById({
 		id: req.params.id
@@ -104,16 +89,6 @@ exports.getRecallById = function (req, res) {
 	}).done();
 };
 
-/**
- * Gets recalls for matches against provided input
- * @param req
- * @param {String} [req.query.state]
- * @param {String} [req.query.from]
- * @param {String} [req.query.to]
- * @param {String[]|String} [req.query.classificationlevels]
- * @param {String[]} [req.query.keywords]
- * @param res
- */
 exports.getRecalls = function (req, res) {
 	var obj = {
 		firmname: req.query.firmname,
@@ -134,7 +109,10 @@ exports.getRecalls = function (req, res) {
 
 		for (var i = 0; i < req.query.classificationlevels.length; i++) {
 			var temp = _toNumber(req.query.classificationlevels[i]);
-			obj.classificationlevels.push(temp);
+
+			if (!_.isNaN(temp)) {
+				obj.classificationlevels.push(temp);
+			}
 		}
 	}
 
@@ -153,14 +131,6 @@ exports.getRecalls = function (req, res) {
 	}).done();
 };
 
-/**
- * Gets counts
- * @param req
- * @param {String} req.query.field
- * @param {String} [req.query.state]
- * @param {String} [req.query.status]
- * @param res
- */
 exports.getRecallsCounts = function (req, res) {
 	recallsDal.getCounts({
 		field: req.query.field,

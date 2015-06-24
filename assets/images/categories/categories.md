@@ -8,7 +8,7 @@ The food category images used in Total Briecall are listed below with their asso
 * It is resized and/or cropped from [Mandorle sgusciate/Shelled almonds](https://commons.wikimedia.org/wiki/File:Mandorle_sgusciate.jpg) by [Luigi Chiesa](https://commons.wikimedia.org/wiki/User:Luigi_Chiesa), used under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
 
 **fish.jpg** is licensed under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/) by TeraLogics    
-* It is resized and/or cropped from [Fish at Ensenada´s fishmarket ](https://commons.wikimedia.org/wiki/File:Fishmarket_01.jpg) by [Tomás Castelazo](https://commons.wikimedia.org/wiki/User:Tomascastelazo), used under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/)
+* It is resized and/or cropped from [Fish at Ensenada's fishmarket ](https://commons.wikimedia.org/wiki/File:Fishmarket_01.jpg) by [Tomás Castelazo](https://commons.wikimedia.org/wiki/User:Tomascastelazo), used under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/)
 
 **egg.jpg** is licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) by TeraLogics    
 * It is resized and/or cropped from [Braunes Ei und Eierschale/Brown egg and eggshell](https://commons.wikimedia.org/wiki/File:Eggshell_001.jpg) by [H. Zell](https://commons.wikimedia.org/wiki/User:Llez), used under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
