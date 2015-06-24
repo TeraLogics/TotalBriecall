@@ -6,7 +6,7 @@
   "keywords": ["node", "express", "static", "brie"],
   "addons": [
     "mongolab"
-  ]
+  ],
   "env": {
     "NEWRELIC_KEY ": {
       "description": "The API key to your New Relic account.",
