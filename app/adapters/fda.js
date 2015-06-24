@@ -43,7 +43,7 @@ var options = {
 	}, {}),
 	protoPlusRegex = /\s+/ig,
 	dedupPlusRegex = /\++/g,
-	badCharacterRegex = /\W+/g,
+	badCharacterRegex = /\W/,
 	spaceRegex = / /g,
 	lastLetterRegex = /(\w)$/i;
 
@@ -54,7 +54,7 @@ var options = {
  * @private
  */
 function _formatValue(val) {
-	if (spaceRegex.test(val)) {
+	if (val.search(spaceRegex) !== -1) {
 		return '"' + val.replace(spaceRegex, '+') + '"';
 	} else {
 		return val;
