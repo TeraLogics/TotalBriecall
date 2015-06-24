@@ -15,8 +15,7 @@ deploy:
     - ls -lF app/views
     - ls -lF app/views/docs
     - npm run apidoc
-    - ls -lF app/views/docs
-    - ls -lF app/views/docs/api
+    - find . -path ./node_modules -prune -o -name api_project.json
     - restart
 notifications:
   slack:
