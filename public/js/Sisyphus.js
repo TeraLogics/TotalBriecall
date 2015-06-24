@@ -37,6 +37,7 @@ define(['jquery', 'underscore', 'visible'], function ($, _, visible, require) {
     Sisyphus.prototype.rebind = function () {
         this._element.off('scroll', $.proxy(this._onScroll, this))
             .on('scroll', $.proxy(this._onScroll, this));
+        this._checkTrigger();
     };
     Sisyphus.prototype.destroy = function () {
 

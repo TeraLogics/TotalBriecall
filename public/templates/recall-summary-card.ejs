@@ -6,7 +6,7 @@
 %>
 <div class="panel <%= summaryProvider.getCardType() %> recall-summary-card recall-class-i">
 	<div class="panel-heading">
-		<div class="recall-card-toggle" data-toggle="collapse"
+		<div class="recall-card-toggle <%= summaryProvider.isCollapsed() ? 'collapsed' : '' %>" data-toggle="collapse"
 			 data-target="#collapse-<%= summaryProvider.getFdaId() %>">
 			<i class="glyphicon"></i>
 		</div>
@@ -21,13 +21,14 @@
 		</h4>
 	</div>
 	<div id="collapse-<%= summaryProvider.getFdaId() %>" data-recall-id="<%= summaryProvider.getFdaId() %>"
-		 class="panel-collapse collapse in">
+		 class="panel-collapse collapse <%= summaryProvider.isCollapsed() ? '' : 'in' %>">
 		<div class="panel-body">
 			<p class="recall-reason"><%= summaryProvider.getReasonForRecall() %></p>
 		</div>
 		<div class="panel-footer clearfix">
 			<ul class="list-inline pull-left">
-				<li><a class="btn btn-link" href="<%= summaryProvider.getRecallDetailsLink() %>"><i class="glyphicon glyphicon-info-sign"></i> Info</a></li>
+				<li><a class="btn btn-link" href="<%= summaryProvider.getRecallDetailsLink() %>"><i
+								class="glyphicon glyphicon-info-sign"></i> Info</a></li>
 			</ul>
 			<ul class="list-inline pull-right">
 				<li>
@@ -38,7 +39,7 @@
 				<li>
 					<div class="dropup">
 						<span class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i
-								class="glyphicon glyphicon-share-alt"></i> Share</span>
+									class="glyphicon glyphicon-share-alt"></i> Share</span>
 						<ul class="dropdown-menu dropdown-menu-right" role="menu">
 							<li role="presentation">
 								<a href="#" data-action="recall-copy"
@@ -55,10 +56,8 @@
 								</a>
 							</li>
 							<li role="presentation">
-								<a href="#" data-action="recall-fbshare"
-								   data-href="<%= summaryProvider.getFacebookShareLink() %>"
+								<a href="#" data-href="<%= summaryProvider.getFacebookShareLink() %>"
 								   onclick="window.open(this.dataset.href, 'FeedDialog', 'width=500,height=300,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no'); return false;"
-								   href="#"
 								   role="menuitem" tabindex="-1">
 									<i class="fa fa-facebook-official"></i> Facebook
 								</a>

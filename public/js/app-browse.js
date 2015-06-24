@@ -55,12 +55,16 @@ requirejs([
 			 BrowseTour
 ) {
 	function addRecentRecalls(recalls) {
+		var recallCards = [],
+			collapsedRecalls = getPreference('collapsedrecalls', []);
+
 		recentRecallsView.removeClass('empty');
-		var recallCards = [];
 
 		for (var i = 0, l = recalls.length; i < l; i++) {
 			var cardView = $('<li class="recall-card col-xs-12 col-sm-6 col-lg-4">').append(
-				recallCardTemplate({summaryProvider: new RecallSummaryProvider(recalls[i])}));
+				recallCardTemplate({summaryProvider: new RecallSummaryProvider(recalls[i], {
+					collapsed: _.contains(collapsedRecalls, recalls[i].openfda_id)
+				})}));
 
 			recallCards.push(cardView.get(0));
 
@@ -69,6 +73,45 @@ requirejs([
 		}
 
 		recentRecallsMasonry.layout();
+	}
+
+	function setPreference(pref, value) {
+		if (!brie.preferences) {
+			brie.preferences = {};
+		}
+
+		brie.preferences[pref] = value;
+
+		return _syncPreferences();
+	}
+
+	function getPreference(pref, dflt) {
+		if (!brie.preferences || !brie.preferences.hasOwnProperty('collapsedrecalls')) {
+			return dflt;
+		} else {
+			return brie.preferences['collapsedrecalls'];
+		}
+	}
+
+	function _syncPreferences() {
+		return $.ajax({
+			url: '/preferences',
+			type: 'POST',
+			dataType: 'JSON',
+			data: brie.preferences
+		});
+	}
+
+	function _onRecallVisibility(recallId, visible) {
+		var collapsedRecalls = getPreference('collapsedrecalls', []);
+		if (!visible) {
+			collapsedRecalls.push(recallId);
+		}
+		else {
+			collapsedRecalls = _.without(collapsedRecalls, recallId);
+		}
+
+		setPreference('collapsedrecalls', collapsedRecalls);
 	}
 
 	var appWindow = $(window),
@@ -125,21 +168,33 @@ requirejs([
 		}
 	});
 
-	eventTrolley.on('hidden.recall.pinned', function () {
+	eventTrolley.on('hidden.recall.pinned', function (event, data) {
+		_onRecallVisibility(data.recallId, false);
 		pinnedRecallMasonry.layout();
-	}).on('shown.recall.pinned', function () {
+	}).on('shown.recall.pinned', function (event, data) {
+		_onRecallVisibility(data.recallId, true);
 		pinnedRecallMasonry.layout();
-	}).on('hidden.recall.recent', function () {
+	}).on('hidden.recall.recent', function (event, data) {
+		_onRecallVisibility(data.recallId, false);
 		recentRecallsMasonry.layout();
-	}).on('shown.recall.recent', function () {
+	}).on('shown.recall.recent', function (event, data) {
+		_onRecallVisibility(data.recallId, true);
 		recentRecallsMasonry.layout();
 	});
 
 	pinnedRecallsView.on('shown.bs.collapse hidden.bs.collapse', '.recall-card .collapse', function (event) {
-		eventTrolley.triggerHandler(event.type === 'hidden' ? 'hidden.recall.pinned' : 'shown.recall.pinned');
+		var element = $(this),
+			visible = event.type === 'shown',
+			recallId = element.data('recallId');
+
+		eventTrolley.triggerHandler(visible ? 'shown.recall.pinned' : 'hidden.recall.pinned', {recallId: recallId});
 	});
 	recentRecallsView.on('shown.bs.collapse hidden.bs.collapse', '.recall-card .collapse', function (event) {
-		eventTrolley.triggerHandler(event.type === 'hidden' ? 'hidden.recall.recent' : 'shown.recall.recent');
+		var element = $(this),
+			visible = event.type === 'shown',
+			recallId = element.data('recallId');
+
+		eventTrolley.triggerHandler(visible ? 'shown.recall.recent' : 'hidden.recall.recent', {recallId: recallId});
 	});
 
 	var map = new MapApp({
@@ -189,10 +244,6 @@ requirejs([
 		recallLinkCopyModal.modal('show');
 	});
 	appView.on('click', '[data-action="recall-pin"]', function (event) {
-		var element = $(this),
-			recallId = element.data('recallId');
-	});
-	appView.on('click', '[data-action="recall-toggle"]', function (event) {
 		var element = $(this),
 			recallId = element.data('recallId');
 	});

@@ -3,14 +3,18 @@
  */
 
 define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
-	var RecallSummaryProvider = function (recall) {
+	var RecallSummaryProvider = function (recall, states) {
 			this._recall = recall;
+			this._states = states;
 		},
 		_getBaseURL = function () {
 			return window.location.origin ? window.location.origin : Uri(window.location.href).authority();
 		};
 	RecallSummaryProvider.prototype.getFirmAddress = function () {
 		return this._recall.city + ', ' + this._recall.state + ', ' + this._recall.country;
+	};
+	RecallSummaryProvider.prototype.isCollapsed = function () {
+		return this._states.collapsed || false;
 	};
 	RecallSummaryProvider.prototype.getFirmName = function () {
 		return this._recall.recalling_firm;
