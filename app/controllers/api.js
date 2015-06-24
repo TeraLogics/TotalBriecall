@@ -3,8 +3,8 @@
 var _ = require('underscore'),
 	moment = require('moment'),
 	path = require('path'),
-	commentsAdapter = require(path.join(global.__adptsdir, 'mongocomments')),
-	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
+	commentsDal = require(path.join(global.__dalsdir, 'comments')),
+	recallsDal = require(path.join(global.__dalsdir, 'recalls'));
 
 /**
  * Converts `input` to an integer.
@@ -14,20 +14,36 @@ var _ = require('underscore'),
  */
 function _toNumber (input) {
 	var number = parseInt(input, 10);
-
 	return _.isFinite(number) ? number : NaN;
 }
 
 /**
  * Sends invalid argument error to client
- * @param message
  * @param res
+ * @param type
+ * @param message
  * @private
  */
-function _rejectArgument (message, res) {
-	res.status(409).json({
+function _returnError (res, message, type) {
+	var status;
+
+	message = message || 'An unknown error occurred.';
+
+	switch (type) {
+		case 'INVALID_ARGUMENT':
+			status = 409;
+			break;
+		case 'NOT_FOUND':
+			status = 404;
+			break;
+		default:
+			type = 'INTERNAL_ERROR';
+			status = 500;
+	}
+
+	res.status(status).json({
 		error: {
-			code: 'INVALID_ARGUMENT',
+			code: type,
 			message: message
 		}
 	});
@@ -39,27 +55,15 @@ function _rejectArgument (message, res) {
  * @param {Object} res The HTTP response object.
  * @private
  */
-function _handleError (err, res) {
+function _handleError (res, err) {
 	if (err instanceof Error) {
-		// errors raised by the adapter
-		_rejectArgument(err.message, res);
-	} else if (err && err.statusCode && err.error) {
-		// errors probably in a ServerResponse from the FDA API
-		res.status(err.statusCode).json({
-			error: err.error
-		});
+		_returnError(res, err.message, err.type);
 	} else {
-		// anything else
 		if (err) {
-			console.error(err);
+			console.error('Unknown Error:', err);
 		}
 
-		res.status(500).json({
-			error: {
-				code: 'INTERNAL_ERROR',
-				message: 'An unknown error occurred.'
-			}
-		});
+		_returnError(res);
 	}
 }
 
@@ -73,29 +77,16 @@ function _handleError (err, res) {
  * @param res
  */
 exports.addCommentForRecall = function (req, res) {
-	// TODO validate recall number against pattern?
-	if (!req.body.recallnumber || !_.isString(req.body.recallnumber)) {
-		_rejectArgument('Invalid recallnumber', res);
-	} else if (!req.body.name || !_.isString(req.body.name)) {
-		_rejectArgument('Invalid name', res);
-	} else if (req.body.location && !_.isString(req.body.location)) {
-		_rejectArgument('Invalid location', res);
-	} else if (req.body.location && !fdaAdapter.isValidState(req.body.location)) {
-		_rejectArgument('Location must be a valid state', res);
-	} else if (!req.body.comment || !_.isString(req.body.comment)) {
-		_rejectArgument('Invalid comment', res);
-	} else {
-		commentsAdapter.add({
-			recallnumber: req.body.recallnumber,
-			name: req.body.name,
-			location: req.body.location,
-			comment: req.body.comment
-		}).then(function (comment) {
-			res.json(comment);
-		}).catch(function (err) {
-			_handleError(err, res);
-		}).done();
-	}
+	commentsDal.add({
+		recallnumber: req.body.recallnumber,
+		name: req.body.name,
+		location: req.body.location,
+		comment: req.body.comment
+	}).then(function (comment) {
+		res.json(comment);
+	}).catch(function (err) {
+		_handleError(res, err);
+	}).done();
 };
 
 /**
@@ -105,47 +96,19 @@ exports.addCommentForRecall = function (req, res) {
  * @param res
  */
 exports.getRecallById = function (req, res) {
-	var obj = {};
-
-	obj.id = req.params.id; // TODO validate against pattern?
-
 	if (req.query.skip) {
-		_rejectArgument('Invalid skip - not allowed', res);
-		return;
+		_returnError(res, 'Invalid skip - not allowed', 'INVALID_ARGUMENT');
+	} else if (req.query.limit) {
+		_returnError(res, 'Invalid limit - not allowed', 'INVALID_ARGUMENT');
+	} else {
+		recallsDal.getById({
+			id: req.params.id
+		}).then(function (foodResult) {
+			res.json(foodResult);
+		}).catch(function (err) {
+			_handleError(res, err);
+		}).done();
 	}
-
-	if (req.query.limit) {
-		_rejectArgument('Invalid limit - not allowed', res);
-		return;
-	}
-
-	fdaAdapter.getFoodRecallById(obj).then(function (foodResult) {
-		if (foodResult) {
-			return commentsAdapter.get([foodResult.recall_number]).then(function (comments) {
-				foodResult.comments = _.chain(comments)
-					.where({recallnumber: foodResult.recall_number})
-					.map(function (comment) {
-						delete comment.recallnumber;
-						return comment;
-					})
-					.value();
-
-				return foodResult;
-			});
-		}
-
-		throw {
-			statusCode: 404,
-			error: {
-				code: 'NOT_FOUND',
-				message: 'No matches found!'
-			}
-		};
-	}).then(function (foodResult) {
-		res.json(foodResult);
-	}).catch(function (err) {
-		_handleError(err, res);
-	}).done();
 };
 
 /* TODO
@@ -164,45 +127,15 @@ exports.getRecallById = function (req, res) {
  * @param res
  */
 exports.getRecalls = function (req, res) {
-	var obj = {};
+	var obj = {
+		firmname: req.query.firmname,
+		from: _toNumber(req.query.from),
+		to: _toNumber(req.query.to),
+		state: req.query.state,
+		eventid: _toNumber(req.query.eventid)
+	};
 
-	if (req.query.state) {
-		if (!fdaAdapter.isValidState(req.query.state)) {
-			_rejectArgument('Invalid state', res);
-			return;
-		}
-		obj.state = req.query.state;
-	}
 
-	if (req.query.eventid) {
-		obj.eventid = _toNumber(req.query.eventid);
-		if (_.isNaN(obj.eventid)) {
-			_rejectArgument('Invalid eventid', res);
-			return;
-		}
-	}
-
-	if (req.query.firmname) {
-		obj.firmname = req.query.firmname;
-	}
-
-	if (req.query.from || req.query.to) {
-		obj.from = _toNumber(req.query.from);
-		if (_.isNaN(obj.from) || !moment.unix(obj.from).isValid()) {
-			_rejectArgument('Invalid from', res);
-			return;
-		}
-		obj.to = _toNumber(req.query.to);
-		if (_.isNaN(obj.to) || !moment.unix(obj.to).isValid()) {
-			_rejectArgument('Invalid to', res);
-			return;
-		}
-
-		if (obj.from >= obj.to) {
-			_rejectArgument('Invalid from/to - from must be before to', res);
-			return;
-		}
-	}
 
 	if (req.query.classificationlevels) {
 		if (!_.isArray(req.query.classificationlevels)) {
@@ -211,19 +144,8 @@ exports.getRecalls = function (req, res) {
 
 		obj.classificationlevels = [];
 
-		var i = 0;
-		for (; i < req.query.classificationlevels.length; i++) {
+		for (var i = 0; i < req.query.classificationlevels.length; i++) {
 			var temp = _toNumber(req.query.classificationlevels[i]);
-			if (_.isNaN(temp)) {
-				_rejectArgument('Invalid classificationlevels', res);
-				return;
-			}
-
-			if (temp < 1 || temp > 3) {
-				_rejectArgument('Invalid classificationlevels - must be 1, 2, or 3', res);
-				return;
-			}
-
 			obj.classificationlevels.push(temp);
 		}
 	}
@@ -233,53 +155,13 @@ exports.getRecalls = function (req, res) {
 			req.query.keywords = req.query.keywords.split(',');
 		}
 
-		var invalid = fdaAdapter.areValidKeywords(req.query.keywords);
-		if (invalid !== undefined) {
-			_rejectArgument('Invalid keywords - could not match keyword ' + invalid, res);
-			return;
-		}
 		obj.keywords = req.query.keywords;
 	}
 
-	if (req.query.skip) {
-		obj.skip = _toNumber(req.query.skip);
-		if (_.isNaN(obj.skip)) {
-			_rejectArgument('Invalid skip', res);
-			return;
-		}
-	}
-
-	if (req.query.limit) {
-		obj.limit = _toNumber(req.query.limit);
-		if (_.isNaN(obj.limit)) {
-			_rejectArgument('Invalid limit', res);
-			return;
-		}
-	}
-
-	fdaAdapter.searchFoodRecalls(obj).then(function (foodResult) {
-		if (foodResult.data.length > 0) {
-			return commentsAdapter.get(_.pluck(foodResult.data, 'recall_number')).then(function (comments) {
-				foodResult.data = _.map(foodResult.data, function (r) {
-					r.comments = _.chain(comments)
-						.where({recallnumber: r.recall_number})
-						.map(function (comment) {
-							delete comment.recallnumber;
-							return comment;
-						})
-						.value();
-					return r;
-				});
-
-				return foodResult;
-			});
-		}
-
-		return foodResult;
-	}).then(function (foodResult) {
+	recallsDal.search(obj).then(function (foodResult) {
 		res.json(foodResult);
 	}).catch(function (err) {
-		_handleError(err, res);
+		_handleError(res, err);
 	}).done();
 };
 
@@ -292,43 +174,19 @@ exports.getRecalls = function (req, res) {
  * @param res
  */
 exports.getRecallsCounts = function (req, res) {
-	var obj = {};
-
-	if (!req.query.field || !fdaAdapter.isValidCountField(req.query.field)) {
-		_rejectArgument('Invalid field', res);
-		return;
-	}
-	obj.field = req.query.field;
-
-	if (req.query.state) {
-		if (!fdaAdapter.isValidState(req.query.state)) {
-			_rejectArgument('Invalid state', res);
-			return;
-		}
-		obj.state = req.query.state;
-	}
-
-	if (req.query.status) {
-		if (!fdaAdapter.isValidStatus(req.query.status)) {
-			_rejectArgument('Invalid status', res);
-			return;
-		}
-		obj.status = req.query.status;
-	}
-
 	if (req.query.skip) {
-		_rejectArgument('Invalid skip - not allowed', res);
-		return;
+		_returnError(res, 'Invalid skip - not allowed', 'INVALID_ARGUMENT');
+	} else if (req.query.limit) {
+		_returnError(res, 'Invalid limit - not allowed', 'INVALID_ARGUMENT');
+	} else {
+		recallsDal.getCounts({
+			field: req.query.field,
+			state: req.query.state,
+			status: req.query.status
+		}).then(function (counts) {
+			res.json(counts);
+		}).catch(function (err) {
+			_handleError(res, err);
+		}).done();
 	}
-
-	if (req.query.limit) {
-		_rejectArgument('Invalid limit - not allowed', res);
-		return;
-	}
-
-	fdaAdapter.getFoodRecallsCounts(obj).then(function (counts) {
-		res.json(counts);
-	}).catch(function (err) {
-		_handleError(err, res);
-	}).done();
 };

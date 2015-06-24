@@ -8,9 +8,9 @@ var _ = require('underscore'),
 /**
  * Gets comments for a list of recall numbers.
  * @param {String[]} recallNumbers A list of recall numbers.
- * @returns {Promise.<Object[]>|Promise<Object[]>} Returns a list of comments
+ * @returns {Promise.<Object[]>|Promise<Object[]>} Returns a list of comments.
  */
-exports.get = function (recallNumbers) {
+exports.getComments = function (recallNumbers) {
 	return Promise.resolve(Comments.find({
 		recallnumber: { $in: recallNumbers }
 	}).exec()).then(function (comments) {
@@ -32,9 +32,9 @@ exports.get = function (recallNumbers) {
  * @param {String} obj.name The user's name.
  * @param {String} [obj.location] The location of the user.
  * @param {String} obj.comment The comment.
- * @returns {Promise.<Object>|Promise<Object>}
+ * @returns {Promise.<Object>|Promise<Object>} Returns the added comment.
  */
-exports.add = function (obj) {
+exports.addComment = function (obj) {
 	return Promise.resolve(Comments.create({
 		recallnumber: obj.recallnumber,
 		name: obj.name,

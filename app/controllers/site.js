@@ -3,7 +3,7 @@
 var _ = require('underscore'),
 	path = require('path'),
 	url = require('url'),
-	fdaAdapter = require(path.join(global.__adptsdir, 'fdaapi'));
+	recallsDal = require(path.join(global.__dalsdir, 'recalls'));
 
 var defaultPorts = {
 	'http': 80,
@@ -36,45 +36,35 @@ exports.browse = function (req, res) {
 };
 
 exports.details = function (req, res) {
-	fdaAdapter.getFoodRecallById({ id: req.params.id }).then(function (recall) {
+	recallsDal.getById({id: req.params.id}).then(function (recall) {
 		var serverURL = req.protocol + '://' + req.get('host'),
 			urlObj = url.parse(serverURL);
+
 		return res.render('recall', {
 			recall: recall,
 			fbappid: global.config.FACEBOOK_APPID,
 			url: serverURL + (!urlObj.port && global.config.PORT !== defaultPorts[req.protocol] ? ':' + global.config.PORT : '')
 		});
 	}).catch(function (err) {
-		if (err instanceof Error) {
-			// errors raised by the adapter
-			return res.render('recall', {
-				recall: null,
-				error: {
-					statusCode: 500,
+		console.error(err);
+
+		switch (err.type) {
+			case 'notfound':
+				return res.render('404');
+			case 'validation':
+				return res.render('recall', {
+					recall: null,
+					error: {
+						statusCode: 409,
+						message: err.message
+					}
+				});
+			default:
+				return res.render('error', {
+					code: 500,
+					title: 'Internal Error',
 					message: err.message
-				}
-			});
-		} else if (err && err.statusCode && err.error) {
-			// errors probably in a ServerResponse from the FDA API
-			return res.render('recall', {
-				recall: null,
-				error: {
-					statusCode: err.statusCode,
-					message: err.error.message
-				}
-			});
-		} else {
-			// anything else
-			if (err) {
-				console.error(err);
-			}
-			return res.render('recall', {
-				recall: null,
-				error: {
-					statusCode: 500,
-					message: 'An unknown error occurred.'
-				}
-			});
+				});
 		}
 	}).done();
 };
@@ -86,18 +76,23 @@ exports.map = function (req, res) {
 };
 
 exports.preferencesGet = function (req, res) {
-	res.json(req.session.preferences);
+	return res.json(req.session.preferences);
 };
 
 exports.preferencesSet = function (req, res) {
 	_.each(req.body, function (val, key) {
 		req.session.preferences[key] = val;
 	});
+
 	try {
 		req.session.save();
-		res.json({ code: "OK", message: "Success!" });
+
+		return res.json({
+			code: "OK",
+			message: "Success!"
+		});
 	} catch (e) {
-		res.status(500).send(e.message);
+		return res.status(500).json(e.message);
 	}
 };
 

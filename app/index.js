@@ -32,7 +32,6 @@ process.on('uncaughtException', function (err) {
 // Set the project's root directory
 global.__appdir = __dirname;
 global.__basedir = path.join(__dirname, '..');
-global.__libdir = path.join(global.__basedir, 'lib');
 global.__assetsdir = path.join(global.__basedir, 'public');
 
 // MVC directory structure
@@ -40,10 +39,13 @@ global.__modelsdir = path.join(global.__appdir, 'models');
 global.__viewsdir = path.join(global.__appdir, 'views');
 global.__ctrldir = path.join(global.__appdir, 'controllers');
 
+// Application helpers
+global.__libdir = path.join(global.__appdir, 'lib');
 global.__adptsdir = path.join(global.__appdir, 'adapters');
+global.__dalsdir = path.join(global.__appdir, 'dals');
 
 // Load application configuration
-global.config = require(path.join(global.__basedir, 'app', 'config'));
+global.config = require(path.join(global.__appdir, 'config'));
 
 var app = express(),
 	readDir = Promise.promisify(fs.readdir);

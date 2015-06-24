@@ -2,8 +2,10 @@
 
 var _ = require('underscore'),
 	moment = require('moment'),
+	path = require('path'),
 	Promise = require('bluebird'),
-	request = require('request-promise');
+	request = require('request-promise'),
+	recallHelper = require(path.join(global.__libdir, 'recallHelper'));
 
 var options = {
 		uri: 'https://api.fda.gov/food/enforcement.json',
@@ -20,61 +22,8 @@ var options = {
 		}
 	},
 	limit = 100,
-	stateMappings = {
-		AL: ['AL', 'Alabama'],
-		AK: ['AK', 'Alaska'],
-		AZ: ['AZ', 'Arizona'],
-		AR: ['AR', 'Arkansas'],
-		CA: ['CA', 'California'],
-		CO: ['CO', 'Colorado'],
-		CT: ['CT', 'Connecticut'],
-		DE: ['DE', 'Delaware'],
-		FL: ['FL', 'Florida'],
-		GA: ['GA', 'Georgia'],
-		HI: ['HI', 'Hawaii'],
-		ID: ['ID', 'Idaho'],
-		IL: ['IL', 'Illinois'],
-		IN: ['IN', 'Indiana'],
-		IA: ['IA', 'Iowa'],
-		KS: ['KS', 'Kansas'],
-		KY: ['KY', 'Kentucky'],
-		LA: ['LA', 'Louisiana'],
-		ME: ['ME', 'Maine'],
-		MD: ['MD', 'Maryland'],
-		MA: ['MA', 'Massachusetts'],
-		MI: ['MI', 'Michigan'],
-		MN: ['MN', 'Minnesota'],
-		MS: ['MS', 'Mississippi'],
-		MO: ['MO', 'Missouri'],
-		MT: ['MT', 'Montana'],
-		NE: ['NE', 'Nebraska'],
-		NV: ['NV', 'Nevada'],
-		NH: ['NH', 'New Hampshire'],
-		NJ: ['NJ', 'New Jersey'],
-		NM: ['NM', 'New Mexico'],
-		NY: ['NY', 'New York'],
-		NC: ['NC', 'North Carolina'],
-		ND: ['ND', 'North Dakota'],
-		OH: ['OH', 'Ohio'],
-		OK: ['OK', 'Oklahoma'],
-		OR: ['OR', 'Oregon'],
-		PA: ['PA', 'Pennsylvania'],
-		RI: ['RI', 'Rhode Island'],
-		SC: ['SC', 'South Carolina'],
-		SD: ['SD', 'South Dakota'],
-		TN: ['TN', 'Tennessee'],
-		TX: ['TX', 'Texas'],
-		UT: ['UT', 'Utah'],
-		VT: ['VT', 'Vermont'],
-		VA: ['VA', 'Virginia'],
-		WA: ['WA', 'Washington'],
-		WV: ['WV', 'West Virginia'],
-		WI: ['WI', 'Wisconsin'],
-		WY: ['WY', 'Wyoming'],
-		DC: ['DC', 'District of Columbia', 'D.C.']
-	},
-	stateAbbreviations = _.keys(stateMappings).sort(),
-	stateRegexes = _.reduce(stateMappings, function (memo, values, key) {
+	stateAbbreviations = _.keys(recallHelper.stateMappings).sort(),
+	stateRegexes = _.reduce(recallHelper.stateMappings, function (memo, values, key) {
 		memo[key] = _.map(values, function (val) {
 			return new RegExp('\\b' + val + '\\b');
 		});
@@ -91,17 +40,6 @@ var options = {
 	nationalRegexes = _.map(nationalTerms, function (val) {
 		return new RegExp('\\b' + val + '\\b', 'i');
 	}),
-	keywordMappings = {
-		'dairy': ['dairy', 'milk', 'cheese', 'cheeses', 'whey'],
-		'dye': ['dye', 'color', 'colors', 'red', 'yellow', 'pink', 'blue', 'green'],
-		'egg': ['egg', 'eggs'],
-		'fish': ['fish', 'shellfish', 'oyster', 'oysters'],
-		'gluten': ['gluten', 'wheat'],
-		'nut': ['nut', 'nuts', 'peanut', 'peanuts', 'seed', 'seeds', 'walnut', 'walnuts', 'almond', 'almonds', 'pistachio', 'pistachios', 'hazelnut', 'hazelnuts'],
-		'soy': ['soy', 'tofu']
-	},
-	statusKeys = ['ongoing', 'completed', 'terminated', 'pending'],
-	supportedCountFields = ['classification'],
 	protoPlusRegex = /\s+|,|%[0-9a-f]{2}/ig,
 	dedupPlusRegex = /\++/g;
 
@@ -265,44 +203,6 @@ function _makeRequest(obj) {
 }
 
 /**
- * Validates state
- * @param {String} state
- * @returns {boolean}
- */
-exports.isValidState = function (state) {
-	return stateMappings.hasOwnProperty(state.toUpperCase());
-};
-
-/**
- * Validates keywords
- * @param {String[]} keywords
- * @returns {String|undefined} Returns first invalid element or undefined if all are valid
- */
-exports.areValidKeywords = function (keywords) {
-	return _.find(keywords, function (keyword) {
-		return !keywordMappings.hasOwnProperty(keyword.toLowerCase());
-	});
-};
-
-/**
- * Validates status string
- * @param {String} status
- * @returns {boolean}
- */
-exports.isValidStatus = function (status) {
-	return _.contains(statusKeys, status.toLowerCase());
-};
-
-/**
- * Validates count field string
- * @param {String} field
- * @returns {boolean}
- */
-exports.isValidCountField = function (field) {
-	return _.contains(supportedCountFields, field.toLowerCase());
-};
-
-/**
  * Gets food recall details for specific recall id
  * @param obj
  * @param {String} obj.data
@@ -362,7 +262,7 @@ exports.searchFoodRecalls = function (obj) {
 	var search = [];
 
 	if (obj.state) {
-		search.push(_convertArrayToParam(stateMappings[obj.state.toUpperCase()].concat(nationalTerms), 'distribution_pattern'));
+		search.push(_convertArrayToParam(recallHelper.stateMappings[obj.state.toUpperCase()].concat(nationalTerms), 'distribution_pattern'));
 	}
 
 	if (obj.eventid) {
@@ -385,7 +285,7 @@ exports.searchFoodRecalls = function (obj) {
 
 	if (obj.keywords) {
 		search.push(_convertArrayToParam(_.reduce(obj.keywords, function (arr, keyword) {
-			return arr.concat(keywordMappings[keyword.toLowerCase()]);
+			return arr.concat(recallHelper.keywordMappings[keyword.toLowerCase()]);
 		}, []), 'reason_for_recall'));
 	}
 
@@ -407,7 +307,7 @@ exports.getFoodRecallsCounts = function (obj) {
 	var search = [];
 
 	if (obj.state) {
-		search.push(_convertArrayToParam(stateMappings[obj.state.toUpperCase()].concat(nationalTerms), 'distribution_pattern'));
+		search.push(_convertArrayToParam(recallHelper.stateMappings[obj.state.toUpperCase()].concat(nationalTerms), 'distribution_pattern'));
 	}
 
 	if (obj.status) {

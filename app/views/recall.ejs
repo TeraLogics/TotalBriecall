@@ -33,11 +33,14 @@
 			<div class="panel-body">
 				<ol id="recall-comments" class="list-view empty">
 					<!-- recall cards placeholder -->
+					<% _.each(recall.comments, function (comment) { %>
+					<%= comment.created = moment.unix(comment.created).format(); %>
 					<li class="comment-entry">
-						<a href="#" title="Bell, Mike">Mike Bell</a>
-						<small class="event-subtitle text-muted" title="MMM Do YYYY, h:mm:ssa">MMM Do [at] h:mmA</small>
-						<p class="comment-body">Sample comment by a state user.</p>
+						<a href="#" title="<%= comment.name %>"><%= comment.name %> from <%= comment.location %></a>
+						<small class="event-subtitle text-muted" title="<%= comment.created %>"><%= comment.created %></small>
+						<p class="comment-body"><%= comment.comment %></p>
 					</li>
+					<% }); %>
 				</ol>
 				<div class="list-view-messages">
 					<p class="list-view-loading-message spinner spinner-pulsation spinner-primary">Loading...</p>
