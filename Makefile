@@ -4,7 +4,6 @@ NPM_BIN ?= ./node_modules/.bin
 
 include support/mk/node.mk
 include support/mk/mocha.mk
-include support/mk/apidoc.mk
 
 include support/mk/istanbul.mk
 include support/mk/coveralls.mk
@@ -25,7 +24,6 @@ ci-travis: lint lint-tests test-cov
 clean:
 	rm -rf build
 	rm -rf reports
-	rm -rf app/views/docs/api
 
 clobber: clean npm-uninstall
 

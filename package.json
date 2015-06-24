@@ -7,7 +7,7 @@
     "start": "node app/index.js",
     "test": "node ./node_modules/mocha/bin/mocha --require test/bootstrap --recursive --reporter spec ./test",
     "test-coverage": "node ./node_modules/istanbul/lib/cli.js cover --dir ./reports/coverage --report html ./node_modules/mocha/bin/_mocha -- --require test/bootstrap --recursive --reporter spec ./test",
-    "apidoc": "node ./node_modules/apidoc/bin/apidoc --verbose --file-filters '^api.js$' --input app/routes/ --output app/views/docs/api/"
+    "apidoc": "node ./node_modules/apidoc/bin/apidoc --file-filters '^api.js$' --input app/routes/ --output app/views/docs/api/"
   },
   "dependencies": {
     "apidoc": "^0.13.1",
