@@ -5,7 +5,7 @@
 [![Quality](https://codeclimate.com/github/TeraLogics/TotalBriecall.png)](https://codeclimate.com/github/TeraLogics/TotalBriecall)
 [![Dependencies](https://david-dm.org/TeraLogics/TotalBriecall.png)](https://david-dm.org/TeraLogics/TotalBriecall)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/TeraLogics/TotalBriecall/tree/master)
 
 A barebones Node.js app using [Express 4](http://expressjs.com/).
 
