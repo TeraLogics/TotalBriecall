@@ -188,9 +188,6 @@ requirejs([
 	appView.on('click', '[data-action="recall-copy"]', function (event) {
 		recallLinkCopyModal.modal('show');
 	});
-	appView.on('click', '[data-action="recall-fbshare"]', function (event) {
-		openFacebookDialog($(this).data('href'));
-	});
 	appView.on('click', '[data-action="recall-pin"]', function (event) {
 		var element = $(this),
 			recallId = element.data('recallId');
@@ -199,32 +196,6 @@ requirejs([
 		var element = $(this),
 			recallId = element.data('recallId');
 	});
-
-	function openFacebookDialog(link, windowname, width, height) {
-		if (!window.focus) {
-			return;
-		}
-
-		var href;
-		if (typeof(link) === 'string') {
-			href = link;
-		} else {
-			href = link.href;
-		}
-
-		if (!windowname) {
-			windowname = 'FeedDialog';
-		}
-
-		if (!width) {
-			width = 700;
-		}
-		if (!height) {
-			height = 400;
-		}
-
-		window.open(href, windowname, 'resizable=yes,width=' + width + ',height=' + height + ',scrollbars=yes');
-	}
 
 	appDocument.ready(function () {
 		BrowseTour.start();
