@@ -41,11 +41,7 @@ requirejs([
 
 	$(document).ready(function () {
 		if ('geolocation' in navigator) {
-			navigator.geolocation.getCurrentPosition(GetLatLon, handleGeoLocError, {
-				timeout: 1500,
-				enableHighAccuracy: false,
-				maximumAge: 30000
-			});
+			navigator.geolocation.getCurrentPosition(GetLatLon, handleGeoLocError, { timeout: 1500, enableHighAccuracy: false, maximumAge: 30000 });
 		} else {
 			handleGeoLocError();
 		}
@@ -58,9 +54,9 @@ requirejs([
 			lon: location.coords.longitude
 		}).then(function (state) {
 			HidePromptForZip();
-			SaveState(state).then(function () {
+			SaveState(state).then(function(){
 				window.location = '/browse';
-			}).fail(function (err) {
+			}).fail(function(err){
 				PromptForZip();
 			});
 		}).fail(function () {
@@ -71,13 +67,13 @@ requirejs([
 	function GetZipcode(zipcode) {
 		GeoCode.zipcode(zipcode).then(function (state) {
 			HidePromptForZip();
-			SaveState(state).then(function () {
+			SaveState(state).then(function(){
 				window.location = '/browse';
-			}).fail(function (err) {
+			}).fail(function(err){
 				PromptForZip();
 			});
 		}).fail(function () {
-			alert('sorry failed zipcode');
+			alert('Failed to find zipcode. Please try again.');
 			$('#zipcodeInput').val("");
 			PromptForZip();
 		});

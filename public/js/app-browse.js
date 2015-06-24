@@ -10,7 +10,9 @@ requirejs.config({
 		bootstrap: {'deps': ['jquery']},
 		ejs: {exports: 'ejs'},
 		URI: {deps: ['jquery']},
-		visible: {deps: ['jquery']}
+		visible: {deps: ['jquery']},
+		BootstrapTour: {deps: ['bootstrap']},
+		AppTour: {deps: ['BootstrapTour']}
 	},
 	paths: {
 		jquery: 'jquery-2.1.4.min',
@@ -21,7 +23,9 @@ requirejs.config({
 		underscore: 'underscore-min',
 		visible: 'jquery.visible.min',
 		bluebird: 'bluebird.min',
-		UsStates: 'us-states'
+		UsStates: 'us-states',
+		BootstrapTour: 'bootstrap-tour-standalone.min',
+		AppTour: 'app-recall-tour'
 	}
 });
 
@@ -36,7 +40,8 @@ requirejs([
 	'RecallSummaryProvider',
 	'Sisyphus',
 	'SyncFileReader',
-	'UsStates'
+	'UsStates',
+	'AppTour'
 ], function (Promise,
 			 bootstrap,
 			 ejs,
