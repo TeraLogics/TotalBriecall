@@ -79,7 +79,7 @@ exports.addCommentForRecall = function (req, res) {
 	commentsDal.add({
 		recallnumber: req.body.recallnumber,
 		name: req.body.name,
-		location: req.body.location,
+		location: req.body.location || req.session.preferences.state,
 		comment: req.body.comment
 	}).then(function (comment) {
 		res.json(comment);
