@@ -13,7 +13,7 @@ deploy:
     development: total-briecall-dev
   run:
     - npm run apidoc
-    - ls -lF app/views/docs/api/
+    - pwd
     - restart
 notifications:
   slack:
