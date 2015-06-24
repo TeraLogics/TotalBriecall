@@ -122,7 +122,7 @@ function _getBlobFromProductDescription(desc) {
 		charSum += addedLen;
 	}
 
-	console.log(charSum, JSON.stringify(used));
+	//console.log(charSum, JSON.stringify(used));
 
 	return used.join('+');
 }

@@ -96,17 +96,17 @@ exports.supportedCountFields = ['classification'];
  * @returns {Boolean} Whether or not it was valid.
  */
 exports.isValidState = function (state) {
-	return exports.stateMappings.hasOwnProperty(state.toUpperCase());
+	return _.isString(state) && exports.stateMappings.hasOwnProperty(state.toUpperCase());
 };
 
 /**
  * Validates keywords.
  * @param {String[]} keywords A list of keywords
- * @returns {String|undefined} Returns first invalid element or undefined if all are valid
+ * @returns {String|undefined} Returns null if not an array or the first invalid element or undefined if all are valid
  */
 exports.areValidKeywords = function (keywords) {
-	return _.find(keywords, function (keyword) {
-		return !exports.keywordMappings.hasOwnProperty(keyword.toLowerCase());
+	return !_.isArray(keywords) ? null : _.find(keywords, function (keyword) {
+		return _.isString(keyword) && !exports.keywordMappings.hasOwnProperty(keyword.toLowerCase());
 	});
 };
 
@@ -116,7 +116,7 @@ exports.areValidKeywords = function (keywords) {
  * @returns {Boolean} Whether or not it was valid.
  */
 exports.isValidStatus = function (status) {
-	return _.contains(exports.statusKeys, status.toLowerCase());
+	return _.isString(status) && _.contains(exports.statusKeys, status.toLowerCase());
 };
 
 /**
@@ -125,5 +125,5 @@ exports.isValidStatus = function (status) {
  * @returns {Boolean} Whether or not it was valid.
  */
 exports.isValidCountField = function (field) {
-	return _.contains(exports.supportedCountFields, field.toLowerCase());
+	return _.isString(field) && _.contains(exports.supportedCountFields, field.toLowerCase());
 };
