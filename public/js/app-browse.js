@@ -52,27 +52,66 @@ requirejs([
 			 Sisyphus,
 			 SyncFileReader,
 			 UsStates,
-			 BrowseTour
-) {
-	function addRecentRecalls(recalls) {
-		var recallCards = [],
-			collapsedRecalls = getPreference('collapsedrecalls', []);
+			 BrowseTour) {
 
-		recentRecallsView.removeClass('empty');
+	function _generateRecallCards(recalls) {
+		var cards = [],
+			collapsedRecalls = getPreference('collapsedrecalls', []),
+			pinnedRecalls = getPreference('pinnedrecalls', []);
 
-		for (var i = 0, l = recalls.length; i < l; i++) {
-			var cardView = $('<li class="recall-card col-xs-12 col-sm-6 col-lg-4">').append(
-				recallCardTemplate({summaryProvider: new RecallSummaryProvider(recalls[i], {
-					collapsed: _.contains(collapsedRecalls, recalls[i].openfda_id)
-				})}));
-
-			recallCards.push(cardView.get(0));
-
-			recentRecallsView.append(cardView);
-			recentRecallsMasonry.appended(cardView.get(0));
+		if (Object.prototype.toString.call(recalls) !== '[object Array]') {
+			recalls = [recalls];
 		}
 
-		recentRecallsMasonry.layout();
+		for (var i = 0, l = recalls.length; i < l; i++) {
+			var collapsed = _.contains(collapsedRecalls, recalls[i].openfda_id),
+				pinned = _.contains(pinnedRecalls, recalls[i].openfda_id),
+				cardView = null;
+
+			cardView = $('<li class="recall-card col-xs-12 col-sm-6 col-lg-4">').append(
+				recallCardTemplate({
+					summaryProvider: new RecallSummaryProvider(
+						recalls[i], {
+							collapsed: collapsed,
+							pinned: pinned
+						}
+					)
+				})
+			).data('recall-data', recalls[i]);
+
+			cards.push(cardView);
+		}
+
+		return $(cards);
+	}
+
+	function _addRecallCardsToView(view, cards) {
+		for (var i = 0, l = cards.length; i < l; i++) {
+			view.append(cards[i]);
+		}
+	}
+
+	function _layoutAddedRecallCards(masonry, cards) {
+		cards.each(function (index, element) {
+			masonry.appended(element);
+		});
+
+		masonry.layout();
+	}
+
+	function _layoutRemovedRecallCards(masonry, cards) {
+		cards.each(function (index, element) {
+			masonry.remove(element);
+		});
+
+		masonry.layout();
+	}
+
+	function addRecalls(view, masonry, recalls) {
+		var recallCards = _generateRecallCards(recalls);
+
+		_addRecallCardsToView(recentRecallsView, recallCards);
+		_layoutAddedRecallCards(recentRecallsMasonry, recallCards);
 	}
 
 	function setPreference(pref, value) {
@@ -115,11 +154,6 @@ requirejs([
 		setPreference('pinnedrecalls', pinnedRecalls);
 	}
 
-	function _onRecallUnpinned(recallId) {
-		var pinnedRecalls = getPreference('pinnedrecalls', []);
-
-	}
-
 	function _onRecallVisibility(recallId, visible) {
 		var collapsedRecalls = getPreference('collapsedrecalls', []);
 		if (!visible) {
@@ -137,7 +171,7 @@ requirejs([
 		appView = $('.application'),
 		recallCardTemplate = ejs.compile(SyncFileReader.request('/templates/recall-summary-card.ejs')),
 		pinnedRecallsView = $('#pinned-recalls'),
-		pinnedRecallMasonry = new Masonry(pinnedRecallsView[0], {
+		pinnedRecallsMasonry = new Masonry(pinnedRecallsView[0], {
 			itemSelector: '.recall-card'
 		}),
 		recentRecallsView = $('#recent-recalls'),
@@ -176,11 +210,15 @@ requirejs([
 			});
 		},
 		onProcess: function (result, meta, sisyphus) {
+			recentRecallsView.toggleClass('empty', (
+				result.data.length === 0 && recentRecallsView.children().length === 0
+			));
+
 			if (result.data.length === 0) {
 				sisyphus.stop();
 			}
 			else {
-				addRecentRecalls(result.data);
+				addRecalls(recentRecallsView, recentRecallsMasonry, result.data);
 				sisyphus.rebind();
 			}
 		}
@@ -245,10 +283,10 @@ requirejs([
 
 	eventTrolley.on('hidden.recall.pinned', function (event, data) {
 		_onRecallVisibility(data.recallId, false);
-		pinnedRecallMasonry.layout();
+		pinnedRecallsMasonry.layout();
 	}).on('shown.recall.pinned', function (event, data) {
 		_onRecallVisibility(data.recallId, true);
-		pinnedRecallMasonry.layout();
+		pinnedRecallsMasonry.layout();
 	}).on('hidden.recall.recent', function (event, data) {
 		_onRecallVisibility(data.recallId, false);
 		recentRecallsMasonry.layout();
@@ -259,11 +297,42 @@ requirejs([
 
 	// Hook up general controls
 	appView.on('click', '[data-action="recall-copy"]', function (event) {
+		var element = $(this),
+			text = element.data('text'),
+			recallLinkInput = recallLinkCopyModal.find('[name="recall-link"]');
+
+		recallLinkInput.val(text);
+
 		recallLinkCopyModal.modal('show');
 	});
 	appView.on('click', '[data-action="recall-pin"]', function (event) {
 		var element = $(this),
-			recallId = element.data('recallId');
+			recallId = element.data('recallId'),
+			cardView = element.closest('.recall-card'),
+			recallData = cardView.data('recall-data');
+
+		if (!element.hasClass('active')) {
+			_layoutRemovedRecallCards(recentRecallsMasonry, cardView);
+			recentRecallsView.toggleClass('empty', (recentRecallsView.children().length === 0 ));
+
+			cardView = _generateRecallCards(recallData);
+
+			pinnedRecallsView.toggleClass('empty', false);
+			_addRecallCardsToView(pinnedRecallsView, cardView);
+			_layoutAddedRecallCards(pinnedRecallsMasonry, cardView);
+			_onRecallPin(recallId, true);
+		}
+		else {
+			_layoutRemovedRecallCards(pinnedRecallsMasonry, cardView);
+			pinnedRecallsView.toggleClass('empty', (pinnedRecallsView.children().length === 0 ));
+
+			cardView = _generateRecallCards(recallData);
+
+			recentRecallsView.toggleClass('empty', false);
+			_addRecallCardsToView(recentRecallsView, cardView);
+			_layoutAddedRecallCards(recentRecallsMasonry, cardView);
+			_onRecallPin(recallId, false);
+		}
 	});
 
 	appDocument.ready(function () {

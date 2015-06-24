@@ -34,7 +34,7 @@
 				<li>
 					<div data-action="recall-pin" data-recall-id="<%= summaryProvider.getFdaId() %>"
 						 data-toggle="button"
-						 class="btn btn-link"><i class="glyphicon glyphicon-pushpin"></i> Pin
+						 class="btn btn-link <%= summaryProvider.isPinned() ? 'active' : '' %>"><i class="glyphicon glyphicon-pushpin"></i> Pin
 					</div>
 				</li>
 				<li>

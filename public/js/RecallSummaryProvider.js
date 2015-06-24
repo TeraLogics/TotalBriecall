@@ -16,6 +16,9 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 	RecallSummaryProvider.prototype.isCollapsed = function () {
 		return this._states.collapsed || false;
 	};
+	RecallSummaryProvider.prototype.isPinned = function () {
+		return this._states.pinned || false;
+	};
 	RecallSummaryProvider.prototype.getFirmName = function () {
 		return this._recall.recalling_firm;
 	};
