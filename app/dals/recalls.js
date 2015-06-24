@@ -59,7 +59,7 @@ exports.getById = function (obj) {
  * @param {String} [obj.to] The end date to search by.
  * @param {String[]} [obj.classificationlevels] A list of classification levels to search by.
  * @param {String[]} [obj.keywords] A list of key words to search by.
- * @returns {Promise.<Object>} A list of recalls and their metadata.
+ * @returns {Promise<Object>} A list of recalls and their metadata.
  */
 exports.search = function (obj) {
 	return Promise.try(function validate () {

@@ -31,7 +31,7 @@ exports.browse = function (req, res) {
 };
 
 exports.details = function (req, res) {
-	recallsDal.getById({id: req.params.id}).then(function (recall) {
+	recallsDal.getById({ id: req.params.id }).then(function (recall) {
 		var serverURL = req.protocol + '://' + req.get('host'),
 			urlObj = url.parse(serverURL);
 

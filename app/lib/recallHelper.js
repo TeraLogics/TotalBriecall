@@ -1,3 +1,7 @@
+'use strict';
+
+var _ = require('underscore');
+
 /**
  * State mappings.
  * @type {{AL: string[], AK: string[], AZ: string[], AR: string[], CA: string[], CO: string[], CT: string[], DE: string[], FL: string[], GA: string[], HI: string[], ID: string[], IL: string[], IN: string[], IA: string[], KS: string[], KY: string[], LA: string[], ME: string[], MD: string[], MA: string[], MI: string[], MN: string[], MS: string[], MO: string[], MT: string[], NE: string[], NV: string[], NH: string[], NJ: string[], NM: string[], NY: string[], NC: string[], ND: string[], OH: string[], OK: string[], OR: string[], PA: string[], RI: string[], SC: string[], SD: string[], TN: string[], TX: string[], UT: string[], VT: string[], VA: string[], WA: string[], WV: string[], WI: string[], WY: string[], DC: string[]}}
@@ -58,16 +62,21 @@ exports.stateMappings = {
 
 /**
  * Key work mappings.
- * @type {{dairy: string[], dye: string[], egg: string[], fish: string[], gluten: string[], nut: string[], soy: string[]}}
+ * @type {{dairy: string[], dye: string[], egg: string[], fruit: string[], fish: string[], gluten: string[], meat: string[], nut: string[], soy: string[], spice: string[], supplement: string[], vegetable: string[]}}
  */
 exports.keywordMappings = {
-	dairy: ['dairy', 'milk', 'cheese', 'cheeses', 'whey'],
-	dye: ['dye', 'color', 'colors', 'red', 'yellow', 'pink', 'blue', 'green'],
-	egg: ['egg', 'eggs'],
-	fish: ['fish', 'shellfish', 'oyster', 'oysters'],
-	gluten: ['gluten', 'wheat'],
-	nut: ['nut', 'nuts', 'peanut', 'peanuts', 'seed', 'seeds', 'walnut', 'walnuts', 'almond', 'almonds', 'pistachio', 'pistachios', 'hazelnut', 'hazelnuts'],
-	soy: ['soy', 'tofu']
+	'dairy': ['dairy', 'butter', 'cheddar', 'cheese', 'chocolate', 'cream', 'milk', 'whey'],
+	'dye': ['dye', 'color', 'red', 'yellow', 'pink', 'blue', 'green'],
+	'egg': ['egg'],
+	'fish': ['fish', 'shellfish', 'oyster', 'tuna', 'salmon', 'shrimp', 'herring', 'clam', 'lobster', 'seafood'],
+	'fruit': ['fruit', 'corn', 'raspberry', 'pineapple', 'pear', 'peach', 'apple', 'plum', 'lemon', 'strawberry', 'mango', 'cranberry', 'orange', 'cherry', 'salsa', 'melon', 'tomato', 'raisin', 'olive', 'grape', 'pumpkin', 'pomegranate'],
+	'gluten': ['gluten', 'wheat', 'bread', 'pasta', 'flour', 'rice', 'bagel', 'cake', 'cookie', 'brownie', 'taco', 'pizza'],
+	'meat': ['meat', 'chicken', 'steak', 'beef', 'sausage', 'pork', 'ham', 'turkey', 'bacon'],
+	'nut': ['nut', 'peanut', 'seed', 'walnut', 'almond', 'pistachio', 'hazelnut', 'pecan'],
+	'soy': ['soy', 'tofu'],
+	'spice': ['spice', 'vanilla', 'peppermint', 'garlic', 'ginseng', 'ginger', 'herb', 'seasoning', 'cumin', 'cinnamon', 'salt', 'coriander', 'honey'],
+	'supplement': ['supplement', 'coffee'],
+	'vegetable': ['vegetable', 'salad', 'spinach', 'lettuce', 'sprout', 'mushroom', 'onion', 'potato', 'romaine', 'broccoli', 'celery', 'cucumber', 'pea', 'cabbage', 'chili', 'jalapeno', 'pepper', 'bean']
 };
 
 /**

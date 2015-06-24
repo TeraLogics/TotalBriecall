@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('underscore');
 
 /**
@@ -6,5 +8,5 @@ var _ = require('underscore');
  * @returns {Boolean} Whether or not the input was an integer
  */
 exports.isValidInt = function (input) {
-	return _.isNumber(input) && _.isFinite(parseInt(input, 10));
+	return _.isFinite(parseInt(input, 10));
 };

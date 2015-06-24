@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Gets a custom error with extra properties.
  * @param {String} message The error message.

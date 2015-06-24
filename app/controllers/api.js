@@ -1,7 +1,6 @@
 'use strict';
 
 var _ = require('underscore'),
-	moment = require('moment'),
 	path = require('path'),
 	commentsDal = require(path.join(global.__dalsdir, 'comments')),
 	recallsDal = require(path.join(global.__dalsdir, 'recalls'));
@@ -12,7 +11,7 @@ var _ = require('underscore'),
  * @returns {Number|NaN} The number; or, if `input` cannot be converted, `NaN`.
  * @private
  */
-function _toNumber (input) {
+function _toNumber(input) {
 	var number = parseInt(input, 10);
 	return _.isFinite(number) ? number : NaN;
 }
@@ -24,7 +23,7 @@ function _toNumber (input) {
  * @param message
  * @private
  */
-function _returnError (res, message, type) {
+function _returnError(res, message, type) {
 	var status;
 
 	message = message || 'An unknown error occurred.';
@@ -55,7 +54,7 @@ function _returnError (res, message, type) {
  * @param {Object} res The HTTP response object.
  * @private
  */
-function _handleError (res, err) {
+function _handleError(res, err) {
 	if (err instanceof Error) {
 		_returnError(res, err.message, err.type);
 	} else {
@@ -132,10 +131,10 @@ exports.getRecalls = function (req, res) {
 		from: _toNumber(req.query.from),
 		to: _toNumber(req.query.to),
 		state: req.query.state,
-		eventid: _toNumber(req.query.eventid)
+		eventid: _toNumber(req.query.eventid),
+		skip: _toNumber(req.query.skip),
+		limit: _toNumber(req.query.limit)
 	};
-
-
 
 	if (req.query.classificationlevels) {
 		if (!_.isArray(req.query.classificationlevels)) {
