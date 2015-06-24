@@ -18,7 +18,7 @@ var recallTour = new Tour({
 			element: "div .recall-summary-card:first",
 			title: "Recalls",
 			content: "Each card shows an on-going recall in your area. Watch out!",
-			placement: "right",
+			placement: "top",
 			backdrop: true
 		},
 		{
@@ -37,7 +37,7 @@ var recallTour = new Tour({
 			element: "div .recall-summary-card:first .panel-body",
 			title: "Description",
 			content: "Why the product is being recalled",
-			placement: "right"
+			placement: "top"
 		},
 		{
 			element: "div .recall-summary-card:first .panel-footer ul .glyphicon-share-alt",
@@ -55,19 +55,19 @@ var recallTour = new Tour({
 			element: "div .recall-summary-card:first .panel-footer ul .glyphicon-pushpin",
 			title: "#Pinning",
 			content: "You can pin recalls to find them again easily",
-			placement: "right"
+			placement: "top"
 		},
 		{
 			element: "div .recall-summary-card:first .recall-card-toggle",
 			title: "Hide Recalls",
 			content: "If you don't want to see a recall again, you can hide it from view",
-			placement: "top"
+			placement: "left"
 		},
 		{
 			element: "div .recall-summary-card:first .glyphicon-info-sign",
 			title: "Get More Info",
 			content: "Click the info button for more info about a recall, such as the states affected and other people's comments",
-			placement: "bottom"
+			placement: "top"
 		},
 		{
 			title: "The End",
