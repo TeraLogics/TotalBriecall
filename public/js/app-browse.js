@@ -20,7 +20,8 @@ requirejs.config({
 		masonry: 'masonry.pkgd.min',
 		underscore: 'underscore-min',
 		visible: 'jquery.visible.min',
-		bluebird: 'bluebird.min'
+		bluebird: 'bluebird.min',
+		UsStates: 'us-states'
 	}
 });
 
@@ -35,7 +36,7 @@ requirejs([
 	'RecallSummaryProvider',
 	'Sisyphus',
 	'SyncFileReader',
-	'us-states'
+	'UsStates'
 ], function (Promise,
 			 bootstrap,
 			 ejs,
@@ -45,7 +46,9 @@ requirejs([
 			 Masonry,
 			 RecallSummaryProvider,
 			 Sisyphus,
-			 SyncFileReader) {
+			 SyncFileReader,
+			 UsStates
+) {
 	function addRecentRecalls(recalls) {
 		recentRecallsView.removeClass('empty');
 		var recallCards = [];
@@ -154,9 +157,15 @@ requirejs([
 		};
 	};
 
-	map.add('layer', getStateGeoJSON([brie.preferences.state]), {
-		style: style
-	});
+	if (brie.preferences.state) {
+		map.add('layer', UsStates.getStateGeoJSON([brie.preferences.state]), {
+			style: style
+		});
+	} else {
+		map.add('layer', UsStates.getNationGeoJSON(), {
+			style: style
+		});
+	}
 
 	/* disable moving the header map */
 	map._map.dragging.disable();
