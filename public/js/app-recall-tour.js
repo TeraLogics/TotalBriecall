@@ -1,45 +1,85 @@
-'use strict';
-
-/* globals
- Tour
- */
-
 var recallTour = new Tour({
+	storage: false,
 	steps: [
 		{
-			title: "Welcome",
-			content: "Welcome to the cheesiest recall page.",
-			orphan: true
+			title: "Getting Started",
+			content: "Welcome to the cheesiest recall page. We'll give you a tour of the site.",
+			orphan: true,
+			backdrop: true
 		},
 		{
-			element: "#observe",
-			title: "This is the search bar",
-			content: "Text can be typed in or filters can be selected in the filter menu. Click the caret icon to expand the filter menu.",
-			placement: "left",
-			onShown: function (tour) {
-				$(".popover.tour-tour .popover-navigation .btn-group .btn[data-role=next]").prop("disabled", true);
+			element: "#header-map",
+			title: "Location",
+			content: "We'll only show you recalls affecting your state.",
+			placement: "bottom",
+			backdrop: true
+		},
+		{
+			element: "div .recall-summary-card:first",
+			title: "Recalls",
+			content: "Each card shows an on-going recall in your area. Watch out!",
+			placement: "right",
+			backdrop: true
+		},
+		{
+			element: "div .recall-summary-card:first .panel-heading .panel-title:first",
+			title: "Product",
+			content: "This describes the product being recalled",
+			placement: "top"
+		},
+		{
+			element: "div .recall-summary-card:first .panel-heading .panel-subtitle:first",
+			title: "Company",
+			content: "This describes the company recalling the product",
+			placement: "bottom"
+		},
+		{
+			element: "div .recall-summary-card:first .panel-body",
+			title: "Description",
+			content: "Why the product is being recalled",
+			placement: "right"
+		},
+		{
+			element: "div .recall-summary-card:first .panel-footer ul .glyphicon-share-alt",
+			title: "Share",
+			content: "Share this recall with someone via Facebook, E-mail or get a link",
+			placement: "bottom",
+			onShown: function () {
+				$("div .recall-summary-card:first .panel-footer ul .glyphicon-share-alt").parent().dropdown('toggle');
 			},
-			reflex: true,
+			onHidden: function () {
+				$("div .recall-summary-card:first .panel-footer ul .open").removeClass('open');
+			}
+		},
+		{
+			element: "div .recall-summary-card:first .panel-footer ul .glyphicon-pushpin",
+			title: "#Pinning",
+			content: "You can pin recalls to find them again easily",
+			placement: "left"
+		},
+		{
+			element: "div .recall-summary-card:first .recall-card-toggle",
+			title: "Hide Recalls",
+			content: "If you don't want to see a recall again, you can hide it from view",
+			placement: "top"
+		},
+		{
+			element: "div .recall-summary-card:first .glyphicon-info-sign",
+			title: "Get More Info",
+			content: "Click the info button for more info about a recall, such as the states affected and other people's comments",
+			placement: "right"
+		},
+		{
+			title: "The End",
+			content: "You're now a recall master.  Remember with great power comes great responsibility, share your recall knowledge with others!",
+			orphan: true,
 			backdrop: true
 		}
-		// show a card
-
-		// focus on the title
-
-		// manufacturer
-
-		// description
-
-		// how to get more info
-
-		// pin a card
-
-		//share with others
-
-		//hide
-
-		//TODO add filtering
 	]
 });
 
 recallTour.init();
+
+$(document).ready(function(){
+	recallTour.start();
+});

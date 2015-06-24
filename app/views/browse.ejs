@@ -9,9 +9,8 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-sm-6 col-md-8">
-					<h1><%= state %></h1>
-
 					<div id="header-map">
+						<h1><%= state %></h1>
 						<!-- map goes here -->
 					</div>
 					<div>
@@ -94,6 +93,10 @@
 </div><!-- /.modal -->
 <script data-main="/js/app-browse" src="/js/require.js"></script>
 <script src="/js/us-states.js"></script>
+<link rel="stylesheet" href="/css/bootstrap-tour-standalone.min.css">
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/bootstrap-tour-standalone.min.js"></script>
+<script src="/js/app-recall-tour.js"></script>
 <script>
 	var state = '<%= state %>',
 		fbappid = '<%= fbappid %>';
