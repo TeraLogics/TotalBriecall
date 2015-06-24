@@ -55,10 +55,6 @@ module.exports = function (app) {
 	 * @apiParam {String} location The location of the user.
 	 * @apiParam {String} comment The comment.
 	 *
-	 * @apiUse SuccessResponse
-	 *
-	 * @apiUse SuccessExample
-	 *
 	 * @apiError (FailureHeader) InvalidArgumentError `recallnumber` or `location` or `comment` was not provided or was invalid.
 	 *
 	 * @apiUse InvalidArgumentErrorExample
