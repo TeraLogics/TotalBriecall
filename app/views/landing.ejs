@@ -77,7 +77,7 @@
 					PromptForZip();
 				});
 			}).fail(function () {
-				alert('sorry failed zipcode');
+				alert('Failed to find zipcode. Please try again.');
 				$('#zipcodeInput').val("");
 				PromptForZip();
 			});

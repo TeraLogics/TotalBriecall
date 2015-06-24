@@ -55,7 +55,7 @@ var recallTour = new Tour({
 			element: "div .recall-summary-card:first .panel-footer ul .glyphicon-pushpin",
 			title: "#Pinning",
 			content: "You can pin recalls to find them again easily",
-			placement: "left"
+			placement: "right"
 		},
 		{
 			element: "div .recall-summary-card:first .recall-card-toggle",
@@ -67,7 +67,7 @@ var recallTour = new Tour({
 			element: "div .recall-summary-card:first .glyphicon-info-sign",
 			title: "Get More Info",
 			content: "Click the info button for more info about a recall, such as the states affected and other people's comments",
-			placement: "right"
+			placement: "bottom"
 		},
 		{
 			title: "The End",
