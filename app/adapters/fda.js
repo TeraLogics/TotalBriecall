@@ -177,6 +177,8 @@ function _formatRecallResults(data) {
 			return regex.test(foodrecall.product_description) || regex.test(foodrecall.reason_for_recall);
 		})).sort();
 
+		foodrecall.openfda_id = foodrecall['@id'];
+
 		return _.omit(foodrecall, ['@id', '@epoch', 'openfda']);
 	});
 
