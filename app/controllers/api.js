@@ -95,26 +95,15 @@ exports.addCommentForRecall = function (req, res) {
  * @param res
  */
 exports.getRecallById = function (req, res) {
-	if (req.query.skip) {
-		_returnError(res, 'Invalid skip - not allowed', 'INVALID_ARGUMENT');
-	} else if (req.query.limit) {
-		_returnError(res, 'Invalid limit - not allowed', 'INVALID_ARGUMENT');
-	} else {
-		recallsDal.getById({
-			id: req.params.id
-		}).then(function (foodResult) {
-			res.json(foodResult);
-		}).catch(function (err) {
-			_handleError(res, err);
-		}).done();
-	}
+	recallsDal.getById({
+		id: req.params.id
+	}).then(function (foodResult) {
+		res.json(foodResult);
+	}).catch(function (err) {
+		_handleError(res, err);
+	}).done();
 };
 
-/* TODO
- * Filter results
- * - nationwide match: make sure there is no state designation
- * - filter out 'no' when found in distribution?
- */
 /**
  * Gets recalls for matches against provided input
  * @param req
@@ -173,19 +162,13 @@ exports.getRecalls = function (req, res) {
  * @param res
  */
 exports.getRecallsCounts = function (req, res) {
-	if (req.query.skip) {
-		_returnError(res, 'Invalid skip - not allowed', 'INVALID_ARGUMENT');
-	} else if (req.query.limit) {
-		_returnError(res, 'Invalid limit - not allowed', 'INVALID_ARGUMENT');
-	} else {
-		recallsDal.getCounts({
-			field: req.query.field,
-			state: req.query.state,
-			status: req.query.status
-		}).then(function (counts) {
-			res.json(counts);
-		}).catch(function (err) {
-			_handleError(res, err);
-		}).done();
-	}
+	recallsDal.getCounts({
+		field: req.query.field,
+		state: req.query.state,
+		status: req.query.status
+	}).then(function (counts) {
+		res.json(counts);
+	}).catch(function (err) {
+		_handleError(res, err);
+	}).done();
 };

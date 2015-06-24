@@ -211,9 +211,32 @@ function _formatRecallResults(data) {
 			foodrecall.affectednationally = false;
 		}
 
-		foodrecall.categories = _.keys(_.pick(keywordRegexes, function (regex) {
-			return regex.test(foodrecall.product_description) || regex.test(foodrecall.reason_for_recall);
-		})).sort();
+		foodrecall.categories = _.pluck(_.reduce(keywordRegexes, function (memo, regex, key) {
+			var reasonMatchPos = foodrecall.reason_for_recall.search(regex),
+				reasonMatched = reasonMatchPos !== -1,
+				descriptionMatchPost = foodrecall.product_description.search(regex),
+				descriptionMatched = descriptionMatchPost !== -1,
+				priority = 0;
+
+			if (reasonMatched) {
+				priority += 500 - reasonMatchPos;
+			}
+
+			if (descriptionMatched) {
+				priority += 100 - reasonMatchPos;
+			}
+
+			if (reasonMatched || descriptionMatched) {
+				memo.push({
+					'key': key,
+					'value': priority
+				});
+			}
+
+			return memo;
+		}, []).sort(function (a, b) {
+			return b.value - a.value;
+		}), 'key');
 
 		foodrecall.openfda_id = foodrecall['@id'];
 

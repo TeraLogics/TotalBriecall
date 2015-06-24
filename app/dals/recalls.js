@@ -18,8 +18,7 @@ var _ = require('underscore'),
  */
 exports.getById = function (obj) {
 	return Promise.try(function validate () {
-		// TODO validate against pattern?
-		if (!obj.id || !_.isString(obj.id)) {
+		if (!obj.id || !validationHelper.isBase64String(obj.id)) {
 			throw errorHelper.getValidationError('Invalid id');
 		}
 	}).then(function () {
@@ -45,11 +44,6 @@ exports.getById = function (obj) {
 	});
 };
 
-/* TODO
- * Filter results
- * - nationwide match: make sure there is no state designation
- * - filter out 'no' when found in distribution?
- */
 /**
  *
  * Gets recalls for matches against provided input.
@@ -67,15 +61,15 @@ exports.search = function (obj) {
 			throw errorHelper.getValidationError('Invalid state');
 		}
 
-		if (obj.eventid && !validationHelper.isValidInt(obj.eventid)) {
+		if (obj.eventid && !validationHelper.isInt(obj.eventid)) {
 			throw errorHelper.getValidationError('Invalid eventid');
 		}
 
-		if (obj.from && (!validationHelper.isValidInt(obj.from) || !moment.unix(obj.from).isValid())) {
+		if (obj.from && (!validationHelper.isInt(obj.from) || !moment.unix(obj.from).isValid())) {
 			throw errorHelper.getValidationError('Invalid from');
 		}
 
-		if (obj.to && (!validationHelper.isValidInt(obj.to) || !moment.unix(obj.to).isValid())) {
+		if (obj.to && (!validationHelper.isInt(obj.to) || !moment.unix(obj.to).isValid())) {
 			throw errorHelper.getValidationError('Invalid from');
 		}
 
@@ -84,7 +78,7 @@ exports.search = function (obj) {
 		}
 
 		if (obj.classificationlevels && !_.isArray(obj.classificationlevels) && !_.every(obj.classificationlevels, function (c) {
-				return validationHelper.isValidInt(c) && c >= 1 && c <= 3;
+				return validationHelper.isInt(c) && c >= 1 && c <= 3;
 			})) {
 			throw errorHelper.getValidationError('Invalid classificationlevels');
 		}
@@ -93,11 +87,11 @@ exports.search = function (obj) {
 			throw errorHelper.getValidationError('Invalid keywords - could not match keywords');
 		}
 
-		if (obj.skip && !validationHelper.isValidInt(obj.skip)) {
+		if (obj.skip && !validationHelper.isInt(obj.skip)) {
 			throw errorHelper.getValidationError('Invalid skip');
 		}
 
-		if (obj.limit && !validationHelper.isValidInt(obj.limit)) {
+		if (obj.limit && !validationHelper.isInt(obj.limit)) {
 			throw errorHelper.getValidationError('Invalid limit');
 		}
 	}).then(function () {
