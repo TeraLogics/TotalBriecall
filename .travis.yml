@@ -12,8 +12,11 @@ deploy:
     master: total-briecall
     development: total-briecall-dev
   run:
-    - ls -lF
+    - ls -lF app/views
+    - ls -lF app/views/docs
     - npm run apidoc
+    - ls -lF app/views/docs
+    - ls -lF app/views/docs/api
     - restart
 notifications:
   slack:
