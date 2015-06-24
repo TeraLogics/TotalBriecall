@@ -23,6 +23,9 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 	RecallSummaryProvider.prototype.getRecallId = function () {
 		return this._recall.id;
 	};
+	RecallSummaryProvider.prototype.getRecallNumber = function () {
+		return this._recall.recall_number;
+	};
 	RecallSummaryProvider.prototype.getSanitizedRecallId = function () {
 		return this._recall.id.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
 	};
@@ -45,6 +48,7 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		return _getBaseURL() + this.getRecallDetailsLink();
 	};
 	RecallSummaryProvider.prototype.getFacebookShareLink = function () {
+		// TODO share instead of feed?
 		return ejs.render('http://www.facebook.com/dialog/feed?' + [
 				'app_id=<%=app_id%>',
 				'redirect_uri=<%=redirect_uri%>',
@@ -56,11 +60,11 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 				'picture=<%=picture%>'
 			].join('&'), {
 			app_id: fbappid,
-			redirect_uri: encodeURIComponent(this.getShareLink()), // TODO: landing page for redirection?
+			redirect_uri: encodeURIComponent(_getBaseURL() + '/popupclose'), // TODO: landing page for redirection?
 			link: encodeURIComponent(this.getShareLink()),
-			name: encodeURIComponent('Food Recall: ' + this._recall.recall_number),
-			caption: encodeURIComponent(this._recall.product_description),
-			description: encodeURIComponent(this._recall.reason_for_recall),
+			name: encodeURIComponent('Food Recall: ' + this.getRecallNumber()),
+			caption: encodeURIComponent((this.getFirmName().length < 30 ? this.getFirmName() : this.getFirmName().substr(0, 30) + '...') + ' recalls ' + (this.getProductDescription().length < 30 ? this.getProductDescription() : this.getProductDescription().substr(0, 30) + '...')),
+			description: encodeURIComponent(this.getReasonForRecall().length < 100 ? this.getReasonForRecall() : this.getReasonForRecall().substr(0, 100) + '...'),
 			picture: encodeURIComponent('http://canyoufreeze.com/wp-content/uploads/2014/09/brie-cheese.jpg')
 		});
 	};

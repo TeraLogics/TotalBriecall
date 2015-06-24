@@ -19,4 +19,7 @@ module.exports = function (app) {
 	app.route('/preferences')
 		.get(siteCtrl.preferencesGet)
 		.post(siteCtrl.preferencesSet);
+
+	app.route('/popupclose')
+		.get(siteCtrl.popupClose);
 };

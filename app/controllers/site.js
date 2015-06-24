@@ -100,3 +100,7 @@ exports.preferencesSet = function (req, res) {
 		res.status(500).send(e.message);
 	}
 };
+
+exports.popupClose = function (req, res) {
+	return res.render('popupclose');
+};
