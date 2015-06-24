@@ -3,5 +3,26 @@
   "description": "Prototype for Total Briecall",
   "repository": "https://github.com/teralogics/TotalBriecall",
   "logo": "http://total-briecall.herokuapp.com/node.svg",
-  "keywords": ["node", "express", "static"]
+  "keywords": ["node", "express", "static", "brie"],
+  "addons": [
+    "mongolab"
+  ],
+  "env": {
+    "NEWRELIC_KEY ": {
+      "description": "The API key to your New Relic account.",
+      "value": ""
+    },
+    "SECRET": {
+      "description": "The application secret used to encrypt cookie and session data.",
+      "generator": "secret"
+    },
+    "SESSIONLENGTH": {
+      "description": "The session length in seconds.",
+      "value": "3600000000"
+    },
+    "USPS_USER": {
+      "description": "The API key to USPS account.",
+      "value": ""
+    }
+  }
 }
