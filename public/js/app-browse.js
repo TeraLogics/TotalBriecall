@@ -86,10 +86,10 @@ requirejs([
 	}
 
 	function getPreference(pref, dflt) {
-		if (!brie.preferences || !brie.preferences.hasOwnProperty('collapsedrecalls')) {
+		if (!brie.preferences || !brie.preferences.hasOwnProperty(pref)) {
 			return dflt;
 		} else {
-			return brie.preferences['collapsedrecalls'];
+			return brie.preferences[pref];
 		}
 	}
 
@@ -100,6 +100,24 @@ requirejs([
 			dataType: 'JSON',
 			data: brie.preferences
 		});
+	}
+
+	function _onRecallPin(recallId, pinned) {
+		var pinnedRecalls = getPreference('pinnedrecalls', []);
+
+		if (pinned) {
+			pinnedRecalls.push(recallId);
+		}
+		else {
+			pinnedRecalls = _.without(pinnedRecalls, recallId);
+		}
+
+		setPreference('pinnedrecalls', pinnedRecalls);
+	}
+
+	function _onRecallUnpinned(recallId) {
+		var pinnedRecalls = getPreference('pinnedrecalls', []);
+
 	}
 
 	function _onRecallVisibility(recallId, visible) {
@@ -147,8 +165,8 @@ requirejs([
 				meta.skip += meta.limit;
 			}
 
-			if (brie.preferences.state) {
-				meta.state = brie.preferences.state;
+			if (getPreference('state')) {
+				meta.state = getPreference('state');
 			}
 
 			return $.ajax({
@@ -166,35 +184,6 @@ requirejs([
 				sisyphus.rebind();
 			}
 		}
-	});
-
-	eventTrolley.on('hidden.recall.pinned', function (event, data) {
-		_onRecallVisibility(data.recallId, false);
-		pinnedRecallMasonry.layout();
-	}).on('shown.recall.pinned', function (event, data) {
-		_onRecallVisibility(data.recallId, true);
-		pinnedRecallMasonry.layout();
-	}).on('hidden.recall.recent', function (event, data) {
-		_onRecallVisibility(data.recallId, false);
-		recentRecallsMasonry.layout();
-	}).on('shown.recall.recent', function (event, data) {
-		_onRecallVisibility(data.recallId, true);
-		recentRecallsMasonry.layout();
-	});
-
-	pinnedRecallsView.on('shown.bs.collapse hidden.bs.collapse', '.recall-card .collapse', function (event) {
-		var element = $(this),
-			visible = event.type === 'shown',
-			recallId = element.data('recallId');
-
-		eventTrolley.triggerHandler(visible ? 'shown.recall.pinned' : 'hidden.recall.pinned', {recallId: recallId});
-	});
-	recentRecallsView.on('shown.bs.collapse hidden.bs.collapse', '.recall-card .collapse', function (event) {
-		var element = $(this),
-			visible = event.type === 'shown',
-			recallId = element.data('recallId');
-
-		eventTrolley.triggerHandler(visible ? 'shown.recall.recent' : 'hidden.recall.recent', {recallId: recallId});
 	});
 
 	var map = new MapApp({
@@ -218,8 +207,8 @@ requirejs([
 		};
 	};
 
-	if (brie.preferences.state) {
-		map.add('layer', UsStates.getStateGeoJSON([brie.preferences.state]), {
+	if (getPreference('state')) {
+		map.add('layer', UsStates.getStateGeoJSON([getPreference('state')]), {
 			style: style
 		});
 	} else {
@@ -238,6 +227,35 @@ requirejs([
 	if (map._map.tap) {
 		map._map.tap.disable();
 	}
+
+	pinnedRecallsView.on('shown.bs.collapse hidden.bs.collapse', '.recall-card .collapse', function (event) {
+		var element = $(this),
+			visible = event.type === 'shown',
+			recallId = element.data('recallId');
+
+		eventTrolley.triggerHandler(visible ? 'shown.recall.pinned' : 'hidden.recall.pinned', {recallId: recallId});
+	});
+	recentRecallsView.on('shown.bs.collapse hidden.bs.collapse', '.recall-card .collapse', function (event) {
+		var element = $(this),
+			visible = event.type === 'shown',
+			recallId = element.data('recallId');
+
+		eventTrolley.triggerHandler(visible ? 'shown.recall.recent' : 'hidden.recall.recent', {recallId: recallId});
+	});
+
+	eventTrolley.on('hidden.recall.pinned', function (event, data) {
+		_onRecallVisibility(data.recallId, false);
+		pinnedRecallMasonry.layout();
+	}).on('shown.recall.pinned', function (event, data) {
+		_onRecallVisibility(data.recallId, true);
+		pinnedRecallMasonry.layout();
+	}).on('hidden.recall.recent', function (event, data) {
+		_onRecallVisibility(data.recallId, false);
+		recentRecallsMasonry.layout();
+	}).on('shown.recall.recent', function (event, data) {
+		_onRecallVisibility(data.recallId, true);
+		recentRecallsMasonry.layout();
+	});
 
 	// Hook up general controls
 	appView.on('click', '[data-action="recall-copy"]', function (event) {
