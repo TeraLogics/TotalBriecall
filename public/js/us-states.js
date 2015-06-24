@@ -600,7 +600,7 @@ define(function (require) {
 			"features": []
 		};
 		if (!states || !_.isArray(states)) { //if states is null or not an array return all states
-			featureCollection.features = _.toArray(stateFeatures);
+			return getUsNationGeoJSON();
 		} else {
 			_.each(states, function (state) {
 				state = state.length === 2 ? state : stateNameToAbbr[state];
@@ -615,7 +615,9 @@ define(function (require) {
 	function getUsNationGeoJSON() {
 		return {
 			"type": "FeatureCollection",
-			"features": _.toArray(stateFeatures)
+			"features": _.toArray(_.filter(stateFeatures, function(state, key){
+				return key !== "AK" && key !== "HI" && key !== "PR";
+			}))
 		};
 	}
 

@@ -65,12 +65,12 @@ requirejs([
 
 	map.create();
 
-	if (brie.page.recall.affectedstates) {
+	if (brie.page.recall.affectedstates && !brie.page.recall.affectednationally) {
 		map.add('layer', UsStates.getStateGeoJSON(brie.page.recall.affectedstates), {
 			style: style
 		});
 	} else {
-		map.add('layer', UsStates.getNationGeoJSON(), {
+		map.add('layer', UsStates.getUsNationGeoJSON(), {
 			style: style
 		});
 	}
