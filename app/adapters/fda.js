@@ -24,9 +24,7 @@ var options = {
 	limit = 100,
 	stateAbbreviations = _.keys(recallHelper.stateMappings).sort(),
 	stateRegexes = _.reduce(recallHelper.stateMappings, function (memo, values, key) {
-		memo[key] = _.map(values, function (val) {
-			return new RegExp('\\b' + val + '\\b');
-		});
+		memo[key] = new RegExp('\\b' + values.join('|') + '\\b', 'i');
 		return memo;
 	}, {}),
 	nationalTerms = [
@@ -37,11 +35,16 @@ var options = {
 		'us',
 		'usa'
 	],
-	nationalRegexes = _.map(nationalTerms, function (val) {
-		return new RegExp('\\b' + val + '\\b', 'i');
-	}),
+	nationalRegex = new RegExp('\\b' + nationalTerms.join('|') + '\\b', 'i'),
+	keywordRegexes = _.reduce(recallHelper.keywordMappings, function (memo, values, key) {
+		memo[key] = new RegExp('\\b' + values.join('|') + '\\b', 'i');
+		return memo;
+	}, {}),
+// TODO: fix single quotes in product descriptions
 	protoPlusRegex = /\s+|,|%[0-9a-f]{2}/ig,
-	dedupPlusRegex = /\++/g;
+	dedupPlusRegex = /\++/g,
+	spaceRegex = / /g,
+	lastLetterRegex = /(\w)$/i;
 
 /**
  * Format input for use in search
@@ -50,20 +53,47 @@ var options = {
  * @private
  */
 function _formatValue(val) {
-	return val.replace(/ /g, '+');
+	if (spaceRegex.test(val)) {
+		return '"' + val.replace(spaceRegex, '+') + '"';
+	} else {
+		return val;
+	}
 }
 
 /**
  * Converts an array of values to query string using field
  * @param {String[]} arr Values to match against
- * @param {String} field Field to query on
+ * @param {String} [field] Field to query on
  * @returns {string}
  * @private
  */
 function _convertArrayToParam(arr, field) {
-	return '(' + _.map(arr, function (ele) {
-			return field + ':"' + _formatValue(ele) + '"';
-		}).join('+') + ')';
+	return (field ? field + ':' : '') + '(' + _.map(arr, _formatValue).join('+') + ')';
+}
+
+/**
+ * Pluralizes a word (naive)
+ * @param {String} word Word to pluralize
+ * @returns {String|null} Pluralized string
+ * @private
+ */
+function _pluralizeWord(word) {
+	var lastLetter = word.match(lastLetterRegex);
+	if (lastLetter) {
+		lastLetter = lastLetter[1];
+	}
+	switch (lastLetter) {
+		case null:
+		case 's':
+			return word;
+		case 'y':
+			return word.replace(lastLetterRegex, 'ies');
+		case 'o':
+		case 'i':
+			return word + 'es';
+		default:
+			return word + 's';
+	}
 }
 
 /**
@@ -132,20 +162,20 @@ function _formatRecallResults(data) {
 		foodrecall.mandated = foodrecall.voluntary_mandated ? foodrecall.voluntary_mandated.match(/mandated/i) !== null : false;
 
 		// If we match a national term, select all states
-		if (_.some(nationalRegexes, function (regex) {
-				return regex.test(foodrecall.distribution_pattern);
-			})) {
+		if (nationalRegex.test(foodrecall.distribution_pattern)) {
 			foodrecall.affectedstates = stateAbbreviations;
 			foodrecall.affectednationally = true;
 		} else {
 			// Otherwise, find the states that match
-			foodrecall.affectedstates = _.keys(_.pick(stateRegexes, function (regexs) {
-				return _.some(regexs, function (regex) {
-					return regex.test(foodrecall.distribution_pattern);
-				});
+			foodrecall.affectedstates = _.keys(_.pick(stateRegexes, function (regex) {
+				return regex.test(foodrecall.distribution_pattern);
 			})).sort();
 			foodrecall.affectednationally = false;
 		}
+
+		foodrecall.categories = _.keys(_.pick(keywordRegexes, function (regex) {
+			return regex.test(foodrecall.product_description) || regex.test(foodrecall.reason_for_recall);
+		})).sort();
 
 		return _.omit(foodrecall, ['@id', '@epoch', 'openfda']);
 	});
@@ -270,7 +300,7 @@ exports.searchFoodRecalls = function (obj) {
 	}
 
 	if (obj.firmname) {
-		search.push('recalling_firm:"' + _formatValue(obj.firmname) + '"');
+		search.push('recalling_firm:' + _formatValue(obj.firmname));
 	}
 
 	if (obj.from && obj.to) {
@@ -285,8 +315,15 @@ exports.searchFoodRecalls = function (obj) {
 
 	if (obj.keywords) {
 		search.push(_convertArrayToParam(_.reduce(obj.keywords, function (arr, keyword) {
-			return arr.concat(recallHelper.keywordMappings[keyword.toLowerCase()]);
-		}, []), 'reason_for_recall'));
+			return arr.concat(_.reduce(recallHelper.keywordMappings[keyword.toLowerCase()], function (memo, item) {
+				memo.push(item);
+				var plural = _pluralizeWord(item);
+				if (plural !== item) {
+					memo.push(plural);
+				}
+				return memo;
+			}, []));
+		}, [])));
 	}
 
 	return _makeRequest({
