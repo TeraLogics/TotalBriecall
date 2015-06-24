@@ -12,10 +12,7 @@ deploy:
     master: total-briecall
     development: total-briecall-dev
   run:
-    - ls -lF app/views
-    - ls -lF app/views/docs
     - npm run apidoc
-    - find . -path ./node_modules -prune -o -name api_project.json
     - restart
 notifications:
   slack:
