@@ -16,7 +16,7 @@ var app = express(),
 // Populate the Express routes.
 require(path.join(global.__routedir, 'api'))(app);
 
-function _createInvalidArgumentResponse(message) {
+function _createInvalidArgumentResponse (message) {
 	return {
 		error: {
 			code: 'INVALID_ARGUMENT',
@@ -29,7 +29,7 @@ module.exports = function () {
 
 	describe('API', function () {
 
-		var EMPTY_RECALL_RESULT = {
+		var EMPTY_RECALLS_RESULT = {
 				skip: 0,
 				limit: 100,
 				total: 1,
@@ -51,7 +51,7 @@ module.exports = function () {
 		describe('getRecallById', function () {
 
 			beforeEach(function () {
-				sinon.stub(fdaAdapter, 'getFoodRecallById').returns(Promise.resolve(EMPTY_RECALL_RESULT));
+				sinon.stub(fdaAdapter, 'getFoodRecallById').returns(Promise.resolve());
 			});
 
 			afterEach(function () {
@@ -63,13 +63,16 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/recalls/' + recallId)
-					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(404)
+					.expect({
+						error: {
+							code: 'NOT_FOUND',
+							message: 'No matches found!'
+						}
+					})
 					.expect(function () {
 						assert(fdaAdapter.getFoodRecallById.called, 'getFoodRecallById was not called on the FDA adapter.');
-						assert(fdaAdapter.getFoodRecallById.calledWith({ id: recallId }), 'getFoodRecalledById was not called with the recall ID.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.getFoodRecallById.calledWith({id: recallId}), 'getFoodRecalledById was not called with the recall ID.');
 					})
 					.end(done);
 			});
@@ -77,7 +80,7 @@ module.exports = function () {
 			it('should return a 409 when skip is provided', function (done) {
 				request(app)
 					.get('/api/recalls/0123456798abcdef')
-					.query({ skip: 10 })
+					.query({skip: 10})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid skip - not allowed'))
 					.expect(function () {
@@ -90,7 +93,7 @@ module.exports = function () {
 			it('should return a 409 when limit is provided', function (done) {
 				request(app)
 					.get('/api/recalls/0123456798abcdef')
-					.query({ limit: 10 })
+					.query({limit: 10})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid limit - not allowed'))
 					.expect(function () {
@@ -204,7 +207,7 @@ module.exports = function () {
 		describe('getRecalls', function () {
 
 			beforeEach(function () {
-				sinon.stub(fdaAdapter, 'searchFoodRecalls').returns(Promise.resolve(EMPTY_RECALL_RESULT));
+				sinon.stub(fdaAdapter, 'searchFoodRecalls').returns(Promise.resolve(EMPTY_RECALLS_RESULT));
 			});
 
 			afterEach(function () {
@@ -215,12 +218,10 @@ module.exports = function () {
 				request(app)
 					.get('/api/recalls')
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
 						assert(fdaAdapter.searchFoodRecalls.calledWith({}), 'searchFoodRecalls was not called with empty parameters.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
 					})
 					.end(done);
 			});
@@ -228,7 +229,7 @@ module.exports = function () {
 			it('should return a 409 when state is invalid', function (done) {
 				request(app)
 					.get('/api/recalls')
-					.query({ state: 'OF MIND' })
+					.query({state: 'OF MIND'})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid state'))
 					.expect(function () {
@@ -243,14 +244,12 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/recalls')
-					.query({ state: state })
+					.query({state: state})
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({ state: state }), 'searchFoodRecalls was not called with the state.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({state: state}), 'searchFoodRecalls was not called with the state.');
 					})
 					.end(done);
 			});
@@ -258,7 +257,7 @@ module.exports = function () {
 			it('should return a 409 when eventid is invalid', function (done) {
 				request(app)
 					.get('/api/recalls')
-					.query({ eventid: 'Warped Tour' })
+					.query({eventid: 'Warped Tour'})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid eventid'))
 					.expect(function () {
@@ -273,14 +272,12 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/recalls')
-					.query({ eventid: eventid })
+					.query({eventid: eventid})
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({ eventid: eventid }), 'searchFoodRecalls was not called with the event ID.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({eventid: eventid}), 'searchFoodRecalls was not called with the event ID.');
 					})
 					.end(done);
 			});
@@ -290,14 +287,12 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/recalls')
-					.query({ firmname: firmname })
+					.query({firmname: firmname})
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({ firmname: firmname }), 'searchFoodRecalls was not called with the firmname.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({firmname: firmname}), 'searchFoodRecalls was not called with the firmname.');
 					})
 					.end(done);
 			});
@@ -306,7 +301,10 @@ module.exports = function () {
 				// `from` and `to` are both required when one is provided
 				request(app)
 					.get('/api/recalls')
-					.query({ from: 'a long time ago', to: 200000 })
+					.query({
+						from: 'a long time ago',
+						to: 200000
+					})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid from'))
 					.expect(function () {
@@ -320,7 +318,10 @@ module.exports = function () {
 				// `from` and `to` are both required when one is provided
 				request(app)
 					.get('/api/recalls')
-					.query({ from: 100000, to: 'far into the future' })
+					.query({
+						from: 100000,
+						to: 'far into the future'
+					})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid to'))
 					.expect(function () {
@@ -334,7 +335,10 @@ module.exports = function () {
 				// `from` and `to` are both required when one is provided
 				request(app)
 					.get('/api/recalls')
-					.query({ from: 200000, to: 100000 })
+					.query({
+						from: 200000,
+						to: 100000
+					})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid from/to - from must be before to'))
 					.expect(function () {
@@ -350,14 +354,18 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/recalls')
-					.query({ from: from, to: to })
+					.query({
+						from: from,
+						to: to
+					})
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({ from: from, to: to }), 'searchFoodRecalls was not called with the from.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({
+							from: from,
+							to: to
+						}), 'searchFoodRecalls was not called with the from.');
 					})
 					.end(done);
 			});
@@ -365,7 +373,7 @@ module.exports = function () {
 			it('should return a 409 when classificationlevels is invalid', function (done) {
 				request(app)
 					.get('/api/recalls')
-					.query({ classificationlevels: ',' })
+					.query({classificationlevels: ','})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid classificationlevels'))
 					.expect(function () {
@@ -379,7 +387,7 @@ module.exports = function () {
 				it('should return a 409 when classificationlevels is out of range (' + level + ')', function (done) {
 					request(app)
 						.get('/api/recalls')
-						.query({ classificationlevels: level })
+						.query({classificationlevels: level})
 						.expect(409)
 						.expect(_createInvalidArgumentResponse('Invalid classificationlevels - must be 1, 2, or 3'))
 						.expect(function () {
@@ -396,14 +404,12 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/recalls')
-					.query({ classificationlevels: classificationlevels })
+					.query({classificationlevels: classificationlevels})
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({ classificationlevels: classificationlevelsParsed }), 'searchFoodRecalls was not called with the classificationlevels.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({classificationlevels: classificationlevelsParsed}), 'searchFoodRecalls was not called with the classificationlevels.');
 					})
 					.end(done);
 			});
@@ -419,12 +425,10 @@ module.exports = function () {
 						'classificationlevels[2]': 3
 					})
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({ classificationlevels: classificationlevelsParsed }), 'searchFoodRecalls was not called with the classificationlevels.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({classificationlevels: classificationlevelsParsed}), 'searchFoodRecalls was not called with the classificationlevels.');
 					})
 					.end(done);
 			});
@@ -432,7 +436,7 @@ module.exports = function () {
 			it('should return a 409 when keywords is invalid', function (done) {
 				request(app)
 					.get('/api/recalls')
-					.query({ keywords: 'clogs' })
+					.query({keywords: 'clogs'})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid keywords - could not match keyword clogs'))
 					.expect(function () {
@@ -447,14 +451,12 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/recalls')
-					.query({ keywords: keywords.join(',') })
+					.query({keywords: keywords.join(',')})
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({ keywords: keywords }), 'searchFoodRecalls was not called with the keywords.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({keywords: keywords}), 'searchFoodRecalls was not called with the keywords.');
 					})
 					.end(done);
 			});
@@ -469,12 +471,10 @@ module.exports = function () {
 						'keywords[1]': 'egg'
 					})
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({ keywords: keywordsParsed }), 'searchFoodRecalls was not called with the keywords.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({keywords: keywordsParsed}), 'searchFoodRecalls was not called with the keywords.');
 					})
 					.end(done);
 			});
@@ -482,7 +482,7 @@ module.exports = function () {
 			it('should return a 409 when skip is invalid', function (done) {
 				request(app)
 					.get('/api/recalls')
-					.query({ skip: 'a few' })
+					.query({skip: 'a few'})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid skip'))
 					.expect(function () {
@@ -497,14 +497,12 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/recalls')
-					.query({ skip: skip })
+					.query({skip: skip})
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({ skip: skip }), 'searchFoodRecalls was not called with the skip.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({skip: skip}), 'searchFoodRecalls was not called with the skip.');
 					})
 					.end(done);
 			});
@@ -512,7 +510,7 @@ module.exports = function () {
 			it('should return a 409 when limit is invalid', function (done) {
 				request(app)
 					.get('/api/recalls')
-					.query({ limit: 'a few' })
+					.query({limit: 'a few'})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid limit'))
 					.expect(function () {
@@ -527,14 +525,12 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/recalls')
-					.query({ limit: limit })
+					.query({limit: limit})
 					.expect(200)
-					.expect(EMPTY_RECALL_RESULT)
+					.expect(EMPTY_RECALLS_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.searchFoodRecalls.called, 'searchFoodRecalls was not called on the FDA adapter.');
-						assert(fdaAdapter.searchFoodRecalls.calledWith({ limit: limit }), 'searchFoodRecalls was not called with the skip.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.searchFoodRecalls.calledWith({limit: limit}), 'searchFoodRecalls was not called with the skip.');
 					})
 					.end(done);
 			});
@@ -554,7 +550,7 @@ module.exports = function () {
 			it('should return a 409 when field is invalid', function (done) {
 				request(app)
 					.get('/api/counts/recalls')
-					.query({ field: 'somethingsilly' })
+					.query({field: 'somethingsilly'})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid field'))
 					.expect(function () {
@@ -569,14 +565,12 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/counts/recalls')
-					.query({ field: field })
+					.query({field: field})
 					.expect(200)
 					.expect(EMPTY_COUNT_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was not called on the FDA adapter.');
-						assert(fdaAdapter.getFoodRecallsCounts.calledWith({ field: field }), 'getFoodRecallsCounts was not called with the state.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.getFoodRecallsCounts.calledWith({field: field}), 'getFoodRecallsCounts was not called with the state.');
 					})
 					.end(done);
 			});
@@ -584,7 +578,10 @@ module.exports = function () {
 			it('should return a 409 when state is invalid', function (done) {
 				request(app)
 					.get('/api/counts/recalls')
-					.query({ field: 'classification', state: 'OF MIND' })
+					.query({
+						field: 'classification',
+						state: 'OF MIND'
+					})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid state'))
 					.expect(function () {
@@ -599,14 +596,18 @@ module.exports = function () {
 
 				request(app)
 					.get('/api/counts/recalls')
-					.query({ field: 'classification', state: state })
+					.query({
+						field: 'classification',
+						state: state
+					})
 					.expect(200)
 					.expect(EMPTY_COUNT_RESULT)
 					.expect(function () {
 						assert(fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was not called on the FDA adapter.');
-						assert(fdaAdapter.getFoodRecallsCounts.calledWith({ field: 'classification', state: state }), 'getFoodRecallsCounts was not called with the state.');
-						assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-						assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+						assert(fdaAdapter.getFoodRecallsCounts.calledWith({
+							field: 'classification',
+							state: state
+						}), 'getFoodRecallsCounts was not called with the state.');
 					})
 					.end(done);
 			});
@@ -614,7 +615,10 @@ module.exports = function () {
 			it('should return a 409 when status is invalid', function (done) {
 				request(app)
 					.get('/api/counts/recalls')
-					.query({ field: 'classification', status: 'OF MIND' })
+					.query({
+						field: 'classification',
+						status: 'OF MIND'
+					})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid status'))
 					.expect(function () {
@@ -628,14 +632,18 @@ module.exports = function () {
 				it('should succeed with a valid status (' + status + ')', function (done) {
 					request(app)
 						.get('/api/counts/recalls')
-						.query({ field: 'classification', status: status })
+						.query({
+							field: 'classification',
+							status: status
+						})
 						.expect(200)
 						.expect(EMPTY_COUNT_RESULT)
 						.expect(function () {
 							assert(fdaAdapter.getFoodRecallsCounts.called, 'getFoodRecallsCounts was not called on the FDA adapter.');
-							assert(fdaAdapter.getFoodRecallsCounts.calledWith({ field: 'classification', status: status }), 'getFoodRecallsCounts was not called with the status.');
-							assert(commentsAdapter.get.called, 'get was not called on the comments adapter.');
-							assert(commentsAdapter.get.calledWith([]), 'get was not called with an empty array of results.');
+							assert(fdaAdapter.getFoodRecallsCounts.calledWith({
+								field: 'classification',
+								status: status
+							}), 'getFoodRecallsCounts was not called with the status.');
 						})
 						.end(done);
 				});
@@ -644,7 +652,10 @@ module.exports = function () {
 			it('should return a 409 when skip is provided', function (done) {
 				request(app)
 					.get('/api/counts/recalls')
-					.query({ field: 'classification', skip: 1 })
+					.query({
+						field: 'classification',
+						skip: 1
+					})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid skip - not allowed'))
 					.expect(function () {
@@ -657,7 +668,10 @@ module.exports = function () {
 			it('should return a 409 when limit is provided', function (done) {
 				request(app)
 					.get('/api/counts/recalls')
-					.query({ field: 'classification', limit: 1 })
+					.query({
+						field: 'classification',
+						limit: 1
+					})
 					.expect(409)
 					.expect(_createInvalidArgumentResponse('Invalid limit - not allowed'))
 					.expect(function () {

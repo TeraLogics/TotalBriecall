@@ -25,7 +25,8 @@ exports.get = function (recallNumbers) {
 /**
  * Adds a comment.
  * @param {Object} obj
- * @param {String} obj.recall_number The recall number.
+ * @param {String} obj.recallnumber The recall number.
+ * @param {String} obj.name The user's name.
  * @param {String} [obj.location] The location of the user.
  * @param {String} obj.comment The comment.
  * @returns {Promise.<Object>|Promise<Object>}
@@ -33,6 +34,7 @@ exports.get = function (recallNumbers) {
 exports.add = function (obj) {
 	return Promise.resolve(Comments.create({
 		recallnumber: obj.recallnumber,
+		name: obj.name,
 		location: obj.location,
 		comment: obj.comment
 	})).then(function (comment) {

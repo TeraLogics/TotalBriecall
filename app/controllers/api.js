@@ -12,7 +12,7 @@ var _ = require('underscore'),
  * @returns {Number|NaN} The number; or, if `input` cannot be converted, `NaN`.
  * @private
  */
-function _toNumber(input) {
+function _toNumber (input) {
 	var number = parseInt(input, 10);
 
 	return _.isFinite(number) ? number : NaN;
@@ -24,7 +24,7 @@ function _toNumber(input) {
  * @param res
  * @private
  */
-function _rejectArgument(message, res) {
+function _rejectArgument (message, res) {
 	res.status(409).json({
 		error: {
 			code: 'INVALID_ARGUMENT',
@@ -34,59 +34,40 @@ function _rejectArgument(message, res) {
 }
 
 /**
- * Outputs response from database and handles errors
- * @param {Promise} promise
- * @param res
+ * Handles error response output.
+ * @param {Error} err The error.
+ * @param {Object} res The HTTP response object.
  * @private
  */
-function _processResponse(promise, res) {
-	var results = [];
-
-	promise.then(function (foodResult) {
-		results = foodResult;
-		return commentsAdapter.get(_.pluck(foodResult.data, 'recall_number'));
-	}).then(function (comments) {
-		results.data = _.map(results.data, function (r) {
-			r.comments = _.chain(comments)
-							.where({ recallnumber: r.recall_number })
-							.map(function (comment) {
-								delete comment.recallnumber;
-								return comment;
-							})
-							.value();
-			return r;
+function _handleError (err, res) {
+	if (err instanceof Error) {
+		// errors raised by the adapter
+		_rejectArgument(err.message, res);
+	} else if (err && err.statusCode && err.error) {
+		// errors probably in a ServerResponse from the FDA API
+		res.status(err.statusCode).json({
+			error: err.error
 		});
-
-		res.json(results);
-	}).catch(function (err) {
-		if (err instanceof Error) {
-			// errors raised by the adapter
-			_rejectArgument(err.message, res);
-		} else if (err && err.statusCode && err.error) {
-			// errors probably in a ServerResponse from the FDA API
-			res.status(err.statusCode).json({
-				error: err.error
-			});
-		} else {
-			// anything else
-			if (err) {
-				console.error(err);
-			}
-
-			res.status(500).json({
-				error: {
-					code: 'INTERNAL_ERROR',
-					message: 'An unknown error occurred.'
-				}
-			});
+	} else {
+		// anything else
+		if (err) {
+			console.error(err);
 		}
-	}).done();
+
+		res.status(500).json({
+			error: {
+				code: 'INTERNAL_ERROR',
+				message: 'An unknown error occurred.'
+			}
+		});
+	}
 }
 
 /**
  * Adds a comment to a recall
  * @param req
  * @param {String} req.body.recallnumber The recall number.
+ * @param {String} req.body.name The user's name.
  * @param {String} [req.body.location] The location of the user.
  * @param {String} req.body.comment The comment.
  * @param res
@@ -95,16 +76,25 @@ exports.addCommentForRecall = function (req, res) {
 	// TODO validate recall number against pattern?
 	if (!req.body.recallnumber || !_.isString(req.body.recallnumber)) {
 		_rejectArgument('Invalid recallnumber', res);
+	} else if (!req.body.name || !_.isString(req.body.name)) {
+		_rejectArgument('Invalid name', res);
 	} else if (req.body.location && !_.isString(req.body.location)) {
 		_rejectArgument('Invalid location', res);
+	} else if (req.body.location && !fdaAdapter.isValidState(req.body.location)) {
+		_rejectArgument('Location must be a valid state', res);
 	} else if (!req.body.comment || !_.isString(req.body.comment)) {
 		_rejectArgument('Invalid comment', res);
 	} else {
-		_processResponse(commentsAdapter.add({
+		commentsAdapter.add({
 			recallnumber: req.body.recallnumber,
+			name: req.body.name,
 			location: req.body.location,
 			comment: req.body.comment
-		}), res);
+		}).then(function (comment) {
+			res.json(comment);
+		}).catch(function (err) {
+			_handleError(err, res);
+		}).done();
 	}
 };
 
@@ -129,7 +119,33 @@ exports.getRecallById = function (req, res) {
 		return;
 	}
 
-	_processResponse(fdaAdapter.getFoodRecallById(obj), res);
+	fdaAdapter.getFoodRecallById(obj).then(function (foodResult) {
+		if (foodResult) {
+			return commentsAdapter.get([foodResult.recall_number]).then(function (comments) {
+				foodResult.comments = _.chain(comments)
+					.where({recallnumber: foodResult.recall_number})
+					.map(function (comment) {
+						delete comment.recallnumber;
+						return comment;
+					})
+					.value();
+
+				return foodResult;
+			});
+		}
+
+		throw {
+			statusCode: 404,
+			error: {
+				code: 'NOT_FOUND',
+				message: 'No matches found!'
+			}
+		};
+	}).then(function (foodResult) {
+		res.json(foodResult);
+	}).catch(function (err) {
+		_handleError(err, res);
+	}).done();
 };
 
 /* TODO
@@ -241,7 +257,30 @@ exports.getRecalls = function (req, res) {
 		}
 	}
 
-	_processResponse(fdaAdapter.searchFoodRecalls(obj), res);
+	fdaAdapter.searchFoodRecalls(obj).then(function (foodResult) {
+		if (foodResult.data.length > 0) {
+			return commentsAdapter.get(_.pluck(foodResult.data, 'recall_number')).then(function (comments) {
+				foodResult.data = _.map(foodResult.data, function (r) {
+					r.comments = _.chain(comments)
+						.where({recallnumber: r.recall_number})
+						.map(function (comment) {
+							delete comment.recallnumber;
+							return comment;
+						})
+						.value();
+					return r;
+				});
+
+				return foodResult;
+			});
+		}
+
+		return foodResult;
+	}).then(function (foodResult) {
+		res.json(foodResult);
+	}).catch(function (err) {
+		_handleError(err, res);
+	}).done();
 };
 
 /**
@@ -287,5 +326,9 @@ exports.getRecallsCounts = function (req, res) {
 		return;
 	}
 
-	_processResponse(fdaAdapter.getFoodRecallsCounts(obj), res);
+	fdaAdapter.getFoodRecallsCounts(obj).then(function (counts) {
+		res.json(counts);
+	}).catch(function (err) {
+		_handleError(err, res);
+	}).done();
 };

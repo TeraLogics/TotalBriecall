@@ -3,7 +3,7 @@
 var path = require('path'),
 	siteCtrl = require(path.join(global.__ctrldir, 'site'));
 
-module.exports = function (app, passport, middleware) {
+module.exports = function (app) {
 	app.route('/')
 		.get(siteCtrl.landing);
 

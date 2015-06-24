@@ -6,6 +6,10 @@ var mongoose = require('mongoose'),
 			required: true,
 			index: true
 		},
+		name: {
+			type: String,
+			required: true
+		},
 		location: String,
 		comment: {
 			type: String,

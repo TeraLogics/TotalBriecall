@@ -335,10 +335,10 @@ exports.getFoodRecallById = function (obj) {
 					}
 				};
 			}
-			response.results = [
-				item
-			];
+
+			response.results = [item];
 		}
+
 		response.meta.results.total = 1;
 		return response;
 	}).then(_formatRecallResults).then(function (results) {
