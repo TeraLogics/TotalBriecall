@@ -12,7 +12,6 @@ requirejs.config({
 		URI: {deps: ['jquery']},
 		visible: {deps: ['jquery']},
 		Tour: {deps: ['bootstrap'], exports: 'Tour'},
-		AppTour: {deps: ['Tour']}
 	},
 	paths: {
 		jquery: 'jquery-2.1.4.min',
@@ -25,7 +24,7 @@ requirejs.config({
 		bluebird: 'bluebird.min',
 		UsStates: 'us-states',
 		Tour: 'bootstrap-tour.min',
-		AppTour: 'app-recall-tour'
+		BrowseTour: 'tour-browse'
 	}
 });
 
@@ -41,7 +40,7 @@ requirejs([
 	'Sisyphus',
 	'SyncFileReader',
 	'UsStates',
-	'AppTour'
+	'BrowseTour'
 ], function (Promise,
 			 bootstrap,
 			 ejs,
@@ -52,7 +51,8 @@ requirejs([
 			 RecallSummaryProvider,
 			 Sisyphus,
 			 SyncFileReader,
-			 UsStates
+			 UsStates,
+			 BrowseTour
 ) {
 	function addRecentRecalls(recalls) {
 		recentRecallsView.removeClass('empty');
@@ -72,6 +72,7 @@ requirejs([
 	}
 
 	var appWindow = $(window),
+		appDocument = $(document),
 		appView = $('.application'),
 		recallCardTemplate = ejs.compile(SyncFileReader.request('/templates/recall-summary-card.ejs')),
 		pinnedRecallsView = $('#pinned-recalls'),
@@ -224,4 +225,8 @@ requirejs([
 
 		window.open(href, windowname, 'resizable=yes,width=' + width + ',height=' + height + ',scrollbars=yes');
 	}
+
+	appDocument.ready(function () {
+		BrowseTour.start();
+	});
 });
