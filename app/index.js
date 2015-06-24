@@ -43,7 +43,7 @@ global.__ctrldir = path.join(global.__appdir, 'controllers');
 global.__adptsdir = path.join(global.__appdir, 'adapters');
 
 // Load application configuration
-global.config = require(path.join(global.__basedir, 'conf', 'config'));
+global.config = require(path.join(global.__basedir, 'config'));
 
 var app = express(),
 	readDir = Promise.promisify(fs.readdir);
