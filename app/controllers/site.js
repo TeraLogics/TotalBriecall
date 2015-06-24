@@ -43,16 +43,8 @@ exports.details = function (req, res) {
 		console.error(err);
 
 		switch (err.type) {
-			case 'notfound':
+			case 'NOT_FOUND':
 				return res.render('404');
-			case 'validation':
-				return res.render('recall', {
-					recall: null,
-					error: {
-						statusCode: 409,
-						message: err.message
-					}
-				});
 			default:
 				return res.render('error', {
 					code: 500,

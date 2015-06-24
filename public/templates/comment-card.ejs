@@ -1,0 +1,11 @@
+<%
+/**
+ * Comment card.
+ * @param {CommentProvider} commentProvider Provider of comment information.
+ */
+%>
+<li class="comment-entry">
+	<%= commentProvider.getName() %> from <%= commentProvider.getLocation() %>
+	<small class="event-subtitle text-muted" title="<%= commentProvider.getCreationDate() %>"><%= commentProvider.getCreationDate() %></small>
+	<p class="comment-body"><%= commentProvider.getComment() %></p>
+</li>

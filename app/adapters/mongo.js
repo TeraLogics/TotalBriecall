@@ -13,7 +13,7 @@ var _ = require('underscore'),
 exports.getComments = function (recallNumbers) {
 	return Promise.resolve(Comments.find({
 		recallnumber: { $in: recallNumbers }
-	}).exec()).then(function (comments) {
+	}).sort({ created: -1 }).exec()).then(function (comments) {
 		return _.map(comments, function (comment) {
 			var c = comment.toObject();
 			c.created = moment(comment.created).unix();
@@ -41,7 +41,9 @@ exports.addComment = function (obj) {
 		location: obj.location,
 		comment: obj.comment
 	})).then(function (comment) {
-		return comment.toObject();
+		var c = comment.toObject();
+		c.created = moment(c.created).unix();
+		return c;
 	}).catch(function (err) {
 		console.error('Failed to add comment: ' + err);
 		throw new Error('Failed to add comment');

@@ -40,12 +40,28 @@
 				<h3 style="margin-bottom: 20px; margin-top: 13px;">Recall comments</h3>
 			</header>
 			<div class="panel-body">
-				<ol id="recall-comments" class="list-view empty">
+				<form>
+					<input type="hidden" name="recallnumber" value="<%= recall.recall_number %>" />
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input type="text" class="form-control" name="name" placeholder="Name">
+					</div>
+					<div class="form-group">
+						<label for="comment">Comment</label>
+						<textarea class="form-control" rows="3" name="comment" placeholder="Leave a comment"></textarea>
+					</div>
+					<button type="submit" class="btn btn-default">Submit</button>
+				</form>
+				<ol id="recall-comments" class="list-view<%= recall.comments.length === 0 ? ' empty' : '' %>">
 					<!-- recall cards placeholder -->
 					<% _.each(recall.comments, function (comment) { %>
-					<%= comment.created = moment.unix(comment.created).format(); %>
+					<%
+						comment.name = comment.name || 'User';
+						comment.location = comment.location || 'Unknown';
+						comment.created = moment.unix(comment.created).format('MMMM Do, YYYY hh:mma');
+					%>
 					<li class="comment-entry">
-						<a href="#" title="<%= comment.name %>"><%= comment.name %> from <%= comment.location %></a>
+						<%= comment.name %> from <%= comment.location %>
 						<small class="event-subtitle text-muted" title="<%= comment.created %>"><%= comment.created %></small>
 						<p class="comment-body"><%= comment.comment %></p>
 					</li>
@@ -69,7 +85,7 @@
 </section>
 <script data-main="/js/app-recall" src="/js/require.js"></script>
 <script>
-	var states = <%- recall.affectedstates ? JSON.stringify(recall.affectedstates) : 'Nationwide' %>;
+	brie.page.recall = <%- JSON.stringify(recall) %>;
 </script>
 <% } else { %>
 </head>
