@@ -16,6 +16,23 @@ var tour = new Tour({
 			reflex: true,
 			backdrop: true
 		},
+		// show a card
+
+		// focus on the title
+
+		// manufacturer
+
+		// description
+
+		// how to get more info
+
+		// pin a card
+
+		//share with others
+
+		//hide
+
+		//TODO add filtering
 	]
 });
 
