@@ -242,6 +242,10 @@ function _makeRequest(obj) {
 		return Promise.reject(new Error('Invalid skip'));
 	}
 
+	if (global.config.OPENFDA_APIKEY) {
+		obj.api_key = global.config.OPENFDA_APIKEY;
+	}
+
 	console.log('Making request to api', obj);
 	return request.get(_.extend(options, {
 		qs: obj
