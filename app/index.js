@@ -79,6 +79,8 @@ app.set('views', global.__viewsdir);
 
 app.use(express.static(global.__assetsdir));
 
+app.use('/docs/api', express.static(path.join(global.__viewsdir, 'docs', 'api')));
+
 // Set the favicon
 var faviconPath = path.join(global.__assetsdir, 'img', 'favicon.ico');
 if (fs.exists(faviconPath)) {
