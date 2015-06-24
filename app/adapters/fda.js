@@ -5,6 +5,7 @@ var _ = require('underscore'),
 	path = require('path'),
 	Promise = require('bluebird'),
 	request = require('request-promise'),
+	errorHelper = require(path.join(global.__libdir, 'errorHelper')),
 	recallHelper = require(path.join(global.__libdir, 'recallHelper'));
 
 var options = {
@@ -149,24 +150,17 @@ function _encodeFoodRecall(foodrecall) {
  * @private
  */
 function _decodeFoodRecall(val) {
-	return Promise.try(function (val) {
-		var arr,
-			invalid = {
-				statusCode: 409,
-				error: {
-					code: 'INVALID_ARGUMENT',
-					message: 'Invalid id'
-				}
-			};
+	return Promise.try(function () {
+		var arr;
 
 		try {
 			arr = new Buffer(val, 'base64').toString('utf8').split('\v');
 		} catch (e) {
-			throw invalid;
+			throw errorHelper.getValidationError('Invalid id');
 		}
 
 		if (arr.length !== 4) {
-			throw invalid;
+			throw errorHelper.getValidationError('Invalid id');
 		}
 
 		return {
@@ -175,7 +169,7 @@ function _decodeFoodRecall(val) {
 			recall_initiation_date: arr[2],
 			product_description: arr[3]
 		};
-	}, val);
+	});
 }
 
 /**
@@ -285,13 +279,15 @@ function _makeRequest(obj) {
 
 		return response.body;
 	}).catch(function (err) {
-		//console.log(err);
-		// TODO need better wrapper for error handling
 		console.log(err.statusCode + ' - ' + JSON.stringify(err.error));
-		throw {
-			statusCode: err.statusCode,
-			error: err.error.error // `error` for request -> `error` for openFDA response
-		};
+		switch (err.statusCode) {
+			case 404:
+				throw errorHelper.getNotFoundError('No results found');
+			case 409:
+				throw errorHelper.getValidationError(err.error.error.message);
+			default:
+				throw new Error(err.error.error.message);
+		}
 	});
 }
 
@@ -324,13 +320,7 @@ exports.getFoodRecallById = function (obj) {
 				return ele.recall_number === recall_number;
 			});
 			if (!item) {
-				throw {
-					statusCode: 404,
-					error: {
-						code: 'NOT_FOUND',
-						message: 'No matches found!'
-					}
-				};
+				throw errorHelper.getNotFoundError('No results found');
 			}
 
 			response.results = [item];
