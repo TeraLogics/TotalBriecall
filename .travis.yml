@@ -12,6 +12,7 @@ deploy:
     master: total-briecall
     development: total-briecall-dev
   run:
+    - pwd
     - npm run apidoc
     - pwd
     - restart
