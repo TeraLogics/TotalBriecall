@@ -1,7 +1,7 @@
 'use strict';
 
 /* globals
- requirejs, state
+ requirejs, brie
  */
 
 requirejs.config({

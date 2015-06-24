@@ -84,5 +84,5 @@ define(['jquery', 'Tour'], function ($, Tour, require) {
 			recallTour.init();
 			recallTour.start();
 		}
-	}
+	};
 });

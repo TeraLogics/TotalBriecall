@@ -40,9 +40,9 @@ var options = {
 		memo[key] = new RegExp('\\b' + values.join('|') + '\\b', 'i');
 		return memo;
 	}, {}),
-// TODO: fix single quotes in product descriptions
-	protoPlusRegex = /\s+|,|%[0-9a-f]{2}/ig,
+	protoPlusRegex = /\s+/ig,
 	dedupPlusRegex = /\++/g,
+	badCharacterRegex = /\W+/g,
 	spaceRegex = / /g,
 	lastLetterRegex = /(\w)$/i;
 
@@ -97,18 +97,49 @@ function _pluralizeWord(word) {
 }
 
 /**
+ * Converts a food recall's product descritption to a blob
+ * @param {String} desc Product description of food recall
+ * @returns {String} '+' delimited string of keywords
+ * @private
+ */
+function _getBlobFromProductDescription(desc) {
+	var parts = _.filter(desc.replace(protoPlusRegex, '+').replace(dedupPlusRegex, '+').split('+'), function (part) {
+			return part.length > 3 && !badCharacterRegex.test(part);
+		}).sort(function (a, b) {
+			return b.length - a.length;
+		}),
+		i = 0,
+		charSum = 0,
+		used = [],
+		maxWords = 8;
+
+	for (; i < parts.length && used.length < maxWords; i++) {
+		var addedLen = parts[i].length;
+		if (charSum + addedLen > 50) {
+			continue;
+		}
+		used.push(parts[i].toLowerCase());
+		charSum += addedLen;
+	}
+
+	console.log(charSum, JSON.stringify(used));
+
+	return used.join('+');
+}
+
+/**
  * Encodes select foodrecall object properties to base64
  * @param {Object} foodrecall The food recall object to encode
  * @returns {String}
  * @private
  */
 function _encodeFoodRecall(foodrecall) {
-	return new Buffer(JSON.stringify([
+	return new Buffer([
 		foodrecall.recall_number,
 		foodrecall.event_id,
 		foodrecall.recall_initiation_date,
-		encodeURIComponent(foodrecall.product_description.substr(0, 50)).replace(protoPlusRegex, '+').replace(dedupPlusRegex, '+').split('+').slice(0, -1).join('+')
-	])).toString('base64');
+		_getBlobFromProductDescription(foodrecall.product_description)
+	].join('\v')).toString('base64');
 }
 
 /**
@@ -119,17 +150,23 @@ function _encodeFoodRecall(foodrecall) {
  */
 function _decodeFoodRecall(val) {
 	return Promise.try(function (val) {
-		var arr;
-		try {
-			arr = JSON.parse(new Buffer(val, 'base64').toString('utf8'));
-		} catch (e) {
-			throw {
-				statusCode: 404,
+		var arr,
+			invalid = {
+				statusCode: 409,
 				error: {
-					code: 'NOT_FOUND',
-					message: 'No matches found!'
+					code: 'INVALID_ARGUMENT',
+					message: 'Invalid id'
 				}
 			};
+
+		try {
+			arr = new Buffer(val, 'base64').toString('utf8').split('\v');
+		} catch (e) {
+			throw invalid;
+		}
+
+		if (arr.length !== 4) {
+			throw invalid;
 		}
 
 		return {
@@ -150,6 +187,7 @@ function _decodeFoodRecall(val) {
 function _formatRecallResults(data) {
 	data.results = _.map(data.results, function (foodrecall) {
 		foodrecall.id = _encodeFoodRecall(foodrecall);
+		//console.log('Encoded id length: ' + foodrecall.id.length);
 
 		foodrecall.recall_initiation_date = moment(foodrecall.recall_initiation_date, 'YYYY-MM-DD').unix();
 		foodrecall.report_date = moment(foodrecall.report_date, 'YYYY-MM-DD').unix();
@@ -246,7 +284,7 @@ exports.getFoodRecallById = function (obj) {
 		var search = [
 			'event_id:' + data.event_id,
 			'recall_initiation_date:"' + data.recall_initiation_date + '"',
-			'product_description:"' + data.product_description + '"'
+			'product_description:(' + data.product_description.split('+').join('+AND+') + ')'
 		];
 		recall_number = data.recall_number;
 		return _makeRequest({
@@ -254,6 +292,10 @@ exports.getFoodRecallById = function (obj) {
 			limit: 1
 		});
 	}).then(function (response) {
+		if (response.meta.results.total > options.limit) {
+			console.log('ERROR: TOO MANY RECALLS (' + response.meta.results.total + ') RETURNED BY ID');
+		}
+		//console.log('INFO: getbyid return ' + response.meta.results.total + ' results.');
 		if (response.results.length > 1) {
 			var item = _.find(response.results, function (ele) {
 				return ele.recall_number === recall_number;
