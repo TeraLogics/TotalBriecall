@@ -1,6 +1,6 @@
 define(['jquery', 'Tour'], function ($, Tour, require) {
 	var recallTour = new Tour({
-		storage: false,
+		//storage: false,
 		steps: [
 			{
 				title: "Getting Started",
