@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
 	"bootstrap-sass-official": "3.3.4",
-    "components-font-awesome": "4.3.0"
+	"components-font-awesome": "4.3.0",
+	"bootstrap-tour": "0.10.2"
   }
 }

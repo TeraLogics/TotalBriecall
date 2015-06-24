@@ -11,8 +11,8 @@ requirejs.config({
 		ejs: {exports: 'ejs'},
 		URI: {deps: ['jquery']},
 		visible: {deps: ['jquery']},
-		BootstrapTour: {deps: ['bootstrap']},
-		AppTour: {deps: ['BootstrapTour']}
+		Tour: {deps: ['bootstrap'], exports: 'Tour'},
+		AppTour: {deps: ['Tour']}
 	},
 	paths: {
 		jquery: 'jquery-2.1.4.min',
@@ -24,7 +24,7 @@ requirejs.config({
 		visible: 'jquery.visible.min',
 		bluebird: 'bluebird.min',
 		UsStates: 'us-states',
-		BootstrapTour: 'bootstrap-tour-standalone.min',
+		Tour: 'bootstrap-tour.min',
 		AppTour: 'app-recall-tour'
 	}
 });

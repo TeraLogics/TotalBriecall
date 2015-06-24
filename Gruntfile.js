@@ -89,6 +89,28 @@ module.exports = function (grunt) {
 					 }
 					 */
 				]
+			},
+			"bootstrap-tour": {
+				files: [
+					// CSS
+					{
+						expand: true,
+						filter: 'isFile',
+						flatten: true,
+						cwd: 'bower_components/',
+						src: ['bootstrap-tour/build/css/**'],
+						dest: 'public/css'
+					},
+					// JS
+					{
+						expand: true,
+						filter: 'isFile',
+						flatten: true,
+						cwd: 'bower_components/',
+						src: ['bootstrap-tour/build/js/**'],
+						dest: 'public/js'
+					}
+				]
 			}
 		},
 		watch: {
@@ -104,5 +126,5 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	grunt.registerTask('default', ['watch']);
-	grunt.registerTask('build', ['sass:production', 'copy:fontawesome']);
+	grunt.registerTask('build', ['sass:production', 'copy:fontawesome', 'copy:bootstrap-tour']);
 };
