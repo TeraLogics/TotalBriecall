@@ -45,6 +45,10 @@ exports.details = function (req, res) {
 		switch (err.type) {
 			case 'NOT_FOUND':
 				return res.render('404');
+			case 'INVALID_ARGUMENT':
+				return res.render('404', {
+					message: err.message
+				});
 			default:
 				return res.render('error', {
 					code: 500,

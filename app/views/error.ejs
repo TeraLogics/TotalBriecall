@@ -14,32 +14,32 @@ var errorMessage = (_.isUndefined(message) || _.isNull(message)) ? 'Sorry, the p
 <div><p>&nbsp;</p></div>
 <div class="container">
 	<div class="row">
-		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
-			<div class="panel">
-				<div class="panel-heading">Error</div>
-				<div class="panel-body">
-					<h1><%= errorCode %>
-						<small><%= errorTitle %></small>
-					</h1>
-					<hr/>
-					<% if (errorMessage) { %>
-					<p><%= errorMessage %></p>
-					<hr/>
-					<% } %>
-					<% if (typeof showback === 'undefined' || showback) { %>
-					<p>
-						<a href="javascript:window.history.go(-1)" class="btn btn-warning">
-							<span class="batchicon batchicon_296"></span>
-							Back
-						</a>
-					</p>
-					<% } %>
-					<% if (typeof showerr !== 'undefined' && showerr && typeof err !== 'undefined' && err) { %>
-					<p><%= err.type %></p>
-					<pre><%= err.stack %></pre>
-					<% } %>
-				</div>
-			</div>
+		<div class="col-sm-6 col-md-6 col-sm-6 col-xs-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
+			<h1><%= errorCode %> <small><%= errorTitle %></small></h1>
+			<hr/>
+			<% if (errorMessage) { %>
+			<p><%= errorMessage %></p>
+			<% if (typeof showback === 'undefined' || showback) { %>
+			<p>
+				<a href="javascript:window.history.go(-1)" class="btn btn-warning">
+					<span class="batchicon batchicon_296"></span>
+					Back
+				</a>
+			</p>
+			<% } %>
+			<hr/>
+			<% } %>
+			<% if (code == 403) { %>
+			<img src="/img/forbiddencheese.jpg" width="100%" />
+			<% } else if (code == 404) { %>
+			<img src="/img/cheesenotfound.jpg" width="100%" />
+			<% } else { %>
+			<img src="/img/cheeseerrored.jpg" width="100%" />
+			<% } %>
+			<% if (typeof showerr !== 'undefined' && showerr && typeof err !== 'undefined' && err) { %>
+			<p><%= err.type %></p>
+			<pre><%= err.stack %></pre>
+			<% } %>
 		</div>
 	</div>
 </div>
