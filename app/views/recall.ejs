@@ -42,6 +42,7 @@
 			<div class="panel-body">
 				<form>
 					<input type="hidden" name="recallnumber" value="<%= recall.recall_number %>" />
+					<input type="hidden" name="location" value="<%= session.preferences.state %>" />
 					<div class="form-group">
 						<label for="name">Name</label>
 						<input type="text" class="form-control" name="name" placeholder="Name">

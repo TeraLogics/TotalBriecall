@@ -60,7 +60,8 @@ requirejs([
 				//dashArray: '3',
 				fillOpacity: 0.7
 			};
-		};
+		},
+		$form = $('form');
 
 	map.create();
 
@@ -74,7 +75,7 @@ requirejs([
 		});
 	}
 
-	$('form').submit(function () {
+	$form.submit(function () {
 		var $this = $(this);
 
 		$.ajax({
@@ -87,5 +88,11 @@ requirejs([
 		}).fail(function (err) {
 			// display a meaningful error
 		});
+	});
+
+	$form.find('textarea').keydown(function (e) {
+		if (e.ctrlKey && e.keyCode == 13) {
+			$form.submit();
+		}
 	});
 });
