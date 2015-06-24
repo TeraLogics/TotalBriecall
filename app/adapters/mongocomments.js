@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('underscore'),
+	moment = require('moment'),
 	Promise = require('bluebird'),
 	Comments = require('./models/comments');
 
@@ -14,7 +15,9 @@ exports.get = function (recallNumbers) {
 		recallnumber: { $in: recallNumbers }
 	}).exec()).then(function (comments) {
 		return _.map(comments, function (comment) {
-			return comment.toObject();
+			var c = comment.toObject();
+			c.created = moment(comment.created).unix();
+			return c;
 		});
 	}).catch(function (err) {
 		console.error('Failed to get comments: ' + err);
