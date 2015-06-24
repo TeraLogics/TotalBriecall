@@ -1,7 +1,14 @@
+/* globals
+ fbappid
+ */
+
 define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 	var RecallSummaryProvider = function (recall) {
-		this._recall = recall;
-	};
+			this._recall = recall;
+		},
+		_getBaseURL = function () {
+			return window.location.origin ? window.location.origin : Uri(window.location.href).authority();
+		};
 	RecallSummaryProvider._symbolTpl = ejs.compile('<div class="summary-symbol <%=baseClass%> <%=levelClass%>">' +
 		'<span class="symbol-type"><%=type%></span>' +
 		'<h1 class="symbol"><%=symbol%></h1>' +
@@ -26,18 +33,30 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		return this._recall.reason_for_recall;
 	};
 	RecallSummaryProvider.prototype.getRecallDetailsLink = function () {
-		return '/details/' + this._recall.id;
+		return '/details/' + encodeURIComponent(this._recall.id);
 	};
 	RecallSummaryProvider.prototype.getShareTitle = function () {
 		return this._recall.product_description;
 	};
 	RecallSummaryProvider.prototype.getShareLink = function () {
-		return Uri(window.location.href).authority() + '/details/' + Uri.encode(this._recall.id);
+		return _getBaseURL() + this.getRecallDetailsLink();
 	};
 	RecallSummaryProvider.prototype.getFacebookShareLink = function () {
-		return ejs.render('http://www.facebook.com/sharer/sharer.php?u=<%=url%>&title=<%=title%>', {
-			url: this.getShareLink(),
-			title: Uri.encode(this.getShareTitle())
+		return ejs.render('http://www.facebook.com/dialog/feed?' + [
+				'app_id=<%=app_id%>',
+				'redirect_uri=<%=redirect_uri%>',
+				'display=popup',
+				'link=<%=link%>',
+				'name=<%=name%>',
+				'caption=<%=caption%>',
+				'description=<%=description%>'
+			].join('&'), {
+			app_id: fbappid,
+			redirect_uri: encodeURIComponent(_getBaseURL()),
+			link: encodeURIComponent(this.getShareLink()),
+			name: encodeURIComponent(this._recall.recall_number),
+			caption: encodeURIComponent(this._recall.product_description),
+			description: encodeURIComponent(this._recall.reason_for_recall)
 		});
 	};
 	RecallSummaryProvider.prototype.getEmailShareLink = function () {

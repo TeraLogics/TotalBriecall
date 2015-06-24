@@ -23,7 +23,8 @@ exports.browse = function (req, res) {
 		return res.redirect('/');
 	} else {
 		return res.render('browse', {
-			state: req.session.preferences.state
+			state: req.session.preferences.state,
+			fbappid: global.config.FACEBOOK_APPID
 		});
 	}
 };
