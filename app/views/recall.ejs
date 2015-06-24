@@ -22,6 +22,14 @@
 </div>
 <section class="container">
 	<div class="panel">
+		<div class="map-container hidden-xs visible-sm visible-md visible-lg">
+			<header class="panel-heading">
+				<h3 style="margin-bottom: 20px; margin-top: 13px;">Affected States</h3>
+			</header>
+			<div class="panel-body">
+				<div id="map"></div>
+			</div>
+		</div>
 		<div class="text-center visible-xs hidden-sm hidden-md hidden-lg">
 			<button data-action="load-comments" type="button" class="btn btn-link"><i
 						class="glyphicon glyphicon-eye-open"></i> Load comments
@@ -60,6 +68,9 @@
 	</div>
 </section>
 <script data-main="/js/app-recall" src="/js/require.js"></script>
+<script>
+	var states = <%- recall.affectedstates ? JSON.stringify(recall.affectedstates) : 'Nationwide' %>;
+</script>
 <% } else { %>
 </head>
 <body class="bg-void">
