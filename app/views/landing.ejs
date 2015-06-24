@@ -1,4 +1,5 @@
 <% include ./common/header.ejs %>
+<% include ./common/brie-core-js.ejs %>
 </head>
 <body>
 	<div class="container">
@@ -33,11 +34,6 @@
 	<script src="/js/us-states.js"></script>
 	<script src="/js/Geocode.js"></script>
 	<script>
-		/* globals
-		 */
-
-		var uspsuser = '<%= uspsuser %>';
-
 		function handleGeoLocError() {
 			$('#status').hide();
 			PromptForZip();

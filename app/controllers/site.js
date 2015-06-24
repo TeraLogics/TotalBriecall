@@ -18,9 +18,7 @@ exports.landing = function (req, res) {
 	if (req.session.preferences.state) {
 		return res.redirect('/browse');
 	} else {
-		return res.render('landing', {
-			uspsuser: global.config.USPS_USER || ''
-		});
+		return res.render('landing');
 	}
 };
 
@@ -28,10 +26,7 @@ exports.browse = function (req, res) {
 	if (!req.session.preferences.state && !req.session.preferences.haslanded) {
 		return res.redirect('/');
 	} else {
-		return res.render('browse', {
-			state: req.session.preferences.state,
-			fbappid: global.config.FACEBOOK_APPID
-		});
+		return res.render('browse');
 	}
 };
 
@@ -42,7 +37,6 @@ exports.details = function (req, res) {
 
 		return res.render('recall', {
 			recall: recall,
-			fbappid: global.config.FACEBOOK_APPID,
 			url: serverURL + (!urlObj.port && global.config.PORT !== defaultPorts[req.protocol] ? ':' + global.config.PORT : '')
 		});
 	}).catch(function (err) {

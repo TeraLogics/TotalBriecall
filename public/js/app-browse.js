@@ -95,8 +95,8 @@ requirejs([
 				meta.skip += meta.limit;
 			}
 
-			if (state) {
-			meta.state = state;
+			if (brie.preferences.state) {
+				meta.state = brie.preferences.state;
 			}
 
 			return $.ajax({
@@ -143,7 +143,7 @@ requirejs([
 		zoomControl: false
 	});
 
-	var style = function(feature) {
+	var style = function (feature) {
 		return {
 			fillColor: '#800026', //feature.properties.name ? '#800026' : null,
 			weight: 1,
@@ -154,7 +154,7 @@ requirejs([
 		};
 	};
 
-	map.add('layer', getStateGeoJSON([state]), {
+	map.add('layer', getStateGeoJSON([brie.preferences.state]), {
 		style: style
 	});
 

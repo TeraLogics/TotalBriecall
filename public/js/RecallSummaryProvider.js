@@ -9,11 +9,6 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		_getBaseURL = function () {
 			return window.location.origin ? window.location.origin : Uri(window.location.href).authority();
 		};
-	RecallSummaryProvider._symbolTpl = ejs.compile('<div class="summary-symbol <%=baseClass%> <%=levelClass%>">' +
-		'<span class="symbol-type"><%=type%></span>' +
-		'<h1 class="symbol"><%=symbol%></h1>' +
-		'<span class="symbol-description"><%=description%></span>' +
-		'</div>');
 	RecallSummaryProvider.prototype.getFirmAddress = function () {
 		return this._recall.city + ', ' + this._recall.state + ', ' + this._recall.country;
 	};
@@ -59,7 +54,7 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 				'description=<%=description%>',
 				'picture=<%=picture%>'
 			].join('&'), {
-			app_id: fbappid,
+			app_id: brie.fbappid,
 			redirect_uri: encodeURIComponent(_getBaseURL() + '/popupclose'), // TODO: landing page for redirection?
 			link: encodeURIComponent(this.getShareLink()),
 			name: encodeURIComponent('Food Recall: ' + this.getRecallNumber()),

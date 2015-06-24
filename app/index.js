@@ -129,6 +129,15 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (req, res, next) {
+	res.locals.brie = {
+		preferences: req.session.preferences,
+		fbappid: global.config.FACEBOOK_APPID || '',
+		uspsuser: global.config.USPS_USER || ''
+	};
+	return next();
+});
+
+app.use(function (req, res, next) {
 	console.log('IP: '.yellow + colors.grey(req.headers['x-forwarded-for'] || req.connection.remoteAddress));
 	console.log('Url: '.yellow + colors.green(req.method) + ' ' + colors.grey(req.url));
 
