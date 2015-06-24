@@ -158,6 +158,17 @@ requirejs([
 		style: style
 	});
 
+	/* disable moving the header map */
+	map._map.dragging.disable();
+	map._map.touchZoom.disable();
+	map._map.doubleClickZoom.disable();
+	map._map.scrollWheelZoom.disable();
+	map._map.boxZoom.disable();
+	map._map.keyboard.disable();
+	if (map._map.tap) {
+		map._map.tap.disable();
+	}
+
 	// Hook up general controls
 	appView.on('click', '[data-action="recall-copy"]', function (event) {
 		recallLinkCopyModal.modal('show');
