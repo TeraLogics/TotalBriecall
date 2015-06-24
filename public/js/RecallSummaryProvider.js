@@ -21,8 +21,8 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 	RecallSummaryProvider.prototype.getRecallNumber = function () {
 		return this._recall.recall_number;
 	};
-	RecallSummaryProvider.prototype.getSanitizedRecallId = function () {
-		return this._recall.id.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
+	RecallSummaryProvider.prototype.getFdaId = function () {
+		return this._recall.openfda_id;
 	};
 	RecallSummaryProvider.prototype.getProductDescription = function () {
 		return this._recall.product_description;

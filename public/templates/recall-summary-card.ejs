@@ -7,7 +7,7 @@
 <div class="panel <%= summaryProvider.getCardType() %> recall-summary-card recall-class-i">
 	<div class="panel-heading">
 		<div class="recall-card-toggle" data-toggle="collapse"
-			 data-target="#collapse-<%= summaryProvider.getSanitizedRecallId() %>">
+			 data-target="#collapse-<%= summaryProvider.getFdaId() %>">
 			<i class="glyphicon"></i>
 		</div>
 		<h3 class="panel-title"><%= summaryProvider.getProductDescription() %></h3>
@@ -20,7 +20,7 @@
 			</small>
 		</h4>
 	</div>
-	<div id="collapse-<%= summaryProvider.getRecallId() %>" data-recall-id="<%= summaryProvider.getSanitizedRecallId() %>"
+	<div id="collapse-<%= summaryProvider.getFdaId() %>" data-recall-id="<%= summaryProvider.getFdaId() %>"
 		 class="panel-collapse collapse in">
 		<div class="panel-body">
 			<p class="recall-reason"><%= summaryProvider.getReasonForRecall() %></p>
@@ -31,7 +31,7 @@
 			</ul>
 			<ul class="list-inline pull-right">
 				<li>
-					<div data-action="recall-pin" data-recall-id="<%= summaryProvider.getSanitizedRecallId() %>"
+					<div data-action="recall-pin" data-recall-id="<%= summaryProvider.getFdaId() %>"
 						 class="btn btn-link"><i class="glyphicon glyphicon-pushpin"></i> Pin
 					</div>
 				</li>
