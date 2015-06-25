@@ -19,7 +19,7 @@
       "required": false
     },
     "SESSIONLENGTH": {
-      "description": "The session length in seconds.",
+      "description": "The session length in milliseconds.",
       "value": "3600000000",
       "required": false
     },
