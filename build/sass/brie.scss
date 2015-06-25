@@ -158,6 +158,16 @@ html, body {
 }
 
 //
+// List group
+// --------------------------------------------------
+
+.list-group {
+  &.list-group-borderless .list-group-item {
+    border: none;
+  }
+}
+
+//
 // Buttons
 // --------------------------------------------------
 

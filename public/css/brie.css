@@ -8288,6 +8288,9 @@ html, body {
   .canvas {
     padding: 0; } }
 
+.list-group.list-group-borderless .list-group-item {
+  border: none; }
+
 .btn.btn-link[data-toggle="button"]:active,
 .btn.btn-link[data-toggle="button"].active {
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
