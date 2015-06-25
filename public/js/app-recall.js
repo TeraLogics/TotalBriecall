@@ -14,6 +14,7 @@ requirejs.config({
 		jquery: 'jquery-2.1.4.min',
 		bootstrap: 'bootstrap.min',
 		ejs: 'ejs-2.3.1.min',
+		masonry: 'masonry.pkgd.min',
 		moment: 'moment.min',
 		underscore: 'underscore-min',
 		UsStates: 'us-states'
@@ -24,13 +25,14 @@ requirejs([
 	'jquery',
 	'bootstrap',
 	'ejs',
+	'masonry',
 	'moment',
 	'underscore',
 	'CommentProvider',
 	'MapApp',
 	'SyncFileReader',
 	'UsStates'
-], function ($, bootstrap, ejs, moment, _, CommentProvider, MapApp, SyncFileReader, UsStates) {
+], function ($, bootstrap, ejs, Masonry, moment, _, CommentProvider, MapApp, SyncFileReader, UsStates) {
 	$.fn.serializeObject = function () {
 		var o = {},
 			a = this.serializeArray();
@@ -65,9 +67,15 @@ requirejs([
 				fillOpacity: 0.7
 			};
 		},
-		$form = $('form');
+		$form = $('form'),
+		recallCategoriesView = $('#recall-categories'),
+		recallCategoriesMasonry = new Masonry(recallCategoriesView[0], {
+			itemSelector: '.recall-category-card'
+		});
 
-	map.create();
+	map.create({
+		zoomControl: false
+	});
 
 	if (brie.page.recall.affectedstates && !brie.page.recall.affectednationally) {
 		map.add('layer', UsStates.getStateGeoJSON(brie.page.recall.affectedstates), {
@@ -77,6 +85,17 @@ requirejs([
 		map.add('layer', UsStates.getUsNationGeoJSON(), {
 			style: style
 		});
+	}
+
+	/* disable moving the header map */
+	map._map.dragging.disable();
+	map._map.touchZoom.disable();
+	map._map.doubleClickZoom.disable();
+	map._map.scrollWheelZoom.disable();
+	map._map.boxZoom.disable();
+	map._map.keyboard.disable();
+	if (map._map.tap) {
+		map._map.tap.disable();
 	}
 
 	$form.submit(function () {
