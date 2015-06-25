@@ -6,13 +6,16 @@
 %>
 <div class="panel <%= recallProvider.getCardType() %> recall-summary-card recall-class-i">
 	<div class="panel-heading">
-		<div class="recall-card-toggle <%= recallProvider.isCollapsed() ? 'collapsed' : '' %>" data-toggle="collapse"
+		<div data-toggle="tooltip" rel="tooltip" data-placement="bottom"
+			 title="Collapse card" class="recall-card-toggle <%= recallProvider.isCollapsed() ? 'collapsed' : '' %>"
+			 data-toggle="collapse"
 			 data-target="#collapse-<%= recallProvider.getFdaId() %>">
 			<i class="glyphicon"></i>
 		</div>
 		<h3 class="panel-title"><%= recallProvider.getProductDescription() %></h3>
 		<h4 class="panel-subtitle">
-			<a data-toggle="tooltip" data-placement="bottom" title="<%= recallProvider.getFirmAddress() %>" href="">
+			<a data-toggle="tooltip" rel="tooltip" data-placement="bottom"
+			   title="<%= recallProvider.getFirmAddress() %>" href="">
 				<%= recallProvider.getFirmName() %>
 			</a> &nbsp;-&nbsp;
 			<small>
@@ -22,27 +25,52 @@
 	</div>
 	<div id="collapse-<%= recallProvider.getFdaId() %>" data-recall-id="<%= recallProvider.getFdaId() %>"
 		 class="panel-collapse collapse <%= recallProvider.isCollapsed() ? '' : 'in' %>">
-		<div class="panel-body">
-			<div class="aspect-box aspect-ratio-3x1 preview-holder">
-				<img class="aspect-content" src="<%= recallProvider.getFoodCategoryImgUrl() %>">
-			</div>
+		<section class="panel-body">
 			<p class="recall-reason"><%= recallProvider.getReasonForRecall() %></p>
-		</div>
+
+			<div class="allergen-info">
+				<h4 class="recall-section-heading">Known allergens</h4>
+				<ol class="allergen-list list-inline list-view text-center <%= recallProvider.getFoodCategories().length === 0 ? 'empty' : '' %>">
+					<% for (var i = 0, l = recallProvider.getFoodCategories().length; i < l; i++) { %>
+					<li class="allergen">
+						<div class="aspect-box">
+							<div class="aspect-content">
+								<div data-toggle="tooltip" rel="tooltip" data-placement="bottom"
+									 title="<%= recallProvider.getFoodCategoryName(i) %>" class="preview-holder">
+									<img src="<%= recallProvider.getFoodCategoryImgUrl(i) %>">
+								</div>
+							</div>
+						</div>
+					</li>
+					<% } %>
+				</ol>
+				<div class="list-view-messages">
+					<p class="list-view-empty-message">There are no known allergens.</p>
+
+					<p class="list-view-error-message">Oops, we had trouble retrieving recent recalls!</p>
+				</div>
+			</div>
+		</section>
 		<div class="panel-footer clearfix">
 			<ul class="list-inline pull-left">
-				<li><a class="btn btn-link" href="<%= recallProvider.getRecallDetailsLink() %>"><i
+				<li><a class="btn btn-link" data-toggle="tooltip" rel="tooltip" data-placement="top"
+					   title="See recall details" href="<%= recallProvider.getRecallDetailsLink() %>"><i
 								class="glyphicon glyphicon-info-sign"></i> Info</a></li>
 			</ul>
 			<ul class="list-inline pull-right">
 				<li>
 					<div data-action="recall-pin" data-recall-id="<%= recallProvider.getFdaId() %>"
-						 data-toggle="button"
-						 class="btn btn-link <%= recallProvider.isPinned() ? 'active' : '' %>"><i class="glyphicon glyphicon-pushpin"></i> Pin
+						 data-toggle="button" data-toggle="tooltip" rel="tooltip" data-placement="top"
+						 title="Pin recall to your board"
+						 class="btn btn-link <%= recallProvider.isPinned() ? 'active' : '' %>"><i
+								class="glyphicon glyphicon-pushpin"></i> Pin
 					</div>
 				</li>
 				<li>
 					<div class="dropup">
-						<span class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i
+						<span data-toggle="tooltip" rel="tooltip" data-placement="top"
+							  title="Share recall with others" class="btn btn-link dropdown-toggle"
+							  data-toggle="dropdown"><i
 									class="glyphicon glyphicon-share-alt"></i> Share</span>
 						<ul class="dropdown-menu dropdown-menu-right" role="menu">
 							<li role="presentation">

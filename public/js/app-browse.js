@@ -346,6 +346,11 @@ requirejs([
 	});
 
 	appDocument.ready(function () {
+		// Tooltip heaven
+		appView.tooltip({
+			selector: '[rel=tooltip]'
+		});
+
 		BrowseTour.start();
 	});
 });

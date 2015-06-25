@@ -7759,7 +7759,7 @@ button.close, .recall-summary-card button.recall-card-toggle {
     display: block;
     margin: 10px 0;
     font-style: italic;
-    font-size: 1em;
+    font-size: 12px;
     text-align: center;
     vertical-align: middle;
     color: #777777; }
@@ -7867,8 +7867,25 @@ button.close, .recall-summary-card button.recall-card-toggle {
   overflow: auto;
   margin-bottom: 16px; }
 
-.recall-summary-card .recall-reason {
-  margin: 0; }
+.recall-summary-card .recall-section-heading {
+  text-transform: uppercase;
+  margin-top: 1em;
+  margin-bottom: 1.5em;
+  font-size: .7em;
+  font-weight: bold;
+  color: #777777; }
+
+.recall-summary-card .allergen-info {
+  margin-top: 35px; }
+  .recall-summary-card .allergen-info .allergen-list .allergen {
+    width: 20%;
+    margin-top: 5px;
+    margin-bottom: 5px; }
+    .recall-summary-card .allergen-info .allergen-list .allergen .preview-holder {
+      height: 100%;
+      border-radius: 50%; }
+      .recall-summary-card .allergen-info .allergen-list .allergen .preview-holder > img {
+        height: 100%; }
 
 .summary-symbol {
   border-radius: 4px;

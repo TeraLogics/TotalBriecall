@@ -171,7 +171,7 @@
 	display: block;
 	margin: 10px 0;
 	font-style: italic;
-	font-size: 1em;
+	font-size: $font-size-small;
 	text-align: center;
 	vertical-align: middle;
 	color: $text-muted;
@@ -323,12 +323,38 @@
   }
 
   .recall-hud {
-	overflow: auto;
-	margin-bottom: 16px;
+    overflow: auto;
+    margin-bottom: 16px;
   }
 
-  .recall-reason {
-	margin: 0;
+  .recall-section-heading {
+    text-transform: uppercase;
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+    font-size: .7em;
+    font-weight: bold;
+    color: $text-muted;
+  }
+
+  .allergen-info {
+    margin-top: 35px;
+
+    .allergen-list {
+      .allergen {
+        width: 20%;
+        margin-top: 5px;
+        margin-bottom: 5px;
+
+        .preview-holder {
+          height: 100%;
+          border-radius: 50%;
+
+          > img {
+            height: 100%;
+          }
+        }
+      }
+    }
   }
 }
 

@@ -12,15 +12,21 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		_getBaseURL = function () {
 			return window.location.origin ? window.location.origin : new Uri(window.location.href).authority();
 		};
-	RecallProvider.prototype.getFoodCategoryImgUrl = function () {
+	RecallProvider.prototype.getFoodCategoryName = function (index) {
 		var category = 'generic';
 
 		if (this._recall.categories.length > 0) {
-			category = this._recall.categories[0];
+			category = this._recall.categories[index || 0];
 		}
 
-		return _getBaseURL() + '/img/foodcategories/' + category + '.jpg';
+		return category;
 	};
+	RecallProvider.prototype.getFoodCategoryImgUrl = function (index) {
+		return _getBaseURL() + '/img/foodcategories/' + this.getFoodCategoryName(index) + '.jpg';
+	};
+	RecallProvider.prototype.getFoodCategories = function () {
+		return this._recall.categories;
+	}
 	RecallProvider.prototype.getFirmAddress = function () {
 		return this._recall.city + ', ' + this._recall.state + ', ' + this._recall.country;
 	};
@@ -88,7 +94,7 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		return new Uri('mailto:?').query({
 			subject: this.getFirmName() + ' recalls ' + this.getProductDescription(),
 			body: 'On ' + this.getRecallInitiationDate('MMM Do, YYYY') + ' ' + this.getFirmName() +
-				' initiated recall of ' + this.getProductDescription() + ' due to ' + this.getReasonForRecall()
+			' initiated recall of ' + this.getProductDescription() + ' due to ' + this.getReasonForRecall()
 		});
 	};
 	RecallProvider.prototype.getCardType = function () {
