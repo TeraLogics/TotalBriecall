@@ -25,26 +25,22 @@ exports.getById = function (obj) {
 		return fdaAdapter.getFoodRecallById({
 			id: obj.id
 		}).then(function (recallResult) {
-			if (recallResult) {
-				return mongoAdapter.getComments([recallResult.recall_number]).then(function (comments) {
-					recallResult.comments = _.chain(comments)
-						.where({recallnumber: recallResult.recall_number})
-						.map(function (comment) {
-							// delete mongo's internal stuff
-							delete comment.__v;
-							delete comment._id;
-							// remove the recall number as it's duplicated from the recall record
-							delete comment.recallnumber;
+			return mongoAdapter.getComments([recallResult.recall_number]).then(function (comments) {
+				recallResult.comments = _.chain(comments)
+					.where({recallnumber: recallResult.recall_number})
+					.map(function (comment) {
+						// delete mongo's internal stuff
+						delete comment.__v;
+						delete comment._id;
+						// remove the recall number as it's duplicated from the recall record
+						delete comment.recallnumber;
 
-							return comment;
-						})
-						.value();
+						return comment;
+					})
+					.value();
 
-					return recallResult;
-				});
-			} else {
-				throw errorHelper.getNotFoundError();
-			}
+				return recallResult;
+			});
 		});
 	});
 };

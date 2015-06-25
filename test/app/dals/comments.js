@@ -18,7 +18,7 @@ module.exports = function () {
 
 		describe('add', function () {
 
-			function _getDummyComment() {
+			function _getTestComment() {
 				return {
 					__v: 1,
 					_id: 39429230843,
@@ -43,8 +43,8 @@ module.exports = function () {
 			});
 
 			it('should succeed with valid inputs (no location)', function (done) {
-				var input = _getDummyComment(),
-					adapterOutput = _getDummyComment();
+				var input = _getTestComment(),
+					adapterOutput = _getTestComment();
 
 				delete input.location;
 				delete adapterOutput.location;
@@ -71,8 +71,8 @@ module.exports = function () {
 			});
 
 			it('should succeed with valid inputs (with location)', function (done) {
-				var expected = _getDummyComment(),
-					adapterOutput = _getDummyComment();
+				var expected = _getTestComment(),
+					adapterOutput = _getTestComment();
 
 				sinon.stub(mongoAdapter, 'addComment').returns(Promise.resolve(adapterOutput));
 
@@ -92,8 +92,8 @@ module.exports = function () {
 			});
 
 			it('should fail with an invalid recallnumber', function (done) {
-				var input = _getDummyComment(),
-					adapterOutput = _getDummyComment();
+				var input = _getTestComment(),
+					adapterOutput = _getTestComment();
 
 				input.recallnumber = 1234;
 
@@ -111,8 +111,8 @@ module.exports = function () {
 			});
 
 			it('should fail without a recallnumber', function (done) {
-				var input = _getDummyComment(),
-					adapterOutput = _getDummyComment();
+				var input = _getTestComment(),
+					adapterOutput = _getTestComment();
 
 				delete input.recallnumber;
 
@@ -130,8 +130,8 @@ module.exports = function () {
 			});
 
 			it('should fail with an invalid name', function (done) {
-				var input = _getDummyComment(),
-					adapterOutput = _getDummyComment();
+				var input = _getTestComment(),
+					adapterOutput = _getTestComment();
 
 				input.name = 1234;
 
@@ -149,8 +149,8 @@ module.exports = function () {
 			});
 
 			it('should fail without a name', function (done) {
-				var input = _getDummyComment(),
-					adapterOutput = _getDummyComment();
+				var input = _getTestComment(),
+					adapterOutput = _getTestComment();
 
 				delete input.name;
 
@@ -168,8 +168,8 @@ module.exports = function () {
 			});
 
 			it('should fail with an invalid location (not a string)', function (done) {
-				var input = _getDummyComment(),
-					adapterOutput = _getDummyComment();
+				var input = _getTestComment(),
+					adapterOutput = _getTestComment();
 
 				input.location = 1234;
 
@@ -187,8 +187,8 @@ module.exports = function () {
 			});
 
 			it('should fail with an invalid location (not a US state)', function (done) {
-				var input = _getDummyComment(),
-					adapterOutput = _getDummyComment();
+				var input = _getTestComment(),
+					adapterOutput = _getTestComment();
 
 				input.location = 'Gretta Garbo';
 
@@ -209,8 +209,8 @@ module.exports = function () {
 			});
 
 			it('should fail with an invalid comment', function (done) {
-				var input = _getDummyComment(),
-					adapterOutput = _getDummyComment();
+				var input = _getTestComment(),
+					adapterOutput = _getTestComment();
 
 				input.comment = 1234;
 
@@ -228,8 +228,8 @@ module.exports = function () {
 			});
 
 			it('should fail without a comment', function (done) {
-				var input = _getDummyComment(),
-					adapterOutput = _getDummyComment();
+				var input = _getTestComment(),
+					adapterOutput = _getTestComment();
 
 				delete input.comment;
 
