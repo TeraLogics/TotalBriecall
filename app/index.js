@@ -51,8 +51,8 @@ var app = express(),
 	readDir = Promise.promisify(fs.readdir);
 
 // Mongo & Mongoose Configuration
-mongoose.set('debug', process.env.NODE_ENV === 'development');
-mongoose.connect(process.env.MONGOLAB_URI);
+mongoose.set('debug', global.config.NODE_ENV === 'development');
+mongoose.connect(global.config.MONGOLAB_URI);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 

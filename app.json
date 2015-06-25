@@ -14,15 +14,27 @@
     },
     "SECRET": {
       "description": "The application secret used to encrypt cookie and session data.",
-      "generator": "secret"
+      "generator": "secret",
+      "required": false
     },
     "SESSIONLENGTH": {
       "description": "The session length in seconds.",
-      "value": "3600000000"
+      "value": "3600000000",
+      "required": false
     },
     "USPS_USER": {
       "description": "The API key to USPS account.",
       "value": ""
+    },
+    "FACEBOOK_APPID": {
+      "description": "The Facebook API key used to for sharing.",
+      "value": "",
+      "required": false
+    },
+    "OPENFDA_APIKEY": {
+      "description": "The openFDA API key. Providing this allows more requests per minute/per day",
+      "value": "",
+      "required": false
     }
   }
 }
