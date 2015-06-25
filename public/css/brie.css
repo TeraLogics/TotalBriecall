@@ -8281,12 +8281,11 @@ html, body {
     float: none; }
 
 .navmenu {
-  z-index: 1; }
+  z-index: 0; }
 
 .canvas {
   position: relative;
   left: 0;
-  z-index: 2;
   min-height: 100%;
   padding: 50px 0 0 0;
   background: #e6e6e6; }
@@ -8294,17 +8293,15 @@ html, body {
 .canvas .navbar-toggle.releaving-toggle .icon-bar,
 .canvas .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
 .canvas .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar {
+  margin-left: 0; }
+
+.canvas.canvas-slid .navbar-toggle.releaving-toggle .icon-bar,
+.canvas.canvas-slid .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
+.canvas.canvas-slid .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar {
+  margin-left: -15px;
   -webkit-transition: margin-left 0.1s linear;
   -o-transition: margin-left 0.1s linear;
   transition: margin-left 0.1s linear; }
-
-.canvas.canvas-slid .navbar-toggle.releaving-toggle .icon-bar,
-.canvas.canvas-sliding .navbar-toggle.releaving-toggle .icon-bar,
-.canvas.canvas-slid .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
-.canvas.canvas-sliding .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
-.canvas.canvas-slid .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar,
-.canvas.canvas-sliding .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar {
-  margin-left: -15px; }
 
 @media (min-width: 0) {
   .navbar-toggle {

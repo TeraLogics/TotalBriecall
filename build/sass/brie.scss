@@ -145,13 +145,12 @@ html, body {
 }
 
 .navmenu {
-  z-index: 1;
+  z-index: 0;
 }
 
 .canvas {
   position: relative;
   left: 0;
-  z-index: 2;
   min-height: 100%;
   padding: $navbar-height 0 0 0;
   background: $bg-void;
@@ -162,11 +161,11 @@ html, body {
   .navbar-default &.releaving-toggle,
   .navbar-inverted &.releaving-toggle {
     .canvas & .icon-bar {
-      @include transition(margin-left .1s linear);
+      margin-left: 0;
     }
-    .canvas.canvas-slid & .icon-bar,
-    .canvas.canvas-sliding & .icon-bar {
+    .canvas.canvas-slid & .icon-bar{
       margin-left: -15px;
+      @include transition(margin-left .1s linear);
     }
   }
 }

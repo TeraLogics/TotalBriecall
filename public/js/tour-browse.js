@@ -6,6 +6,8 @@
 
 define(['jquery', 'Tour'], function ($, Tour, require) {
 	var recallTour = new Tour({
+		//container: '.canvas',
+		//backdropContainer: '.canvas',
 		//storage: false,
 		steps: [
 			{
