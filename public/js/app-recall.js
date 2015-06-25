@@ -82,7 +82,12 @@ requirejs([
 		recallCategoriesView = $('#recall-categories'),
 		recallCategoriesMasonry = new Masonry(recallCategoriesView[0], {
 			itemSelector: '.recall-category-card'
-		});
+		}),
+		recallLinkCopyModal = $('#recall-link-copy');
+
+	recallLinkCopyModal.find('[name="recall-link"]').on('click', function (event) {
+		this.select();
+	});
 
 	map.create({
 		zoomControl: false
@@ -108,6 +113,19 @@ requirejs([
 	if (map._map.tap) {
 		map._map.tap.disable();
 	}
+
+	// Hook up general controls
+	$('.application').on('click', '[data-action="recall-copy"]', function (event) {
+		var element = $(this),
+			text = element.data('text'),
+			recallLinkInput = recallLinkCopyModal.find('[name="recall-link"]');
+
+		recallLinkInput.val(text);
+
+		recallLinkCopyModal.modal('show');
+
+		return false;
+	});
 
 	$form.submit(function () {
 		var $this = $(this);
