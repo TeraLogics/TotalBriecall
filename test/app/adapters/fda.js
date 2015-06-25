@@ -274,7 +274,7 @@ module.exports = function () {
 				request.get.restore();
 			});
 
-			it('should return a valid formatted recall response', function (done) {
+			it('should format inputs and return a valid formatted recall response when inputs are provided', function (done) {
 				var obj = {
 						state: 'va',
 						status: 'ongoing',
@@ -306,7 +306,7 @@ module.exports = function () {
 				});
 			});
 
-			it('should return a valid formatted recall response', function (done) {
+			it('should return a valid formatted recall response when no inputs are provided', function (done) {
 				var obj = {},
 					search = '';
 
