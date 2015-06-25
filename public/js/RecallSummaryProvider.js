@@ -12,6 +12,15 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		_getBaseURL = function () {
 			return window.location.origin ? window.location.origin : new Uri(window.location.href).authority();
 		};
+	RecallSummaryProvider.prototype.getFoodCategoryImgUrl = function () {
+		var category = 'generic';
+
+		if (this._recall.categories.length > 0) {
+			category = this._recall.categories[0];
+		}
+
+		return _getBaseURL() + '/img/foodcategories/' + category + '.jpg';
+	};
 	RecallSummaryProvider.prototype.getFirmAddress = function () {
 		return this._recall.city + ', ' + this._recall.state + ', ' + this._recall.country;
 	};

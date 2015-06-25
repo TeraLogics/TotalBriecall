@@ -51,6 +51,12 @@
   &.aspect-ratio-2x1:before {
 	padding-top: 50%;
   }
+  &.aspect-ratio-3x1:before {
+	padding-top: 33.333333333333%;
+  }
+  &.aspect-ratio-4x1:before {
+	padding-top: 25%;
+  }
   &.aspect-ratio-1x2:before {
 	padding-top: 200%;
   }
@@ -303,6 +309,17 @@
   }
   .panel-title, .panel-subtitle {
 	@include text-overflow();
+  }
+
+  & .preview-holder {
+    overflow: hidden;
+    border: none;
+
+    > * {
+      width: calc(100% + 10px);
+      margin: auto;
+      margin-left: -5px;
+    }
   }
 
   .recall-hud {

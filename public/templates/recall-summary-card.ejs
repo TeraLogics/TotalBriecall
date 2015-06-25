@@ -23,6 +23,9 @@
 	<div id="collapse-<%= summaryProvider.getFdaId() %>" data-recall-id="<%= summaryProvider.getFdaId() %>"
 		 class="panel-collapse collapse <%= summaryProvider.isCollapsed() ? '' : 'in' %>">
 		<div class="panel-body">
+			<div class="aspect-box aspect-ratio-3x1 preview-holder">
+				<img class="aspect-content" src="<%= summaryProvider.getFoodCategoryImgUrl() %>">
+			</div>
 			<p class="recall-reason"><%= summaryProvider.getReasonForRecall() %></p>
 		</div>
 		<div class="panel-footer clearfix">

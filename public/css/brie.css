@@ -7678,6 +7678,10 @@ button.close, .recall-summary-card button.recall-card-toggle {
     padding-top: 100%; }
   .aspect-box.aspect-ratio-2x1:before {
     padding-top: 50%; }
+  .aspect-box.aspect-ratio-3x1:before {
+    padding-top: 33.333333333333%; }
+  .aspect-box.aspect-ratio-4x1:before {
+    padding-top: 25%; }
   .aspect-box.aspect-ratio-1x2:before {
     padding-top: 200%; }
   .aspect-box.aspect-ratio-4x3:before {
@@ -7850,6 +7854,14 @@ button.close, .recall-summary-card button.recall-card-toggle {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap; }
+
+.recall-summary-card .preview-holder {
+  overflow: hidden;
+  border: none; }
+  .recall-summary-card .preview-holder > * {
+    width: calc(100% + 10px);
+    margin: auto;
+    margin-left: -5px; }
 
 .recall-summary-card .recall-hud {
   overflow: auto;

@@ -13,9 +13,6 @@ The food category images used in Total Briecall are listed below with their asso
 **dairy.jpg** is licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) by TeraLogics    
 * It is resized and/or cropped from [Un coulommiers au lait cru/A Coulommiers cheese made from unpasteurised cow's milk](https://commons.wikimedia.org/wiki/File:Eggshell_001.jpg) by [Myrabella](https://commons.wikimedia.org/wiki/User:Myrabella), used under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
 
-**vegetable.jpg** is licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) by TeraLogics    
-* It is resized and/or cropped from [Owoce papryki rocznej/Various colors of the capsicum fruit](https://commons.wikimedia.org/wiki/File:Capsicum_annuum_fruits_IMGP0049.jpg) by [Nikodem Nijaki](https://commons.wikimedia.org/wiki/User:Nikodem_Nijaki), used under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
-
 **fish.jpg** is licensed under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/) by TeraLogics    
 * It is resized and/or cropped from [Fish at Ensenada's fishmarket](https://commons.wikimedia.org/wiki/File:Fishmarket_01.jpg) by [Tomás Castelazo](https://commons.wikimedia.org/wiki/User:Tomascastelazo), used under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/)
 
@@ -27,6 +24,9 @@ The food category images used in Total Briecall are listed below with their asso
 
 **spice.jpg** is in the public domain    
 * It is resized and/or cropped from [Anhelo de Marruecos](https://flic.kr/p/eVqavv) by [Luz Adriana Villa](http://www.flickr.com/people/11599314@N00), used under [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/)
+
+**vegetable.jpg** is in the public domain
+* It is resized and/or cropped from [peppers](https://flic.kr/p/9QpaFy) by [Janine](http://www.flickr.com/people/62274271@N00), used under [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/)
 
 **gluten.jpg** is in the public domain
 
