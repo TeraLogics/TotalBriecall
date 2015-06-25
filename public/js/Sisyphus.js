@@ -4,7 +4,7 @@
  define
  */
 
-define(['jquery'], function ($) {
+define(['jquery', 'underscore', 'visible'], function ($, _, visible) {
 	var Sisyphus = function (element, options) {
 		var self = this;
 
