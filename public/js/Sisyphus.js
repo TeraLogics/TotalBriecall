@@ -45,6 +45,12 @@ define(['jquery', 'underscore', 'visible'], function ($, _, visible) {
 			.on('scroll', $.proxy(this._onScroll, this));
 		this._checkTrigger();
 	};
+	Sisyphus.prototype.reset = function () {
+		this._options.onReset(this._meta, this);
+		this._meta = {};
+		this.rebind();
+		this._checkTrigger();
+	};
 	Sisyphus.prototype.destroy = function () {
 
 	};

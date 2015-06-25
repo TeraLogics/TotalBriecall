@@ -187,11 +187,15 @@ requirejs([
 		}),
 		recentRecallLoadingView = $('#recent-recalls + .list-view-messages > .list-view-loading-message'),
 		eventTrolley = $({}),
-		recallLinkCopyModal = $('#recall-link-copy');
+		recallLinkCopyModal = $('#recall-link-copy'),
+		categoryFilterView = $('.select2.categories'),
+		sisyphusList = null;
 
-	$(".select2.categories").select2({
+	categoryFilterView.select2({
 		placeholder: 'Select one or more categories',
 		data: brie.page.categories
+	}).on('change', function (event) {
+		sisyphusList.reset();
 	});
 
 	recallLinkCopyModal.find('[name="recall-link"]').on('click', function (event) {
@@ -199,7 +203,7 @@ requirejs([
 	});
 
 	// Setup infini-scroll
-	new Sisyphus(appWindow, {
+	sisyphusList = new Sisyphus(appWindow, {
 		trigger: recentRecallLoadingView,
 		autoTrigger: true,
 		onFetch: function (meta, sisyphus) {
@@ -217,11 +221,18 @@ requirejs([
 				meta.state = getPreference('state');
 			}
 
+			meta.keywords = categoryFilterView.val();
+
 			return $.ajax({
 				url: '/api/recalls',
 				data: meta,
 				cache: false
 			});
+		},
+		onReset: function (meta, sisyphus) {
+			recentRecallsMasonry.remove(recentRecallsView.children());
+			recentRecallsMasonry.layout();
+			recentRecallsView.addClass('empty');
 		},
 		onProcess: function (result, meta, sisyphus) {
 			recentRecallsView.toggleClass('empty', (
