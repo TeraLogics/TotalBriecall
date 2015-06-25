@@ -36,9 +36,9 @@ var _ = require('underscore'),
 		'us',
 		'usa'
 	],
-	nationalRegex = new RegExp('\\b' + nationalTerms.join('|') + '\\b', 'i'),
+	nationalRegex = new RegExp('\\b(' + nationalTerms.join('|') + ')\\b', 'i'),
 	keywordRegexes = _.reduce(recallHelper.keywordMappings, function (memo, values, key) {
-		memo[key] = new RegExp('\\b' + values.join('|') + '\\b', 'i');
+		memo[key] = new RegExp('\\b(' + values.join('|') + ')\\b', 'i');
 		return memo;
 	}, {}),
 	protoPlusRegex = /\s+/ig,
@@ -208,8 +208,8 @@ function _formatRecallResults(data) {
 		foodrecall.categories = _.pluck(_.reduce(keywordRegexes, function (memo, regex, key) {
 			var reasonMatchPos = foodrecall.reason_for_recall.search(regex),
 				reasonMatched = reasonMatchPos !== -1,
-				descriptionMatchPost = foodrecall.product_description.search(regex),
-				descriptionMatched = descriptionMatchPost !== -1,
+				descriptionMatchPos = foodrecall.product_description.search(regex),
+				descriptionMatched = descriptionMatchPos !== -1,
 				priority = 0;
 
 			if (reasonMatched) {
@@ -217,7 +217,7 @@ function _formatRecallResults(data) {
 			}
 
 			if (descriptionMatched) {
-				priority += 100 - reasonMatchPos;
+				priority += 100 - descriptionMatchPos;
 			}
 
 			if (reasonMatched || descriptionMatched) {
