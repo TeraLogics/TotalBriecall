@@ -53,14 +53,14 @@
 		</section>
 		<div class="panel-footer clearfix">
 			<ul class="list-inline pull-left">
-				<li><a class="btn btn-link" data-toggle="tooltip" rel="tooltip" data-placement="top"
+				<li><a class="btn btn-link" data-toggle="tooltip" rel="tooltip" data-placement="bottom"
 					   title="See recall details" href="<%= recallProvider.getRecallDetailsLink() %>"><i
 								class="glyphicon glyphicon-info-sign"></i> Info</a></li>
 			</ul>
 			<ul class="list-inline pull-right">
 				<li>
 					<div data-action="recall-pin" data-recall-id="<%= recallProvider.getFdaId() %>"
-						 data-toggle="button" data-toggle="tooltip" rel="tooltip" data-placement="top"
+						 data-toggle="button" data-toggle="tooltip" rel="tooltip" data-placement="bottom"
 						 title="Pin recall to your board"
 						 class="btn btn-link <%= recallProvider.isPinned() ? 'active' : '' %>"><i
 								class="glyphicon glyphicon-pushpin"></i> Pin
@@ -68,10 +68,10 @@
 				</li>
 				<li>
 					<div class="dropup">
-						<span data-toggle="tooltip" rel="tooltip" data-placement="top"
-							  title="Share recall with others" class="btn btn-link dropdown-toggle"
-							  data-toggle="dropdown"><i
-									class="glyphicon glyphicon-share-alt"></i> Share</span>
+						<span data-toggle="dropdown"><span data-toggle="tooltip" rel="tooltip" data-placement="bottom"
+														   title="Share recall with others"
+														   class="btn btn-link dropdown-toggle"><i
+										class="glyphicon glyphicon-share-alt"></i> Share</span></span>
 						<ul class="dropdown-menu dropdown-menu-right" role="menu">
 							<li role="presentation">
 								<a href="#" data-action="recall-copy"
