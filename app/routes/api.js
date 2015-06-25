@@ -212,7 +212,7 @@ module.exports = function (app) {
 	 * Allowed values: `1`, `2`, `3`.
 	 * @apiParam {String} [keywords] A comma-delimited list of one or more keywords.
 	 *
-	 * Allowed values: `"dairy"`, `"dye"`, `"egg"`, `"fish"`, `"gluten"`, `"nut"`, `"soy"`
+	 * Allowed values: `"dairy"`, `"dye"`, `"egg"`, `"fish"`, `"fruit"`, `"gluten"`, `"meat"`, `"nut"`, `"soy"`, `"spice"`, `"supplement"`, `"vegetable"`
 	 * @apiParam {Number{0..5000}} [skip=0] How many records to skip in the results.
 	 * @apiParam {Number{1..100}} [limit=100] The maximum number of results to return.
 	 *

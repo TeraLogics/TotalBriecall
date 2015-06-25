@@ -578,7 +578,7 @@
             "type": "<p>String</p> ",
             "optional": true,
             "field": "keywords",
-            "description": "<p>A comma-delimited list of one or more keywords.</p> <p>Allowed values: <code>&quot;dairy&quot;</code>, <code>&quot;dye&quot;</code>, <code>&quot;egg&quot;</code>, <code>&quot;fish&quot;</code>, <code>&quot;gluten&quot;</code>, <code>&quot;nut&quot;</code>, <code>&quot;soy&quot;</code></p> "
+            "description": "<p>A comma-delimited list of one or more keywords.</p> <p>Allowed values: <code>&quot;dairy&quot;</code>, <code>&quot;dye&quot;</code>, <code>&quot;egg&quot;</code>, <code>&quot;fish&quot;</code>, <code>&quot;fruit&quot;</code>, <code>&quot;gluten&quot;</code>, <code>&quot;meat&quot;</code>, <code>&quot;nut&quot;</code>, <code>&quot;soy&quot;</code>, <code>&quot;spice&quot;</code>, <code>&quot;supplement&quot;</code>, <code>&quot;vegetable&quot;</code></p> "
           },
           {
             "group": "Parameter",
