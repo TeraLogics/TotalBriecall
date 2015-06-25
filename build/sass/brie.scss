@@ -121,7 +121,27 @@ html, body {
 
 .navbar-toggle {
   float: left;
-  margin-left: 15px;
+
+  &.releaving-toggle,
+  .navbar-default &.releaving-toggle,
+  .navbar-inverted &.releaving-toggle {
+    margin-left: 0;
+    margin-right: 0;
+    border: none;
+
+    &:hover,
+    &:focus {
+      background-color: transparent;
+    }
+  }
+
+  & > .navbar-brand {
+    display: inline-block;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: auto;
+    float: none;
+  }
 }
 
 .navmenu {
@@ -133,27 +153,27 @@ html, body {
   left: 0;
   z-index: 2;
   min-height: 100%;
-  padding: 50px 0 0 0;
-  background: #fff;
+  padding: $navbar-height 0 0 0;
+  background: $bg-void;
+}
+
+.navbar-toggle {
+  &.releaving-toggle,
+  .navbar-default &.releaving-toggle,
+  .navbar-inverted &.releaving-toggle {
+    .canvas & .icon-bar {
+      @include transition(margin-left .1s linear);
+    }
+    .canvas.canvas-slid & .icon-bar,
+    .canvas.canvas-sliding & .icon-bar {
+      margin-left: -15px;
+    }
+  }
 }
 
 @media (min-width: 0) {
   .navbar-toggle {
     display: block; /* force showing the toggle */
-  }
-}
-
-@media (min-width: 992px) {
-  body {
-    padding: 0;
-  }
-  .navbar {
-    right: auto;
-    background: none;
-    border: none;
-  }
-  .canvas {
-    padding: 0;
   }
 }
 

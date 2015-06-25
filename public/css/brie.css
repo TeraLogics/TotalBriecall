@@ -8259,8 +8259,26 @@ html, body {
   height: 100%; }
 
 .navbar-toggle {
-  float: left;
-  margin-left: 15px; }
+  float: left; }
+  .navbar-toggle.releaving-toggle,
+  .navbar-default .navbar-toggle.releaving-toggle,
+  .navbar-inverted .navbar-toggle.releaving-toggle {
+    margin-left: 0;
+    margin-right: 0;
+    border: none; }
+    .navbar-toggle.releaving-toggle:hover,
+    .navbar-toggle.releaving-toggle:focus,
+    .navbar-default .navbar-toggle.releaving-toggle:hover,
+    .navbar-default .navbar-toggle.releaving-toggle:focus,
+    .navbar-inverted .navbar-toggle.releaving-toggle:hover,
+    .navbar-inverted .navbar-toggle.releaving-toggle:focus {
+      background-color: transparent; }
+  .navbar-toggle > .navbar-brand {
+    display: inline-block;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: auto;
+    float: none; }
 
 .navmenu {
   z-index: 1; }
@@ -8271,22 +8289,27 @@ html, body {
   z-index: 2;
   min-height: 100%;
   padding: 50px 0 0 0;
-  background: #fff; }
+  background: #e6e6e6; }
+
+.canvas .navbar-toggle.releaving-toggle .icon-bar,
+.canvas .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
+.canvas .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar {
+  -webkit-transition: margin-left 0.1s linear;
+  -o-transition: margin-left 0.1s linear;
+  transition: margin-left 0.1s linear; }
+
+.canvas.canvas-slid .navbar-toggle.releaving-toggle .icon-bar,
+.canvas.canvas-sliding .navbar-toggle.releaving-toggle .icon-bar,
+.canvas.canvas-slid .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
+.canvas.canvas-sliding .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
+.canvas.canvas-slid .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar,
+.canvas.canvas-sliding .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar {
+  margin-left: -15px; }
 
 @media (min-width: 0) {
   .navbar-toggle {
     display: block;
     /* force showing the toggle */ } }
-
-@media (min-width: 992px) {
-  body {
-    padding: 0; }
-  .navbar {
-    right: auto;
-    background: none;
-    border: none; }
-  .canvas {
-    padding: 0; } }
 
 .list-group.list-group-borderless .list-group-item {
   border: none; }
