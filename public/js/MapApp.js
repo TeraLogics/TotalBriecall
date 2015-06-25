@@ -62,11 +62,11 @@ define(['jquery', 'underscore', 'leaflet'], function ($, _, visible, leaflet) {
 				.appendTo($('#' + self._options.div)) //add it to the one provided by the user
 				.get(0); //and get the DOM object
 			options = options || {};
-			options.attributionControl = false;
-			self._map = L.map(div, options); //create the Leaflet map
 
+			self._map = L.map(div, options); //create the Leaflet map
+			self._map.attributionControl.setPrefix("");
 			L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+				attribution: '<div title="http://osm.org/copyright | &copy; OpenStreetMap contributors"><i class="glyphicon glyphicon-info-sign"></i></div>'
 			}).addTo(self._map);
 
 			return true;
