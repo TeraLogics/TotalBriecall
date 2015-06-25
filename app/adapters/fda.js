@@ -75,18 +75,11 @@ function _convertArrayToParam(arr, field) {
 /**
  * Pluralizes a word (naive).
  * @param {String} word Word to pluralize.
- * @returns {String|null} Pluralized string.
+ * @returns {String} Pluralized string.
  * @private
  */
 function _pluralizeWord(word) {
-	var lastLetter = word.match(lastLetterRegex);
-	if (lastLetter) {
-		lastLetter = lastLetter[1];
-	}
-	switch (lastLetter) {
-		case null:
-		case 's':
-			return word;
+	switch (word.match(lastLetterRegex)[1]) {
 		case 'y':
 			return word.replace(lastLetterRegex, 'ies');
 		case 'o':
@@ -151,13 +144,11 @@ function _encodeFoodRecall(foodrecall) {
  */
 function _decodeFoodRecall(val) {
 	return Promise.try(function () {
-		var arr;
-
-		try {
-			arr = new Buffer(val, 'base64').toString('utf8').split('\v');
-		} catch (e) {
+		if (!_.isString(val)) {
 			throw errorHelper.getValidationError('Invalid id');
 		}
+
+		var arr = new Buffer(val, 'base64').toString('utf8').split('\v');
 
 		if (arr.length !== 4) {
 			throw errorHelper.getValidationError('Invalid id');
@@ -255,15 +246,15 @@ function _formatRecallResults(data) {
  * @private
  */
 function _makeRequest(obj) {
-	if (obj.limit) {
-		if (obj.limit > 100) {
+	if (!!obj.limit) {
+		if (obj.limit > 100 || obj.limit < 1) {
 			return Promise.reject(new Error('Invalid limit'));
 		}
 	} else {
 		obj.limit = limit;
 	}
 
-	if (obj.skip && obj.skip > 5000) {
+	if (!!obj.skip && (obj.skip > 5000 || obj.skip < 0)) {
 		return Promise.reject(new Error('Invalid skip'));
 	}
 
@@ -338,6 +329,7 @@ exports.getFoodRecallById = function (obj) {
  * Gets food recall(s) based on search parameters.
  * @param {Object} obj The params object.
  * @param {String} [obj.state] The state to search by.
+ * @param {String} [obj.status] The state to search by.
  * @param {Number} [obj.eventid] The event id to search by.
  * @param {String} [obj.from] The start date to search by.
  * @param {String} [obj.to] The end date to search by.
@@ -354,8 +346,12 @@ exports.searchFoodRecalls = function (obj) {
 		search.push(_convertArrayToParam(recallHelper.stateMappings[obj.state.toUpperCase()].concat(nationalTerms), 'distribution_pattern'));
 	}
 
+	if (obj.status) {
+		search.push('status:' + obj.status);
+	}
+
 	if (obj.eventid) {
-		search.push('event_id:' + obj.id);
+		search.push('event_id:' + obj.eventid);
 	}
 
 	if (obj.firmname) {
@@ -376,10 +372,7 @@ exports.searchFoodRecalls = function (obj) {
 		search.push(_convertArrayToParam(_.reduce(obj.keywords, function (arr, keyword) {
 			return arr.concat(_.reduce(recallHelper.keywordMappings[keyword.toLowerCase()], function (memo, item) {
 				memo.push(item);
-				var plural = _pluralizeWord(item);
-				if (plural !== item) {
-					memo.push(plural);
-				}
+				memo.push(_pluralizeWord(item));
 				return memo;
 			}, []));
 		}, [])));
@@ -395,9 +388,10 @@ exports.searchFoodRecalls = function (obj) {
 /**
  * Gets counts for each unique item in a field.
  * @param {Object} obj The params object.
+ * @param {String} obj.field The field to count on.
  * @param {String} [obj.state] The state to search by.
  * @param {String} [obj.status] The status to search by.
- * @returns {Promise<Object[]>} The number of food recalls by state.
+ * @returns {Promise<Object>} The number of food recalls by state.
  */
 exports.getFoodRecallsCounts = function (obj) {
 	var search = [];
@@ -407,7 +401,7 @@ exports.getFoodRecallsCounts = function (obj) {
 	}
 
 	if (obj.status) {
-		search.push('status:"' + obj.status + '"');
+		search.push('status:' + obj.status);
 	}
 
 	return _makeRequest({

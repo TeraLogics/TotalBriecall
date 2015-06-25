@@ -106,10 +106,11 @@ exports.getRecallById = function (req, res) {
  */
 exports.getRecalls = function (req, res) {
 	var obj = {
+		state: req.query.state,
+		status: req.query.status,
 		firmname: req.query.firmname,
 		from: _toNumber(req.query.from),
 		to: _toNumber(req.query.to),
-		state: req.query.state,
 		eventid: _toNumber(req.query.eventid),
 		skip: _toNumber(req.query.skip),
 		limit: _toNumber(req.query.limit)

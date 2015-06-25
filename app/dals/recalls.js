@@ -68,6 +68,10 @@ exports.search = function (obj) {
 			throw errorHelper.getValidationError('Invalid state');
 		}
 
+		if (obj.status && !recallHelper.isValidStatus(obj.status)) {
+			throw errorHelper.getValidationError('Invalid status');
+		}
+
 		if (obj.eventid && !validationHelper.isInt(obj.eventid)) {
 			throw errorHelper.getValidationError('Invalid eventid');
 		}

@@ -193,6 +193,7 @@ module.exports = function () {
 					from: NaN,
 					to: NaN,
 					state: undefined,
+					status: undefined,
 					eventid: NaN,
 					skip: NaN,
 					limit: NaN
