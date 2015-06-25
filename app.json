@@ -5,7 +5,8 @@
   "logo": "http://total-briecall.herokuapp.com/node.svg",
   "keywords": ["node", "express", "static", "brie"],
   "addons": [
-    "mongolab"
+    "mongolab",
+    "newrelic"
   ],
   "env": {
     "NEWRELIC_KEY ": {
@@ -33,6 +34,11 @@
     },
     "OPENFDA_APIKEY": {
       "description": "The openFDA API key. Providing this allows more requests per minute/per day",
+      "value": "",
+      "required": false
+    },
+    "STATUS_PAGE_IO_URL": {
+      "description": "The url for your StatusPage.io service",
       "value": "",
       "required": false
     }
