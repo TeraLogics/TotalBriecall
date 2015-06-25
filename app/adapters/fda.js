@@ -25,7 +25,7 @@ var _ = require('underscore'),
 	limit = 100,
 	stateAbbreviations = _.keys(recallHelper.stateMappings).sort(),
 	stateRegexes = _.reduce(recallHelper.stateMappings, function (memo, values, key) {
-		memo[key] = new RegExp('\\b' + values.join('|') + '\\b', 'i');
+		memo[key] = new RegExp('\\b(' + values.join('|') + ')\\b', 'i');
 		return memo;
 	}, {}),
 	nationalTerms = [
