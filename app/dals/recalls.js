@@ -17,7 +17,7 @@ var _ = require('underscore'),
  * @returns {Promise.<Object>} A recall.
  */
 exports.getById = function (obj) {
-	return Promise.try(function validate () {
+	return Promise.try(function validate() {
 		if (!obj.id || !validationHelper.isBase64String(obj.id)) {
 			throw errorHelper.getValidationError('Invalid id');
 		}
@@ -27,7 +27,7 @@ exports.getById = function (obj) {
 		}).then(function (recallResult) {
 			return mongoAdapter.getComments([recallResult.recall_number]).then(function (comments) {
 				recallResult.comments = _.chain(comments)
-					.where({recallnumber: recallResult.recall_number})
+					.where({ recallnumber: recallResult.recall_number })
 					.map(function (comment) {
 						// delete mongo's internal stuff
 						delete comment.__v;
@@ -59,7 +59,7 @@ exports.getById = function (obj) {
  * @returns {Promise<Object>} A list of recalls and their metadata.
  */
 exports.search = function (obj) {
-	return Promise.try(function validate () {
+	return Promise.try(function validate() {
 		if (obj.state && !recallHelper.isValidState(obj.state)) {
 			throw errorHelper.getValidationError('Invalid state');
 		}
@@ -112,7 +112,7 @@ exports.search = function (obj) {
 			return mongoAdapter.getComments(_.pluck(recallResults.data, 'recall_number')).then(function (comments) {
 				recallResults.data = _.map(recallResults.data, function (r) {
 					r.comments = _.chain(comments)
-						.where({recallnumber: r.recall_number})
+						.where({ recallnumber: r.recall_number })
 						.map(function (comment) {
 							// delete mongo's internal stuff
 							delete comment.__v;
@@ -143,7 +143,7 @@ exports.search = function (obj) {
  * @returns {Promise} The recall counts.
  */
 exports.getCounts = function (obj) {
-	return Promise.try(function validate () {
+	return Promise.try(function validate() {
 		if (!obj.field || !recallHelper.isValidCountField(obj.field)) {
 			throw errorHelper.getValidationError('Invalid field');
 		}

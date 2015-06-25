@@ -7,6 +7,7 @@ var path = require('path'),
 	Promise = require('bluebird'),
 	recallsDal = require(path.join(global.__dalsdir, 'recalls')),
 	errorHelper = require(path.join(global.__libdir, 'errorHelper')),
+	recallHelper = require(path.join(global.__libdir, 'recallHelper')),
 	validationHelper = require(path.join(global.__libdir, 'validationHelper')),
 	mongoAdapter = require(path.join(global.__adptsdir, 'mongo')),
 	fdaAdapter = require(path.join(global.__adptsdir, 'fda'));
@@ -59,6 +60,17 @@ module.exports = function () {
 		};
 	}
 
+	function _getFDAAPICountFormattedResponse() {
+		return {
+			total: 8016,
+			counts: {
+				'Class I': 3767,
+				'Class II': 3978,
+				'Class III': 271
+			}
+		};
+	}
+
 	describe('recalls', function () {
 
 		beforeEach(function () {
@@ -76,10 +88,6 @@ module.exports = function () {
 		});
 
 		describe('getById', function () {
-
-			beforeEach(function () {
-
-			});
 
 			afterEach(function () {
 				fdaAdapter.getFoodRecallById.restore();
@@ -115,6 +123,101 @@ module.exports = function () {
 					done();
 				}).catch(function (err) {
 					done(err);
+				}).done();
+
+			});
+
+		});
+
+		describe('getCounts', function () {
+
+			afterEach(function () {
+				fdaAdapter.getFoodRecallsCounts.restore();
+			});
+
+			it('should succeed with valid parameters', function (done) {
+				var recall = _getFDAAPICountFormattedResponse(),
+					obj = {
+						state: 'va',
+						status: 'ongoing',
+						field: 'classification'
+					};
+
+				sinon.stub(fdaAdapter, 'getFoodRecallsCounts').returns(Promise.resolve(recall));
+
+				recallsDal.getCounts(obj).then(function (result) {
+					assert(!errorHelper.getValidationError.called, 'errorHelper.getValidationError was called when there was no error');
+
+					assert(fdaAdapter.getFoodRecallsCounts.called, 'fdaAdapter.getFoodRecallsCounts was not called to get the recall');
+					assert(fdaAdapter.getFoodRecallsCounts.calledWith(obj), 'fdaAdapter.getFoodRecallsCounts was not passed the recall ID');
+
+					assert.deepEqual(result, recall, 'fdaAdapter.getFoodRecallsCounts did not return the correct object');
+
+					done();
+				}).catch(function (err) {
+					done(err);
+				}).done();
+
+			});
+
+			it('should return an error when passed an invalid field', function (done) {
+				var recall = _getFDAAPICountFormattedResponse(),
+					obj = {
+						field: 'test'
+					};
+
+				sinon.stub(fdaAdapter, 'getFoodRecallsCounts').returns(Promise.resolve(recall));
+
+				recallsDal.getCounts(obj).then(function () {
+					done(new Error('getFoodRecallsCounts successfully returned when there was an error'));
+				}).catch(function (err) {
+					assert(errorHelper.getValidationError.called, 'errorHelper.getValidationError was not called when there was an error');
+					assert.instanceOf(err, Error, 'getFoodRecallsCounts did not return an error');
+					assert.equal(err.message, 'Invalid field', 'getFoodRecallsCounts did not return the correct message');
+
+					done();
+				}).done();
+
+			});
+
+			it('should return an error when passed an invalid state', function (done) {
+				var recall = _getFDAAPICountFormattedResponse(),
+					obj = {
+						field: 'classification',
+						state: 'test'
+					};
+
+				sinon.stub(fdaAdapter, 'getFoodRecallsCounts').returns(Promise.resolve(recall));
+
+				recallsDal.getCounts(obj).then(function () {
+					done(new Error('getFoodRecallsCounts successfully returned when there was an error'));
+				}).catch(function (err) {
+					assert(errorHelper.getValidationError.called, 'errorHelper.getValidationError was not called when there was an error');
+					assert.instanceOf(err, Error, 'getFoodRecallsCounts did not return an error');
+					assert.equal(err.message, 'Invalid state', 'getFoodRecallsCounts did not return the correct message');
+
+					done();
+				}).done();
+
+			});
+
+			it('should return an error when passed an invalid status', function (done) {
+				var recall = _getFDAAPICountFormattedResponse(),
+					obj = {
+						field: 'classification',
+						status: 'test'
+					};
+
+				sinon.stub(fdaAdapter, 'getFoodRecallsCounts').returns(Promise.resolve(recall));
+
+				recallsDal.getCounts(obj).then(function () {
+					done(new Error('getFoodRecallsCounts successfully returned when there was an error'));
+				}).catch(function (err) {
+					assert(errorHelper.getValidationError.called, 'errorHelper.getValidationError was not called when there was an error');
+					assert.instanceOf(err, Error, 'getFoodRecallsCounts did not return an error');
+					assert.equal(err.message, 'Invalid status', 'getFoodRecallsCounts did not return the correct message');
+
+					done();
 				}).done();
 
 			});
