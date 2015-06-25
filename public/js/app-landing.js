@@ -13,6 +13,7 @@ requirejs.config({
 		visible: { deps: ['jquery'] }
 	},
 	paths: {
+		bootstrap: 'bootstrap.min',
 		jquery: 'jquery-2.1.4.min',
 		ejs: 'ejs-2.3.1.min',
 		moment: 'moment.min',
@@ -29,8 +30,9 @@ requirejs([
 	'underscore',
 	'ejs',
 	'UsStates',
-	'Geocode'
-], function ($, _, ejs, UsStates, GeoCode) {
+	'Geocode',
+	'bootstrap'
+], function ($, _, ejs, UsStates, GeoCode, bootstrap) {
 	function handleGeoLocError() {
 		$('#status').hide();
 		promptForZip();
