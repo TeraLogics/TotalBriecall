@@ -13,7 +13,7 @@ var assert = chai.assert;
 
 module.exports = function () {
 
-	describe.only('FDA', function () {
+	describe('FDA', function () {
 
 		var getFDAAPIFoodRecallObject = function () {
 				return {
