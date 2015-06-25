@@ -8293,15 +8293,20 @@ html, body {
 .canvas .navbar-toggle.releaving-toggle .icon-bar,
 .canvas .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
 .canvas .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar {
-  margin-left: 0; }
+  margin-left: 0;
+  -webkit-transition: margin-left 0.09s linear;
+  -o-transition: margin-left 0.09s linear;
+  transition: margin-left 0.09s linear; }
+
+.canvas.canvas-sliding .navbar-toggle.releaving-toggle .icon-bar,
+.canvas.canvas-sliding .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
+.canvas.canvas-sliding .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar {
+  margin-left: -7.5px; }
 
 .canvas.canvas-slid .navbar-toggle.releaving-toggle .icon-bar,
 .canvas.canvas-slid .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
 .canvas.canvas-slid .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar {
-  margin-left: -15px;
-  -webkit-transition: margin-left 0.1s linear;
-  -o-transition: margin-left 0.1s linear;
-  transition: margin-left 0.1s linear; }
+  margin-left: -15px; }
 
 @media (min-width: 0) {
   .navbar-toggle {

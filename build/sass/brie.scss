@@ -162,10 +162,13 @@ html, body {
   .navbar-inverted &.releaving-toggle {
     .canvas & .icon-bar {
       margin-left: 0;
+      @include transition(margin-left .09s linear);
+    }
+    .canvas.canvas-sliding & .icon-bar{
+      margin-left: -7.5px;
     }
     .canvas.canvas-slid & .icon-bar{
       margin-left: -15px;
-      @include transition(margin-left .1s linear);
     }
   }
 }
