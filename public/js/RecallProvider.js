@@ -26,7 +26,7 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 	};
 	RecallProvider.prototype.getFoodCategories = function () {
 		return this._recall.categories;
-	}
+	};
 	RecallProvider.prototype.getFirmAddress = function () {
 		return this._recall.city + ', ' + this._recall.state + ', ' + this._recall.country;
 	};
