@@ -3,6 +3,7 @@
 var _ = require('underscore'),
 	path = require('path'),
 	url = require('url'),
+	recallHelper = require(path.join(global.__libdir, 'recallHelper')),
 	recallsDal = require(path.join(global.__dalsdir, 'recalls'));
 
 var defaultPorts = {
@@ -36,6 +37,7 @@ exports.browse = function (req, res) {
 	if (!req.session.preferences.state && !req.session.preferences.haslanded) {
 		res.redirect('/');
 	} else {
+		res.locals.categories = _.keys(recallHelper.keywordMappings).sort();
 		res.render('browse');
 	}
 };

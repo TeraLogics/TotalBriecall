@@ -2,6 +2,7 @@
 
 var _ = require('underscore'),
 	path = require('path'),
+	recallHelper = require(path.join(global.__libdir, 'recallHelper')),
 	commentsDal = require(path.join(global.__dalsdir, 'comments')),
 	recallsDal = require(path.join(global.__dalsdir, 'recalls'));
 
@@ -163,3 +164,12 @@ exports.getRecallsCounts = function (req, res) {
 		_handleError(res, err);
 	}).done();
 };
+
+/**
+ * Gets recall categories.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
+exports.getRecallCategories = function (req, res) {
+	res.json(_.keys(recallHelper.keywordMappings).sort());
+}

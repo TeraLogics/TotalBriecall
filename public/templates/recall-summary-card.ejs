@@ -1,59 +1,59 @@
 <%
 /**
  * Recall summary card.
- * @param {RecallSummaryProvider} summaryProvider Provider of recall summary information.
+ * @param {RecallProvider} recallProvider Provider of recall information.
  */
 %>
-<div class="panel <%= summaryProvider.getCardType() %> recall-summary-card recall-class-i">
+<div class="panel <%= recallProvider.getCardType() %> recall-summary-card recall-class-i">
 	<div class="panel-heading">
-		<div class="recall-card-toggle <%= summaryProvider.isCollapsed() ? 'collapsed' : '' %>" data-toggle="collapse"
-			 data-target="#collapse-<%= summaryProvider.getFdaId() %>">
+		<div class="recall-card-toggle <%= recallProvider.isCollapsed() ? 'collapsed' : '' %>" data-toggle="collapse"
+			 data-target="#collapse-<%= recallProvider.getFdaId() %>">
 			<i class="glyphicon"></i>
 		</div>
-		<h3 class="panel-title"><%= summaryProvider.getProductDescription() %></h3>
+		<h3 class="panel-title"><%= recallProvider.getProductDescription() %></h3>
 		<h4 class="panel-subtitle">
-			<a data-toggle="tooltip" data-placement="bottom" title="<%= summaryProvider.getFirmAddress() %>" href="">
-				<%= summaryProvider.getFirmName() %>
+			<a data-toggle="tooltip" data-placement="bottom" title="<%= recallProvider.getFirmAddress() %>" href="">
+				<%= recallProvider.getFirmName() %>
 			</a> &nbsp;-&nbsp;
 			<small>
-				<%= summaryProvider.getRecallInitiationDate('MMMM Do, YYYY') %>
+				<%= recallProvider.getRecallInitiationDate('MMMM Do, YYYY') %>
 			</small>
 		</h4>
 	</div>
-	<div id="collapse-<%= summaryProvider.getFdaId() %>" data-recall-id="<%= summaryProvider.getFdaId() %>"
-		 class="panel-collapse collapse <%= summaryProvider.isCollapsed() ? '' : 'in' %>">
+	<div id="collapse-<%= recallProvider.getFdaId() %>" data-recall-id="<%= recallProvider.getFdaId() %>"
+		 class="panel-collapse collapse <%= recallProvider.isCollapsed() ? '' : 'in' %>">
 		<div class="panel-body">
 			<div class="aspect-box aspect-ratio-3x1 preview-holder">
-				<img class="aspect-content" src="<%= summaryProvider.getFoodCategoryImgUrl() %>">
+				<img class="aspect-content" src="<%= recallProvider.getFoodCategoryImgUrl() %>">
 			</div>
-			<p class="recall-reason"><%= summaryProvider.getReasonForRecall() %></p>
+			<p class="recall-reason"><%= recallProvider.getReasonForRecall() %></p>
 		</div>
 		<div class="panel-footer clearfix">
 			<ul class="list-inline pull-left">
-				<li><a class="btn btn-link" href="<%= summaryProvider.getRecallDetailsLink() %>"><i
-							class="glyphicon glyphicon-info-sign"></i> Info</a></li>
+				<li><a class="btn btn-link" href="<%= recallProvider.getRecallDetailsLink() %>"><i
+								class="glyphicon glyphicon-info-sign"></i> Info</a></li>
 			</ul>
 			<ul class="list-inline pull-right">
 				<li>
-					<div data-action="recall-pin" data-recall-id="<%= summaryProvider.getFdaId() %>"
+					<div data-action="recall-pin" data-recall-id="<%= recallProvider.getFdaId() %>"
 						 data-toggle="button"
-						 class="btn btn-link <%= summaryProvider.isPinned() ? 'active' : '' %>"><i class="glyphicon glyphicon-pushpin"></i> Pin
+						 class="btn btn-link <%= recallProvider.isPinned() ? 'active' : '' %>"><i class="glyphicon glyphicon-pushpin"></i> Pin
 					</div>
 				</li>
 				<li>
 					<div class="dropup">
 						<span class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i
-								class="glyphicon glyphicon-share-alt"></i> Share</span>
+									class="glyphicon glyphicon-share-alt"></i> Share</span>
 						<ul class="dropdown-menu dropdown-menu-right" role="menu">
 							<li role="presentation">
 								<a href="#" data-action="recall-copy"
-								   data-text="<%= summaryProvider.getShareLink() %>"
+								   data-text="<%= recallProvider.getShareLink() %>"
 								   role="menuitem" tabindex="-1">
 									<i class="glyphicon glyphicon-link"></i> Copy
 								</a>
 							</li>
 							<li role="presentation">
-								<a href="<%= summaryProvider.getEmailShareLink() %>"
+								<a href="<%= recallProvider.getEmailShareLink() %>"
 								   role="menuitem"
 								   tabindex="-1"
 								   target="_blank">
@@ -61,7 +61,7 @@
 								</a>
 							</li>
 							<li role="presentation">
-								<a href="#" data-href="<%= summaryProvider.getFacebookShareLink() %>"
+								<a href="#" data-href="<%= recallProvider.getFacebookShareLink() %>"
 								   onclick="window.open(this.dataset.href, 'FeedDialog', 'width=500,height=300,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no'); return false;"
 								   role="menuitem" tabindex="-1">
 									<i class="fa fa-facebook-official"></i> Facebook

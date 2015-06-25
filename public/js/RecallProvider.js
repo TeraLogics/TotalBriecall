@@ -5,14 +5,14 @@
  */
 
 define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
-	var RecallSummaryProvider = function (recall, states) {
+	var RecallProvider = function (recall, states) {
 			this._recall = recall;
 			this._states = states;
 		},
 		_getBaseURL = function () {
 			return window.location.origin ? window.location.origin : new Uri(window.location.href).authority();
 		};
-	RecallSummaryProvider.prototype.getFoodCategoryImgUrl = function () {
+	RecallProvider.prototype.getFoodCategoryImgUrl = function () {
 		var category = 'generic';
 
 		if (this._recall.categories.length > 0) {
@@ -21,46 +21,49 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 
 		return _getBaseURL() + '/img/foodcategories/' + category + '.jpg';
 	};
-	RecallSummaryProvider.prototype.getFirmAddress = function () {
+	RecallProvider.prototype.getFirmAddress = function () {
 		return this._recall.city + ', ' + this._recall.state + ', ' + this._recall.country;
 	};
-	RecallSummaryProvider.prototype.isCollapsed = function () {
+	RecallProvider.prototype.isCollapsed = function () {
 		return this._states.collapsed || false;
 	};
-	RecallSummaryProvider.prototype.isPinned = function () {
+	RecallProvider.prototype.isPinned = function () {
 		return this._states.pinned || false;
 	};
-	RecallSummaryProvider.prototype.getFirmName = function () {
+	RecallProvider.prototype.getFirmName = function () {
 		return this._recall.recalling_firm;
 	};
-	RecallSummaryProvider.prototype.getRecallId = function () {
+	RecallProvider.prototype.getRecallId = function () {
 		return this._recall.id;
 	};
-	RecallSummaryProvider.prototype.getRecallNumber = function () {
+	RecallProvider.prototype.getRecallNumber = function () {
 		return this._recall.recall_number;
 	};
-	RecallSummaryProvider.prototype.getFdaId = function () {
+	RecallProvider.prototype.getFdaId = function () {
 		return this._recall.openfda_id;
 	};
-	RecallSummaryProvider.prototype.getProductDescription = function () {
+	RecallProvider.prototype.getProductDescription = function () {
 		return this._recall.product_description;
 	};
-	RecallSummaryProvider.prototype.getRecallInitiationDate = function (format) {
+	RecallProvider.prototype.getRecallInitiationDate = function (format) {
 		return moment.unix(this._recall.recall_initiation_date).format(format || 'MMMM Do, YYYY');
 	};
-	RecallSummaryProvider.prototype.getReasonForRecall = function () {
+	RecallProvider.prototype.getReasonForRecall = function () {
 		return this._recall.reason_for_recall;
 	};
-	RecallSummaryProvider.prototype.getRecallDetailsLink = function () {
+	RecallProvider.prototype.getRecallDetailsLink = function () {
 		return '/details/' + encodeURIComponent(this.getRecallId());
 	};
-	RecallSummaryProvider.prototype.getShareTitle = function () {
+	RecallProvider.prototype.getShareTitle = function () {
 		return this._recall.product_description;
 	};
-	RecallSummaryProvider.prototype.getShareLink = function () {
+	RecallProvider.prototype.getShareLink = function () {
 		return _getBaseURL() + this.getRecallDetailsLink();
 	};
-	RecallSummaryProvider.prototype.getFacebookShareLink = function () {
+	RecallProvider.prototype.getClassificationLevel = function () {
+		return this._recall.classificationlevel;
+	};
+	RecallProvider.prototype.getFacebookShareLink = function () {
 		// TODO share instead of feed?
 		return ejs.render('http://www.facebook.com/dialog/feed?' + [
 				'app_id=<%=app_id%>',
@@ -81,14 +84,14 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 			picture: encodeURIComponent('http://canyoufreeze.com/wp-content/uploads/2014/09/brie-cheese.jpg')
 		});
 	};
-	RecallSummaryProvider.prototype.getEmailShareLink = function () {
+	RecallProvider.prototype.getEmailShareLink = function () {
 		return new Uri('mailto:?').query({
 			subject: this.getFirmName() + ' recalls ' + this.getProductDescription(),
 			body: 'On ' + this.getRecallInitiationDate('MMM Do, YYYY') + ' ' + this.getFirmName() +
 				' initiated recall of ' + this.getProductDescription() + ' due to ' + this.getReasonForRecall()
 		});
 	};
-	RecallSummaryProvider.prototype.getCardType = function () {
+	RecallProvider.prototype.getCardType = function () {
 		switch (this._recall.classificationlevel) {
 			case 1:
 				return 'panel-danger';
@@ -101,5 +104,5 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		}
 	};
 
-	return RecallSummaryProvider;
+	return RecallProvider;
 });

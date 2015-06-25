@@ -78,6 +78,10 @@ module.exports = function (app) {
 	app.route('/api/comments')
 		.put(apiCtrl.addCommentForRecall);
 
+	// TODO DOCUMENT ME!!!!
+	app.route('/api/recalls/categories')
+		.get(apiCtrl.getRecallCategories);
+
 	/**
 	 * @api {get} /recalls/:recallid Get Recall
 	 * @apiGroup Recalls

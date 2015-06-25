@@ -26,11 +26,7 @@
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-4">
-					<select>
-						<option>Nuts</option>
-						<option>Dairy</option>
-					</select>
-
+					<select style="width:100%" class="select2 categories"></select>
 					<div class="btn-group btn-group-justified" data-toggle="buttons">
 						<label class="btn btn-danger active">
 							<input type="checkbox" autocomplete="off" checked> Class I
@@ -95,5 +91,8 @@
 </div>
 <!-- /.modal -->
 <script data-main="/js/app-browse" src="/js/require.js"></script>
+<script>
+	brie.page.categories = <%- JSON.stringify(categories) %>;
+</script>
 </body>
 </html>

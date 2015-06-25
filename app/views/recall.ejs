@@ -23,17 +23,58 @@
 <section class="container">
 	<div class="panel">
 		<div class="map-container hidden-xs visible-sm visible-md visible-lg">
-			<header class="panel-heading">
-				<h3 style="margin-bottom: 20px; margin-top: 13px;">Affected States</h3>
-			</header>
-			<div class="panel-body">
-				<div id="map"></div>
-			</div>
+			<div id="map"></div>
 		</div>
 		<div class="text-center visible-xs hidden-sm hidden-md hidden-lg">
-			<button data-action="load-comments" type="button" class="btn btn-link"><i
-						class="glyphicon glyphicon-eye-open"></i> Load comments
+			<button data-action="load-comments" type="button" class="btn btn-link">
+				<i class="glyphicon glyphicon-eye-open"></i> Load comments
 			</button>
+		</div>
+		<div class="recall-container visible-xs visible-sm visible-md visible-lg">
+			<h3 class="panel-title"><%= recall.product_description %></h3>
+			<h4 class="panel-subtitle">
+				<a data-toggle="tooltip" data-placement="bottom" title="<%= recall.city + ', ' + recall.state + ', ' + recall.country; %>" href="">
+					<%= recall.recalling_firm %>
+				</a> &nbsp;-&nbsp;
+				<small>
+					<%= moment.unix(recall.recall_initiation_date).format('MMMM Do, YYYY') %>
+				</small>
+			</h4>
+			<p class="recall-reason"><%= recall.reason_for_recall %></p>
+			<div class="clearfix">
+				<ul class="list-inline pull-right">
+					<li>
+						<div class="dropup">
+						<span class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i
+									class="glyphicon glyphicon-share-alt"></i> Share</span>
+							<ul class="dropdown-menu dropdown-menu-right" role="menu">
+								<li role="presentation">
+									<a href="#" data-action="recall-copy"
+									   data-text="<%= '/details/' + encodeURIComponent(recall.id) %>"
+									   role="menuitem" tabindex="-1">
+										<i class="glyphicon glyphicon-link"></i> Copy
+									</a>
+								</li>
+								<li role="presentation">
+									<a href="#"
+									   role="menuitem"
+									   tabindex="-1">
+										<i class="glyphicon glyphicon-envelope"></i> E-mail
+									</a>
+								</li>
+								<li role="presentation">
+									<a href="#" data-href="#"
+									   onclick="window.open(this.dataset.href, 'FeedDialog', 'width=500,height=300,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no'); return false;"
+									   role="menuitem" tabindex="-1">
+										<i class="fa fa-facebook-official"></i> Facebook
+									</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<pre><%- JSON.stringify(recall); %></pre>
 		</div>
 		<div class="comment-log-container hidden-xs visible-sm visible-md visible-lg">
 			<header class="panel-heading">
@@ -41,8 +82,8 @@
 			</header>
 			<div class="panel-body">
 				<form>
-					<input type="hidden" name="recallnumber" value="<%= recall.recall_number %>" />
-					<input type="hidden" name="location" value="<%= session.preferences.state %>" />
+					<input type="hidden" name="recallnumber" value="<%= recall.recall_number %>"/>
+					<input type="hidden" name="location" value="<%= session.preferences.state %>"/>
 					<div class="form-group">
 						<label for="name">Name</label>
 						<input type="text" class="form-control" name="name" placeholder="Name" required>

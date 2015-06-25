@@ -19,6 +19,7 @@ requirejs.config({
 		ejs: 'ejs-2.3.1.min',
 		moment: 'moment.min',
 		masonry: 'masonry.pkgd.min',
+		select2: 'select2.min',
 		underscore: 'underscore-min',
 		visible: 'jquery.visible.min',
 		bluebird: 'bluebird.min',
@@ -36,23 +37,25 @@ requirejs([
 	'MapApp',
 	'moment',
 	'masonry',
-	'RecallSummaryProvider',
+	'select2',
+	'RecallProvider',
 	'Sisyphus',
 	'SyncFileReader',
 	'UsStates',
 	'BrowseTour'
 ], function (Promise,
-			 bootstrap,
-			 ejs,
-			 $,
-			 MapApp,
-			 moment,
-			 Masonry,
-			 RecallSummaryProvider,
-			 Sisyphus,
-			 SyncFileReader,
-			 UsStates,
-			 BrowseTour) {
+			bootstrap,
+			ejs,
+			$,
+			MapApp,
+			moment,
+			Masonry,
+			select2,
+			RecallProvider,
+			Sisyphus,
+			SyncFileReader,
+			UsStates,
+			BrowseTour) {
 
 	function _generateRecallCards(recalls) {
 		var cards = [],
@@ -70,7 +73,7 @@ requirejs([
 
 			cardView = $('<li class="recall-card col-xs-12 col-sm-6 col-lg-4">').append(
 				recallCardTemplate({
-					summaryProvider: new RecallSummaryProvider(
+					recallProvider: new RecallProvider(
 						recalls[i], {
 							collapsed: collapsed,
 							pinned: pinned
@@ -181,6 +184,11 @@ requirejs([
 		recentRecallLoadingView = $('#recent-recalls + .list-view-messages > .list-view-loading-message'),
 		eventTrolley = $({}),
 		recallLinkCopyModal = $('#recall-link-copy');
+
+	$(".select2.categories").select2({
+		tags: brie.page.categories,
+		tokenSeparators: [',', ' ']
+	});
 
 	recallLinkCopyModal.find('[name="recall-link"]').on('click', function (event) {
 		this.select();
