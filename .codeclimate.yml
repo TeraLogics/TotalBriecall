@@ -8,6 +8,7 @@ exclude_paths:
   - "public/js/ejs-2.3.1.js"
   - "public/js/IPv6.js"
   - "public/js/leaflet.js"
+  - "public/js/jasny-bootstrap.js"
   - "public/js/punycode.js"
   - "public/js/require.js"
   - "public/js/SecondLevelDomains.js"
