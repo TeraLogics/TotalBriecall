@@ -119,7 +119,7 @@ module.exports = function () {
 			getFDAAPICountResponse = function () {
 				return {
 					"meta": {
-						"disclaimer": "openFDA is a beta research project and not for clinical use. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated.",
+						"disclaimer": "disclaimer text",
 						"license": "http://open.fda.gov/license",
 						"last_updated": "2015-05-31"
 					},
@@ -170,7 +170,7 @@ module.exports = function () {
 					done();
 				}).catch(function (err) {
 					done(err);
-				});
+				}).done();
 			});
 
 			it('should return a 409 error when the request fails with a 409', function (done) {
@@ -199,12 +199,12 @@ module.exports = function () {
 					assert.equal(err.message, message, 'getFoodRecallsCounts did not return the correct message');
 
 					done();
-				});
+				}).done();
 			});
 
 			it('should return a 404 error when the request fails with a 404', function (done) {
-				var message = 'this will not come back',
-					message2 = 'No results found',
+				var inputMessage = 'this will not come back',
+					outputMessage = 'No results found',
 					type = 'NOT_FOUND';
 
 				sinon.stub(request, 'get', Promise.method(function () {
@@ -212,7 +212,7 @@ module.exports = function () {
 						statusCode: 404,
 						error: {
 							error: {
-								message: message
+								message: inputMessage
 							}
 						}
 					});
@@ -226,10 +226,10 @@ module.exports = function () {
 					assert.instanceOf(err, Error, 'getFoodRecallsCounts did not return an error');
 					assert.property(err, 'type', 'getFoodRecallsCounts did not return an error with a type property');
 					assert.equal(err.type, type, 'getFoodRecallsCounts did not return the correct type');
-					assert.equal(err.message, message2, 'getFoodRecallsCounts did not return the correct message');
+					assert.equal(err.message, outputMessage, 'getFoodRecallsCounts did not return the correct message');
 
 					done();
-				});
+				}).done();
 			});
 
 			it('should return a 500 error when the request fails with a 500', function (done) {
@@ -255,7 +255,7 @@ module.exports = function () {
 					assert.equal(err.message, message, 'getFoodRecallsCounts did not return the correct message');
 
 					done();
-				});
+				}).done();
 			});
 
 		});
@@ -287,13 +287,13 @@ module.exports = function () {
 						skip: 1,
 						limit: 1
 					},
-					search = 'distribution_pattern:(VA+Virginia+nationwide+"national+distribution"+"nation+wide"+nationally+us+usa)+AND+status:ongoing+AND+event_id:12345+AND+recalling_firm:test+AND+recall_initiation_date:[1970-01-01+TO+1970-01-01]+AND+classification:("Class+I"+"Class+II")+AND+(dairy+dairies+butter+butters+cheddar+cheddars+cheese+cheeses+chocolate+chocolates+cream+creams+milk+milks+whey+wheies+dye+dyes+color+colors+red+reds+yellow+yellows+pink+pinks+blue+blues+green+greens+egg+eggs+fish+fishs+shellfish+shellfishs+oyster+oysters+tuna+tunas+salmon+salmons+shrimp+shrimps+herring+herrings+clam+clams+lobster+lobsters+seafood+seafoods+fruit+fruits+corn+corns+raspberry+raspberries+pineapple+pineapples+pear+pears+peach+peachs+apple+apples+plum+plums+lemon+lemons+strawberry+strawberries+mango+mangoes+cranberry+cranberries+orange+oranges+cherry+cherries+salsa+salsas+melon+melons+tomato+tomatoes+raisin+raisins+olive+olives+grape+grapes+pumpkin+pumpkins+pomegranate+pomegranates+gluten+glutens+wheat+wheats+bread+breads+pasta+pastas+flour+flours+rice+rices+bagel+bagels+cake+cakes+cookie+cookies+brownie+brownies+taco+tacoes+pizza+pizzas+meat+meats+chicken+chickens+steak+steaks+beef+beefs+sausage+sausages+pork+porks+ham+hams+turkey+turkeies+bacon+bacons+nut+nuts+peanut+peanuts+seed+seeds+walnut+walnuts+almond+almonds+pistachio+pistachioes+hazelnut+hazelnuts+pecan+pecans+soy+soies+tofu+tofus+spice+spices+vanilla+vanillas+peppermint+peppermints+garlic+garlics+ginseng+ginsengs+ginger+gingers+herb+herbs+seasoning+seasonings+cumin+cumins+cinnamon+cinnamons+salt+salts+coriander+corianders+honey+honeies+supplement+supplements+coffee+coffees+vegetable+vegetables+salad+salads+spinach+spinachs+lettuce+lettuces+sprout+sprouts+mushroom+mushrooms+onion+onions+potato+potatoes+romaine+romaines+broccoli+broccolies+celery+celeries+cucumber+cucumbers+pea+peas+cabbage+cabbages+chili+chilies+jalapeno+jalapenoes+pepper+peppers+bean+beans)';
+					expectedSearch = 'distribution_pattern:(VA+Virginia+nationwide+"national+distribution"+"nation+wide"+nationally+us+usa)+AND+status:ongoing+AND+event_id:12345+AND+recalling_firm:test+AND+recall_initiation_date:[1970-01-01+TO+1970-01-01]+AND+classification:("Class+I"+"Class+II")+AND+(dairy+dairies+butter+butters+cheddar+cheddars+cheese+cheeses+chocolate+chocolates+cream+creams+milk+milks+whey+wheies+dye+dyes+color+colors+red+reds+yellow+yellows+pink+pinks+blue+blues+green+greens+egg+eggs+fish+fishs+shellfish+shellfishs+oyster+oysters+tuna+tunas+salmon+salmons+shrimp+shrimps+herring+herrings+clam+clams+lobster+lobsters+seafood+seafoods+fruit+fruits+corn+corns+raspberry+raspberries+pineapple+pineapples+pear+pears+peach+peachs+apple+apples+plum+plums+lemon+lemons+strawberry+strawberries+mango+mangoes+cranberry+cranberries+orange+oranges+cherry+cherries+salsa+salsas+melon+melons+tomato+tomatoes+raisin+raisins+olive+olives+grape+grapes+pumpkin+pumpkins+pomegranate+pomegranates+gluten+glutens+wheat+wheats+bread+breads+pasta+pastas+flour+flours+rice+rices+bagel+bagels+cake+cakes+cookie+cookies+brownie+brownies+taco+tacoes+pizza+pizzas+meat+meats+chicken+chickens+steak+steaks+beef+beefs+sausage+sausages+pork+porks+ham+hams+turkey+turkeies+bacon+bacons+nut+nuts+peanut+peanuts+seed+seeds+walnut+walnuts+almond+almonds+pistachio+pistachioes+hazelnut+hazelnuts+pecan+pecans+soy+soies+tofu+tofus+spice+spices+vanilla+vanillas+peppermint+peppermints+garlic+garlics+ginseng+ginsengs+ginger+gingers+herb+herbs+seasoning+seasonings+cumin+cumins+cinnamon+cinnamons+salt+salts+coriander+corianders+honey+honeies+supplement+supplements+coffee+coffees+vegetable+vegetables+salad+salads+spinach+spinachs+lettuce+lettuces+sprout+sprouts+mushroom+mushrooms+onion+onions+potato+potatoes+romaine+romaines+broccoli+broccolies+celery+celeries+cucumber+cucumbers+pea+peas+cabbage+cabbages+chili+chilies+jalapeno+jalapenoes+pepper+peppers+bean+beans)';
 
 				fdaAdpt.searchFoodRecalls(obj).then(function (foodrecalls) {
 					// check the format of the inputs
 					var opts = request.get.args[0][0];
 					assert.isObject(opts.qs, 'searchFoodRecalls did not submit an object for qs');
-					assert.propertyVal(opts.qs, 'search', search, 'searchFoodRecalls did not submit the correct search');
+					assert.propertyVal(opts.qs, 'search', expectedSearch, 'searchFoodRecalls did not submit the correct search');
 					assert.propertyVal(opts.qs, 'skip', obj.skip, 'searchFoodRecalls did not submit the correct skip');
 					assert.propertyVal(opts.qs, 'limit', obj.limit, 'searchFoodRecalls did not submit the correct limit');
 
@@ -303,18 +303,18 @@ module.exports = function () {
 					done();
 				}).catch(function (err) {
 					done(err);
-				});
+				}).done();
 			});
 
 			it('should return a valid formatted recall response when no inputs are provided', function (done) {
 				var obj = {},
-					search = '';
+					expectedSearch = '';
 
 				fdaAdpt.searchFoodRecalls(obj).then(function (foodrecalls) {
 					// check the format of the inputs
 					var opts = request.get.args[0][0];
 					assert.isObject(opts.qs, 'searchFoodRecalls did not submit an object for qs');
-					assert.propertyVal(opts.qs, 'search', search, 'searchFoodRecalls did not submit the correct search');
+					assert.propertyVal(opts.qs, 'search', expectedSearch, 'searchFoodRecalls did not submit the correct search');
 					assert.propertyVal(opts.qs, 'skip', null, 'searchFoodRecalls did not submit the correct skip');
 					assert.propertyVal(opts.qs, 'limit', 100, 'searchFoodRecalls did not submit the correct limit');
 
@@ -324,7 +324,7 @@ module.exports = function () {
 					done();
 				}).catch(function (err) {
 					done(err);
-				});
+				}).done();
 			});
 
 		});
@@ -347,13 +347,13 @@ module.exports = function () {
 				var obj = {
 						id: getFDAAPIFoodRecallFormattedObject().id
 					},
-					search = 'event_id:65392+AND+recall_initiation_date:"20130604"+AND+product_description:(070207000110+AND+nutritional+AND+package+AND+plastic+AND+almond+AND+sliced)';
+					expectedSearch = 'event_id:65392+AND+recall_initiation_date:"20130604"+AND+product_description:(070207000110+AND+nutritional+AND+package+AND+plastic+AND+almond+AND+sliced)';
 
 				fdaAdpt.getFoodRecallById(obj).then(function (foodrecall) {
 					// check the format of the inputs
 					var opts = request.get.args[0][0];
 					assert.isObject(opts.qs, 'getFoodRecallById did not submit an object for qs');
-					assert.propertyVal(opts.qs, 'search', search, 'getFoodRecallById did not submit the correct search');
+					assert.propertyVal(opts.qs, 'search', expectedSearch, 'getFoodRecallById did not submit the correct search');
 
 					// check the format of the outputs
 					assert.deepEqual(foodrecall, getFDAAPIFoodRecallFormattedObject(), 'getFoodRecallById did not return a valid response');
@@ -361,7 +361,7 @@ module.exports = function () {
 					done();
 				}).catch(function (err) {
 					done(err);
-				});
+				}).done();
 			});
 
 			it('should return a 409 invalid id when the id is not a base64 encoded string', function (done) {
@@ -377,7 +377,7 @@ module.exports = function () {
 					assert.propertyVal(err, 'message', 'Invalid id', 'getFoodRecallById did not return an error with a valid message property');
 
 					done();
-				});
+				}).done();
 			});
 
 		});

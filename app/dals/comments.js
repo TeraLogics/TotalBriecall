@@ -18,7 +18,6 @@ var _ = require('underscore'),
  */
 exports.add = function (obj) {
 	return Promise.try(function validate () {
-		// TODO validate recall number against pattern?
 		if (!obj.recallnumber || !_.isString(obj.recallnumber)) {
 			throw errorHelper.getValidationError('Invalid recallnumber');
 		}
@@ -32,7 +31,7 @@ exports.add = function (obj) {
 		}
 
 		if (obj.location && !recallHelper.isValidState(obj.location)) {
-			throw errorHelper.getValidationError('Location must be a valid state');
+			throw errorHelper.getValidationError('Invalid location; it must be a valid state');
 		}
 
 		if (!obj.comment || !_.isString(obj.comment)) {
