@@ -61,6 +61,7 @@
 </style>
 </head>
 <body class="bg-void application">
+<% include ./common/page-header.ejs %>
 <div class="navmenu navmenu-default">
 	<!-- off-canvas menu goes here -->
 </div>
@@ -77,40 +78,40 @@
 		<div class="recall-details-panel">
 			<ol class="steps c<%= (recall.classificationlevel > 3) ? '' : recall.classificationlevel %>">
 				<li>
-					<h3 class="panel-title"><%= recall.product_description %></h3>
-					<h4 class="panel-subtitle">
-						<a data-toggle="tooltip" data-placement="bottom" title="<%= recall.city + ', ' + recall.state + ', ' + recall.country; %>" href="">
-							<%= recall.recalling_firm %>
-						</a> &nbsp;-&nbsp;
-						<small>
-							<%= moment.unix(recall.recall_initiation_date).format('MMMM Do, YYYY') %>
-						</small>
-					</h4>
-					<p class="recall-reason"><%= recall.reason_for_recall %></p>
+			<h3 class="panel-title"><%= recall.product_description %></h3>
+			<h4 class="panel-subtitle">
+				<a data-toggle="tooltip" data-placement="bottom" title="<%= recall.city + ', ' + recall.state + ', ' + recall.country; %>" href="">
+					<%= recall.recalling_firm %>
+				</a> &nbsp;-&nbsp;
+				<small>
+					<%= moment.unix(recall.recall_initiation_date).format('MMMM Do, YYYY') %>
+				</small>
+			</h4>
+			<p class="recall-reason"><%= recall.reason_for_recall %></p>
 					<ul class="list-inline">
-						<li>
-							<div class="dropup">
+					<li>
+						<div class="dropup">
 								<span data-toggle="dropdown" rel="tooltip" data-placement="bottom" title="Share recall with others" class="btn btn-link dropdown-toggle"><i class="glyphicon glyphicon-share-alt"></i> Share</span>
-								<ul class="dropdown-menu dropdown-menu-right" role="menu">
-									<li role="presentation">
+							<ul class="dropdown-menu dropdown-menu-right" role="menu">
+								<li role="presentation">
 										<a href="#" data-action="recall-copy" data-text="" role="menuitem" tabindex="-1">
-											<i class="glyphicon glyphicon-link"></i> Copy
-										</a>
-									</li>
-									<li role="presentation">
+										<i class="glyphicon glyphicon-link"></i> Copy
+									</a>
+								</li>
+								<li role="presentation">
 										<a href="" role="menuitem" tabindex="-1" target="_blank">
-											<i class="glyphicon glyphicon-envelope"></i> E-mail
-										</a>
-									</li>
-									<li role="presentation">
+										<i class="glyphicon glyphicon-envelope"></i> E-mail
+									</a>
+								</li>
+								<li role="presentation">
 										<a href="#" data-href="" onclick="window.open(this.dataset.href, 'FeedDialog', 'width=500,height=300,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no'); return false;" role="menuitem" tabindex="-1">
-											<i class="fa fa-facebook-official"></i> Facebook
-										</a>
-									</li>
-								</ul>
-							</div>
-						</li>
-					</ul>
+										<i class="fa fa-facebook-official"></i> Facebook
+									</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
 				</li>
 			</ol>
 			<h4 class="recall-number"><label><%= recall.recall_number %></label></h4>
@@ -123,64 +124,64 @@
 				<li><p class="voluntary-mandated"><label style="padding-right: 4px;">Voluntary or Mandated:</label><%= recall.voluntary_mandated %></p></li>
 				<li><p class="initial-firm-notification"><label style="padding-right: 4px;">Initial Firm Notification:</label><%= recall.initial_firm_notification %></p></li>
 			</ul>
+			</div>
 		</div>
-	</div>
 	<div class="text-center visible-xs hidden-sm hidden-md hidden-lg">
 		<button data-action="load-comments" type="button" class="btn btn-link">
 			<i class="glyphicon glyphicon-eye-open"></i> Show comments
 		</button>
 	</div>
-	<div class="comment-log-container hidden-xs visible-sm visible-md visible-lg">
-		<header class="panel-heading">
-			<h3 style="margin-bottom: 20px; margin-top: 13px;">Recall comments</h3>
-		</header>
-		<div class="panel-body">
-			<form>
-				<input type="hidden" name="recallnumber" value="<%= recall.recall_number %>"/>
-				<input type="hidden" name="location" value="<%= session.preferences.state %>"/>
+		<div class="comment-log-container hidden-xs visible-sm visible-md visible-lg">
+			<header class="panel-heading">
+				<h3 style="margin-bottom: 20px; margin-top: 13px;">Recall comments</h3>
+			</header>
+			<div class="panel-body">
+				<form>
+					<input type="hidden" name="recallnumber" value="<%= recall.recall_number %>"/>
+					<input type="hidden" name="location" value="<%= session.preferences.state %>"/>
 
-				<div class="form-group">
-					<label for="name">Name</label>
-					<input type="text" class="form-control" name="name" placeholder="Name" required>
-				</div>
-				<div class="form-group">
-					<label for="comment">Comment</label>
-					<textarea class="form-control" rows="3" name="comment" placeholder="Leave a comment" required></textarea>
-				</div>
-				<button type="submit" class="btn btn-default">Submit</button>
-			</form>
-			<ol id="recall-comments" class="list-view<%= recall.comments.length === 0 ? ' empty' : '' %>">
-				<!-- recall cards placeholder -->
-				<% _.each(recall.comments, function (comment) { %>
-				<%
-					comment.name = comment.name || 'User';
-					comment.location = comment.location || 'Unknown';
-					comment.created = moment.unix(comment.created).format('MMMM Do, YYYY hh:mma');
-				%>
-				<li class="comment-entry">
-					<%= comment.name %> from <%= comment.location %>
-					<small class="event-subtitle text-muted" title="<%= comment.created %>"><%= comment.created %></small>
-					<p class="comment-body"><%= comment.comment %></p>
-				</li>
-				<% }); %>
-			</ol>
-			<div class="list-view-messages">
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input type="text" class="form-control" name="name" placeholder="Name" required>
+					</div>
+					<div class="form-group">
+						<label for="comment">Comment</label>
+						<textarea class="form-control" rows="3" name="comment" placeholder="Leave a comment" required></textarea>
+					</div>
+					<button type="submit" class="btn btn-default">Submit</button>
+				</form>
+				<ol id="recall-comments" class="list-view<%= recall.comments.length === 0 ? ' empty' : '' %>">
+					<!-- recall cards placeholder -->
+					<% _.each(recall.comments, function (comment) { %>
+					<%
+						comment.name = comment.name || 'User';
+						comment.location = comment.location || 'Unknown';
+						comment.created = moment.unix(comment.created).format('MMMM Do, YYYY hh:mma');
+					%>
+					<li class="comment-entry">
+						<%= comment.name %> from <%= comment.location %>
+						<small class="event-subtitle text-muted" title="<%= comment.created %>"><%= comment.created %></small>
+						<p class="comment-body"><%= comment.comment %></p>
+					</li>
+					<% }); %>
+				</ol>
+				<div class="list-view-messages">
 				<!-- <p class="list-view-loading-message spinner spinner-pulsation spinner-primary">Loading...</p> -->
 
 				<% if (recall.comments.length == 0) { %>
-				<p class="list-view-empty-message">There are no recall comments.</p>
+					<p class="list-view-empty-message">There are no recall comments.</p>
 				<% } %>
 
 				<!-- <p class="list-view-error-message">Oops, we had trouble retrieving recent recall comments!</p> -->
-			</div>
-			<div class="text-center">
-				<button type="button" class="btn btn-success hidden" data-action="load-more-comments"><i
-							class="glyphicon glyphicon-chevron-down"></i> Load more
-				</button>
+				</div>
+				<div class="text-center">
+					<button type="button" class="btn btn-success hidden" data-action="load-more-comments"><i
+								class="glyphicon glyphicon-chevron-down"></i> Load more
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 <script data-main="/js/app-recall" src="/js/require.js"></script>
 <script>
 	brie.page.recall = <%- JSON.stringify(recall) %>;
@@ -192,5 +193,6 @@
 	Error encountered. <%= error.statusCode %> - <%= error.message %>
 </div>
 <% } %>
+<% include ./common/page-footer.ejs %>
 </body>
 </html>

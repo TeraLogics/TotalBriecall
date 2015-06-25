@@ -7,21 +7,27 @@
 requirejs.config({
 	baseUrl: '/js',
 	shim: {
-		bootstrap: { 'deps': ['jquery'] },
-		ejs: { exports: 'ejs' },
-		URI: { deps: ['jquery'] },
-		visible: { deps: ['jquery'] }
+		bootstrap: {'deps': ['jquery']},
+		ejs: {exports: 'ejs'},
+		URI: {deps: ['jquery']},
+		visible: {deps: ['jquery']},
+		Tour: {deps: ['bootstrap'], exports: 'Tour'},
+		JasnyBootstrap: {deps: ['bootstrap', 'jquery']}
 	},
 	paths: {
-		bootstrap: 'bootstrap.min',
 		jquery: 'jquery-2.1.4.min',
+		bootstrap: 'bootstrap.min',
 		ejs: 'ejs-2.3.1.min',
 		moment: 'moment.min',
 		masonry: 'masonry.pkgd.min',
+		select2: 'select2.min',
 		underscore: 'underscore-min',
 		visible: 'jquery.visible.min',
 		bluebird: 'bluebird.min',
-		UsStates: 'us-states'
+		UsStates: 'us-states',
+		Tour: 'bootstrap-tour.min',
+		BrowseTour: 'tour-browse',
+		JasnyBootstrap: 'jasny-bootstrap.min'
 	}
 });
 
@@ -31,8 +37,9 @@ requirejs([
 	'ejs',
 	'UsStates',
 	'Geocode',
-	'bootstrap'
-], function ($, _, ejs, UsStates, GeoCode, bootstrap) {
+	'bootstrap',
+	'JasnyBootstrap'
+], function ($, _, ejs, UsStates, GeoCode, bootstrap, JasnyBootstrap) {
 	function handleGeoLocError() {
 		$('#status').hide();
 		promptForZip();

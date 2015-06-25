@@ -8,9 +8,7 @@
 </style>
 </head>
 <body class="bg-void application">
-<div class="navmenu navmenu-default">
-	<!-- off-canvas menu goes here -->
-</div>
+<% include ./common/page-header.ejs %>
 <div class="container-flexible">
 	<div class="panel panel-default panel-expanded">
 		<div class="panel-body">
@@ -90,6 +88,7 @@
 	<!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+<% include ./common/page-footer.ejs %>
 <script data-main="/js/app-browse" src="/js/require.js"></script>
 <script>
 	brie.page.categories = <%- JSON.stringify(categories) %>;

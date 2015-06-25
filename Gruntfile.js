@@ -111,6 +111,19 @@ module.exports = function (grunt) {
 						dest: 'public/js'
 					}
 				]
+			},
+			"jasny-bootstrap": {
+				files: [
+					// JS
+					{
+						expand: true,
+						filter: 'isFile',
+						flatten: true,
+						cwd: 'bower_components/',
+						src: ['jasny-bootstrap/dist/js/**'],
+						dest: 'public/js'
+					}
+				]
 			}
 		},
 		watch: {
@@ -126,5 +139,5 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	grunt.registerTask('default', ['watch']);
-	grunt.registerTask('build', ['sass:production', 'copy:fontawesome', 'copy:bootstrap-tour']);
+	grunt.registerTask('build', ['sass:production', 'copy:fontawesome', 'copy:bootstrap-tour', 'copy:jasny-bootstrap']);
 };

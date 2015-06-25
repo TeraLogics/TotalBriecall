@@ -7,11 +7,12 @@
 requirejs.config({
 	baseUrl: '/js',
 	shim: {
-		bootstrap: { 'deps': ['jquery'] },
-		ejs: { exports: 'ejs' },
-		URI: { deps: ['jquery'] },
-		visible: { deps: ['jquery'] },
-		Tour: { deps: ['bootstrap'], exports: 'Tour' },
+		bootstrap: {'deps': ['jquery']},
+		ejs: {exports: 'ejs'},
+		URI: {deps: ['jquery']},
+		visible: {deps: ['jquery']},
+		Tour: {deps: ['bootstrap'], exports: 'Tour'},
+		JasnyBootstrap: {deps: ['bootstrap', 'jquery']}
 	},
 	paths: {
 		jquery: 'jquery-2.1.4.min',
@@ -25,7 +26,8 @@ requirejs.config({
 		bluebird: 'bluebird.min',
 		UsStates: 'us-states',
 		Tour: 'bootstrap-tour.min',
-		BrowseTour: 'tour-browse'
+		BrowseTour: 'tour-browse',
+		JasnyBootstrap: 'jasny-bootstrap.min'
 	}
 });
 
@@ -42,20 +44,22 @@ requirejs([
 	'Sisyphus',
 	'SyncFileReader',
 	'UsStates',
-	'BrowseTour'
+	'BrowseTour',
+	'JasnyBootstrap'
 ], function (Promise,
-			bootstrap,
-			ejs,
-			$,
-			MapApp,
-			moment,
-			Masonry,
-			select2,
-			RecallProvider,
-			Sisyphus,
-			SyncFileReader,
-			UsStates,
-			BrowseTour) {
+			 bootstrap,
+			 ejs,
+			 $,
+			 MapApp,
+			 moment,
+			 Masonry,
+			 select2,
+			 RecallProvider,
+			 Sisyphus,
+			 SyncFileReader,
+			 UsStates,
+			 BrowseTour,
+			 JasnyBootstrap) {
 
 	function _generateRecallCards(recalls) {
 		var cards = [],
@@ -281,14 +285,14 @@ requirejs([
 			visible = event.type === 'shown',
 			recallId = element.data('recallId');
 
-		eventTrolley.triggerHandler(visible ? 'shown.recall.pinned' : 'hidden.recall.pinned', { recallId: recallId });
+		eventTrolley.triggerHandler(visible ? 'shown.recall.pinned' : 'hidden.recall.pinned', {recallId: recallId});
 	});
 	recentRecallsView.on('shown.bs.collapse hidden.bs.collapse', '.recall-card .collapse', function (event) {
 		var element = $(this),
 			visible = event.type === 'shown',
 			recallId = element.data('recallId');
 
-		eventTrolley.triggerHandler(visible ? 'shown.recall.recent' : 'hidden.recall.recent', { recallId: recallId });
+		eventTrolley.triggerHandler(visible ? 'shown.recall.recent' : 'hidden.recall.recent', {recallId: recallId});
 	});
 
 	eventTrolley.on('hidden.recall.pinned', function (event, data) {

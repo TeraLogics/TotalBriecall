@@ -130,6 +130,7 @@ app.use(function (req, res, next) {
 
 app.use(function (req, res, next) {
 	res.locals.brie = {
+		projectname: 'Total Briecall',
 		page: {},
 		preferences: req.session.preferences,
 		fbappid: global.config.FACEBOOK_APPID || '',

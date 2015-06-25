@@ -7,8 +7,12 @@
 requirejs.config({
 	baseUrl: '/js',
 	shim: {
-		bootstrap: { 'deps': ['jquery'] },
-		ejs: { exports: 'ejs' }
+		bootstrap: {'deps': ['jquery']},
+		ejs: {exports: 'ejs'},
+		URI: {deps: ['jquery']},
+		visible: {deps: ['jquery']},
+		Tour: {deps: ['bootstrap'], exports: 'Tour'},
+		JasnyBootstrap: {deps: ['bootstrap', 'jquery']}
 	},
 	paths: {
 		jquery: 'jquery-2.1.4.min',
@@ -16,8 +20,14 @@ requirejs.config({
 		ejs: 'ejs-2.3.1.min',
 		masonry: 'masonry.pkgd.min',
 		moment: 'moment.min',
+		select2: 'select2.min',
 		underscore: 'underscore-min',
-		UsStates: 'us-states'
+		visible: 'jquery.visible.min',
+		bluebird: 'bluebird.min',
+		UsStates: 'us-states',
+		Tour: 'bootstrap-tour.min',
+		BrowseTour: 'tour-browse',
+		JasnyBootstrap: 'jasny-bootstrap.min'
 	}
 });
 
@@ -31,8 +41,9 @@ requirejs([
 	'CommentProvider',
 	'MapApp',
 	'SyncFileReader',
-	'UsStates'
-], function ($, bootstrap, ejs, Masonry, moment, _, CommentProvider, MapApp, SyncFileReader, UsStates) {
+	'UsStates',
+	'JasnyBootstrap'
+], function ($, bootstrap, ejs, Masonry, moment, _, CommentProvider, MapApp, SyncFileReader, UsStates, JasnyBootstrap) {
 	$.fn.serializeObject = function () {
 		var o = {},
 			a = this.serializeArray();

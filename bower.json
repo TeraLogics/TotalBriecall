@@ -6,6 +6,7 @@
   "dependencies": {
 	"bootstrap-sass-official": "3.3.4",
 	"components-font-awesome": "4.3.0",
-	"bootstrap-tour": "0.10.2"
+	"bootstrap-tour": "0.10.2",
+	"jasny-bootstrap": "https://github.com/jasny/bootstrap.git#f96d55965a6c3a29014c940ae3f52aeeda1920f7"
   }
 }
