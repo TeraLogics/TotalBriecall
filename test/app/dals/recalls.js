@@ -7,7 +7,6 @@ var path = require('path'),
 	Promise = require('bluebird'),
 	recallsDal = require(path.join(global.__dalsdir, 'recalls')),
 	errorHelper = require(path.join(global.__libdir, 'errorHelper')),
-	recallHelper = require(path.join(global.__libdir, 'recallHelper')),
 	validationHelper = require(path.join(global.__libdir, 'validationHelper')),
 	mongoAdapter = require(path.join(global.__adptsdir, 'mongo')),
 	fdaAdapter = require(path.join(global.__adptsdir, 'fda'));
