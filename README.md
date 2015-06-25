@@ -7,18 +7,6 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/TeraLogics/TotalBriecall/tree/master)
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+A Node.js website, powered by [openFDA](https://open.fda.gov) data, aimed to allow easier and more targeted access to consumers about food recall information.
 
-## Running Locally
-
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
-
-Your app should now be running on [localhost:5000](http://localhost:5000/).
-
-## Deploying to Heroku
-
-```
-$ heroku create
-$ git push heroku master
-$ heroku open
-```
+**OpenFDA is a beta research project and not for clinical or production use. As all data within the system is publically available, openFDA does not contain data with Personally Identifiable Information or other sensitive information.**
