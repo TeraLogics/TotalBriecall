@@ -174,8 +174,8 @@ function _formatRecallResults(data) {
 		foodrecall.id = _encodeFoodRecall(foodrecall);
 		//console.log('Encoded id length: ' + foodrecall.id.length);
 
-		foodrecall.recall_initiation_date = moment(foodrecall.recall_initiation_date, 'YYYY-MM-DD').unix();
-		foodrecall.report_date = moment(foodrecall.report_date, 'YYYY-MM-DD').unix();
+		foodrecall.recall_initiation_date = moment(foodrecall.recall_initiation_date, 'YYYY-MM-DD').utc().unix();
+		foodrecall.report_date = moment(foodrecall.report_date, 'YYYY-MM-DD').utc().unix();
 
 		foodrecall.classificationlevel = foodrecall.classification.match(/I/g).length;
 
