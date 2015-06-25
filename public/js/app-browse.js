@@ -190,8 +190,8 @@ requirejs([
 		recallLinkCopyModal = $('#recall-link-copy');
 
 	$(".select2.categories").select2({
-		tags: brie.page.categories,
-		tokenSeparators: [',', ' ']
+		placeholder: 'Select one or more categories',
+		data: brie.page.categories
 	});
 
 	recallLinkCopyModal.find('[name="recall-link"]').on('click', function (event) {
@@ -204,7 +204,7 @@ requirejs([
 		autoTrigger: true,
 		onFetch: function (meta, sisyphus) {
 			meta.status = 'ongoing';
-			
+
 			if (typeof meta.skip === 'undefined') {
 				meta.skip = 0;
 				meta.limit = 10;
