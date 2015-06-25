@@ -3,7 +3,6 @@
 	"maxerr": 5000,
 	"strict": true,
 	"node": true,
-	"futurehostile": true,
 	"noempty": true,
 	"noarg": true,
 	"unused": "vars",
