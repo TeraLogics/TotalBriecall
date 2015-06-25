@@ -199,6 +199,8 @@ requirejs([
 		trigger: recentRecallLoadingView,
 		autoTrigger: true,
 		onFetch: function (meta, sisyphus) {
+			meta.status = 'ongoing';
+			
 			if (typeof meta.skip === 'undefined') {
 				meta.skip = 0;
 				meta.limit = 10;
