@@ -11,9 +11,11 @@ var _ = require('underscore'),
  * @returns {Promise.<Object[]>|Promise<Object[]>} Returns a list of comments.
  */
 exports.getComments = function (recallNumbers) {
-	return Promise.resolve(Comments.find({
-		recallnumber: { $in: recallNumbers }
-	}).sort({ created: -1 }).exec()).then(function (comments) {
+	return Promise.try(function () {
+		return Comments.find({
+			recallnumber: { $in: recallNumbers }
+		}).sort({ created: -1 }).exec();
+	}).then(function (comments) {
 		return _.map(comments, function (comment) {
 			var c = comment.toObject();
 			// convert created to a timestamp
@@ -36,12 +38,14 @@ exports.getComments = function (recallNumbers) {
  * @returns {Promise.<Object>|Promise<Object>} Returns the added comment.
  */
 exports.addComment = function (obj) {
-	return Promise.resolve(Comments.create({
-		recallnumber: obj.recallnumber,
-		name: obj.name,
-		location: obj.location,
-		comment: obj.comment
-	})).then(function (comment) {
+	return Promise.try(function () {
+		return Comments.create({
+			recallnumber: obj.recallnumber,
+			name: obj.name,
+			location: obj.location,
+			comment: obj.comment
+		});
+	}).then(function (comment) {
 		var c = comment.toObject();
 		// convert created to a timestamp
 		c.created = moment(comment.created).unix();
