@@ -6,7 +6,9 @@
 <div class="container">
 	<div id="status">Getting geolocation...</div>
 	<div id="map"></div>
-	<div id="modal"></div>
+</div>
+<% include ./common/page-footer.ejs %>
+<div id="modal">
 	<form class="col-md-4" id="zipcodeForm" name="zipcodeForm" action="javascript:void(0);">
 		<div class="modal fade" id="zipcodeModal" tabindex="-1" role="dialog" aria-labelledby="zipcodeModalLabel">
 			<div class="modal-dialog" role="document">
@@ -17,7 +19,8 @@
 					<div class="modal-body">
 						<div class="input-group input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
-							<input type="text" tabindex="1" class="form-control" id="zipcodeInput" name="zipcodeInput"
+							<input type="text" tabindex="1" class="form-control" id="zipcodeInput"
+								   name="zipcodeInput"
 								   maxlength="5" required placeholder="Enter Zipcode"/>
 						</div>
 					</div>
@@ -30,7 +33,6 @@
 		</div>
 	</form>
 </div>
-<% include ./common/page-footer.ejs %>
 <script data-main="/js/app-landing" src="/js/require.js"></script>
 </body>
 </html>

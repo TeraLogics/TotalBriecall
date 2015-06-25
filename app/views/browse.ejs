@@ -65,6 +65,7 @@
 		</div>
 	</div>
 </div>
+<% include ./common/page-footer.ejs %>
 <div id="recall-link-copy" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -88,7 +89,6 @@
 	<!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-<% include ./common/page-footer.ejs %>
 <script data-main="/js/app-browse" src="/js/require.js"></script>
 <script>
 	brie.page.categories = <%- JSON.stringify(categories) %>;
