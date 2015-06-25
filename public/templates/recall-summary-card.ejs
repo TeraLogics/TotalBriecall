@@ -6,7 +6,7 @@
 %>
 <div class="panel <%= recallProvider.getCardType() %> recall-summary-card recall-class-i">
 	<div class="panel-heading">
-		<div data-toggle="tooltip" rel="tooltip" data-placement="bottom"
+		<div rel="tooltip" data-placement="bottom"
 			 title="Collapse card" class="recall-card-toggle <%= recallProvider.isCollapsed() ? 'collapsed' : '' %>"
 			 data-toggle="collapse"
 			 data-target="#collapse-<%= recallProvider.getFdaId() %>">
@@ -14,7 +14,7 @@
 		</div>
 		<h3 class="panel-title"><%= recallProvider.getProductDescription() %></h3>
 		<h4 class="panel-subtitle">
-			<a data-toggle="tooltip" rel="tooltip" data-placement="bottom"
+			<a rel="tooltip" data-placement="bottom"
 			   title="<%= recallProvider.getFirmAddress() %>" href="">
 				<%= recallProvider.getFirmName() %>
 			</a> &nbsp;-&nbsp;
@@ -35,7 +35,7 @@
 					<li class="allergen">
 						<div class="aspect-box">
 							<div class="aspect-content">
-								<div data-toggle="tooltip" rel="tooltip" data-placement="bottom"
+								<div rel="tooltip" data-placement="bottom"
 									 title="<%= recallProvider.getFoodCategoryName(i) %>" class="preview-holder">
 									<img src="<%= recallProvider.getFoodCategoryImgUrl(i) %>">
 								</div>
@@ -53,14 +53,14 @@
 		</section>
 		<div class="panel-footer clearfix">
 			<ul class="list-inline pull-left">
-				<li><a class="btn btn-link" data-toggle="tooltip" rel="tooltip" data-placement="bottom"
+				<li><a class="btn btn-link" rel="tooltip" data-placement="bottom"
 					   title="See recall details" href="<%= recallProvider.getRecallDetailsLink() %>"><i
 								class="glyphicon glyphicon-info-sign"></i> Info</a></li>
 			</ul>
 			<ul class="list-inline pull-right">
 				<li>
 					<div data-action="recall-pin" data-recall-id="<%= recallProvider.getFdaId() %>"
-						 data-toggle="button" data-toggle="tooltip" rel="tooltip" data-placement="bottom"
+						 data-toggle="button" rel="tooltip" data-placement="bottom"
 						 title="Pin recall to your board"
 						 class="btn btn-link <%= recallProvider.isPinned() ? 'active' : '' %>"><i
 								class="glyphicon glyphicon-pushpin"></i> Pin
@@ -68,10 +68,10 @@
 				</li>
 				<li>
 					<div class="dropup">
-						<span data-toggle="dropdown"><span data-toggle="tooltip" rel="tooltip" data-placement="bottom"
-														   title="Share recall with others"
-														   class="btn btn-link dropdown-toggle"><i
-										class="glyphicon glyphicon-share-alt"></i> Share</span></span>
+						<span data-toggle="dropdown" rel="tooltip" data-placement="bottom"
+							  title="Share recall with others"
+							  class="btn btn-link dropdown-toggle"><i
+									class="glyphicon glyphicon-share-alt"></i> Share</span>
 						<ul class="dropdown-menu dropdown-menu-right" role="menu">
 							<li role="presentation">
 								<a href="#" data-action="recall-copy"
