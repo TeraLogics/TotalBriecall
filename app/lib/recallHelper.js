@@ -106,7 +106,7 @@ exports.isValidState = function (state) {
  */
 exports.areValidKeywords = function (keywords) {
 	return !_.isArray(keywords) ? null : _.find(keywords, function (keyword) {
-		return _.isString(keyword) && !exports.keywordMappings.hasOwnProperty(keyword.toLowerCase());
+		return !_.isString(keyword) || !exports.keywordMappings.hasOwnProperty(keyword.toLowerCase());
 	});
 };
 

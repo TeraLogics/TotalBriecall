@@ -94,7 +94,7 @@ exports.search = function (obj) {
 			throw errorHelper.getValidationError('Invalid classificationlevels');
 		}
 
-		if (obj.keywords && (!_.isArray(obj.keywords) || !recallHelper.areValidKeywords(obj.keywords))) {
+		if (obj.keywords && recallHelper.areValidKeywords(obj.keywords) !== undefined) {
 			throw errorHelper.getValidationError('Invalid keywords - could not match keywords');
 		}
 
@@ -108,29 +108,25 @@ exports.search = function (obj) {
 	}).then(function () {
 		return fdaAdapter.searchFoodRecalls(obj);
 	}).then(function (recallResults) {
-		if (recallResults.data.length > 0) {
-			return mongoAdapter.getComments(_.pluck(recallResults.data, 'recall_number')).then(function (comments) {
-				recallResults.data = _.map(recallResults.data, function (r) {
-					r.comments = _.chain(comments)
-						.where({ recallnumber: r.recall_number })
-						.map(function (comment) {
-							// delete mongo's internal stuff
-							delete comment.__v;
-							delete comment._id;
-							// remove the recall number as it's duplicated from the recall record
-							delete comment.recallnumber;
+		return mongoAdapter.getComments(_.pluck(recallResults.data, 'recall_number')).then(function (comments) {
+			recallResults.data = _.map(recallResults.data, function (r) {
+				r.comments = _.chain(comments)
+					.where({ recallnumber: r.recall_number })
+					.map(function (comment) {
+						// delete mongo's internal stuff
+						delete comment.__v;
+						delete comment._id;
+						// remove the recall number as it's duplicated from the recall record
+						delete comment.recallnumber;
 
-							return comment;
-						})
-						.value();
-					return r;
-				});
-
-				return recallResults;
+						return comment;
+					})
+					.value();
+				return r;
 			});
-		}
 
-		return recallResults;
+			return recallResults;
+		});
 	});
 };
 

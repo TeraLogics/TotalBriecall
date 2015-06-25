@@ -47,6 +47,17 @@ module.exports = function () {
 		};
 	}
 
+	function _getFDAAPIFoodRecallFormattedResponse() {
+		return {
+			skip: 1,
+			limit: 1,
+			total: 1,
+			data: [
+				_getFDAAPIFoodRecallFormattedObject()
+			]
+		};
+	}
+
 	function _getComment() {
 		return {
 			__v: 1,
@@ -124,6 +135,84 @@ module.exports = function () {
 					done(err);
 				}).done();
 
+			});
+
+		});
+
+		describe('search', function () {
+
+			afterEach(function () {
+				fdaAdapter.searchFoodRecalls.restore();
+			});
+
+			it('should succeed with valid parameters', function (done) {
+				var recalls = _getFDAAPIFoodRecallFormattedResponse(),
+					obj = {
+						state: 'va',
+						status: 'ongoing',
+						eventid: 1,
+						from: 1,
+						to: 2,
+						classificationlevels: [1, 2],
+						keywords: _.keys(recallHelper.keywordMappings),
+						skip: 1,
+						limit: 1
+					};
+
+				sinon.stub(fdaAdapter, 'searchFoodRecalls').returns(Promise.resolve(recalls));
+
+				recallsDal.search(obj).then(function (result) {
+					assert(!errorHelper.getValidationError.called, 'errorHelper.getValidationError was called when there was no error');
+
+					assert(fdaAdapter.searchFoodRecalls.called, 'fdaAdapter.searchFoodRecalls was not called to get the recall');
+					assert(fdaAdapter.searchFoodRecalls.calledWith(obj), 'fdaAdapter.searchFoodRecalls was not passed the recall ID');
+
+					assert.deepEqual(result, recalls, 'fdaAdapter.searchFoodRecalls did not return the correct object');
+
+					done();
+				}).catch(function (err) {
+					done(err);
+				}).done();
+
+			});
+
+			describe('search error cases', function () {
+				_.each([
+					{ condition: 'an invalid state', message: 'Invalid state', obj: { state: 'test' } },
+					{ condition: 'an invalid status', message: 'Invalid status', obj: { status: 'test' } },
+					{ condition: 'an invalid eventid', message: 'Invalid eventid', obj: { eventid: 'test' } },
+					{ condition: 'an invalid from', message: 'Invalid from', obj: { from: 'test' } },
+					{ condition: 'an invalid to', message: 'Invalid to', obj: { to: 'test' } },
+					{ condition: 'from without a to', message: 'Invalid from/to - both must be provided if one is', obj: { from: 1 } },
+					{ condition: 'to without a from', message: 'Invalid from/to - both must be provided if one is', obj: { to: 2 } },
+					{ condition: 'from is bigger than to', message: 'Invalid from/to - from must be before to', obj: { from: 2, to: 1 } },
+					{ condition: 'a non-array classificationlevels', message: 'Invalid classificationlevels', obj: { classificationlevels: 'test' } },
+					{ condition: 'a bad value (string) in classificationlevels', message: 'Invalid classificationlevels', obj: { classificationlevels: ['test'] } },
+					{ condition: 'a bad value (low) in classificationlevels', message: 'Invalid classificationlevels', obj: { classificationlevels: [0] } },
+					{ condition: 'a bad value (high) in classificationlevels', message: 'Invalid classificationlevels', obj: { classificationlevels: [4] } },
+					{ condition: 'a non-array keywords', message: 'Invalid keywords - could not match keywords', obj: { keywords: 'test' } },
+					{ condition: 'a bad value (number) in keywords', message: 'Invalid keywords - could not match keywords', obj: { keywords: [4] } },
+					{ condition: 'a bad value (invalid) in keywords', message: 'Invalid keywords - could not match keywords', obj: { keywords: ['test'] } },
+					{ condition: 'an invalid skip', message: 'Invalid skip', obj: { skip: 'test' } },
+					{ condition: 'an invalid limit', message: 'Invalid limit', obj: { limit: 'test' } }
+				], function (test) {
+					it('should return an error when passed ' + test.condition, function (done) {
+						var recall = _getFDAAPICountFormattedResponse();
+
+						sinon.stub(fdaAdapter, 'searchFoodRecalls').returns(Promise.resolve(recall));
+
+						recallsDal.search(test.obj).then(function () {
+							done(new Error('searchFoodRecalls successfully returned when there was an error'));
+						}).catch(function (err) {
+							assert(errorHelper.getValidationError.called, 'errorHelper.getValidationError was not called when there was an error');
+							assert.instanceOf(err, Error, 'searchFoodRecalls did not return an error');
+							assert.equal(err.message, test.message, 'searchFoodRecalls did not return the correct message');
+
+							done();
+						}).done();
+
+					});
+				});
 			});
 
 		});
