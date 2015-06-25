@@ -9,7 +9,7 @@ var _ = require('underscore'),
 
 /**
  * Adds a comment to a recall
- * @param obj
+ * @param {Object} obj The params object.
  * @param {String} obj.recallnumber The recall number.
  * @param {String} obj.name The user's name.
  * @param {String} [obj.location] The location of the user.

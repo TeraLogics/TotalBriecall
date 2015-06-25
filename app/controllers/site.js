@@ -10,26 +10,41 @@ var defaultPorts = {
 	'https': 443
 };
 
+/**
+ * Renders the landing page.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.landing = function (req, res) {
 	if (!req.session.preferences.haslanded) {
 		req.session.preferences.haslanded = true;
 	}
 
 	if (req.session.preferences.state) {
-		return res.redirect('/browse');
+		res.redirect('/browse');
 	} else {
-		return res.render('landing');
+		res.render('landing');
 	}
 };
 
+/**
+ * Renders the browse page.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.browse = function (req, res) {
 	if (!req.session.preferences.state && !req.session.preferences.haslanded) {
-		return res.redirect('/');
+		res.redirect('/');
 	} else {
-		return res.render('browse');
+		res.render('browse');
 	}
 };
 
+/**
+ * Renders the details page.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.details = function (req, res) {
 	recallsDal.getById({ id: req.params.id }).then(function (recall) {
 		var serverURL = req.protocol + '://' + req.get('host'),
@@ -59,16 +74,31 @@ exports.details = function (req, res) {
 	}).done();
 };
 
+/**
+ * Renders the map page.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.map = function (req, res) {
-	return res.render('map', {
+	res.render('map', {
 		uspsuser: global.config.USPS_USER || ''
 	});
 };
 
+/**
+ * Gets preferences for a user.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.preferencesGet = function (req, res) {
-	return res.json(req.session.preferences);
+	res.json(req.session.preferences);
 };
 
+/**
+ * Sets preferences for the user
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.preferencesSet = function (req, res) {
 	_.each(req.body, function (val, key) {
 		req.session.preferences[key] = val;
@@ -77,15 +107,20 @@ exports.preferencesSet = function (req, res) {
 	try {
 		req.session.save();
 
-		return res.json({
+		res.json({
 			code: "OK",
 			message: "Success!"
 		});
 	} catch (e) {
-		return res.status(500).json(e.message);
+		res.status(500).json(e.message);
 	}
 };
 
+/**
+ * Renders the popup close page which is used to close the window broken Facebook links.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.popupClose = function (req, res) {
-	return res.render('popupclose');
+	res.render('popupclose');
 };

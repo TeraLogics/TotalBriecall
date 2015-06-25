@@ -66,6 +66,11 @@ function _handleError(res, err) {
 	}
 }
 
+/**
+ * Adds a comment.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.addCommentForRecall = function (req, res) {
 	commentsDal.add({
 		recallnumber: req.body.recallnumber,
@@ -79,6 +84,11 @@ exports.addCommentForRecall = function (req, res) {
 	}).done();
 };
 
+/**
+ * Gets a recall by id.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.getRecallById = function (req, res) {
 	recallsDal.getById({
 		id: req.params.id
@@ -89,6 +99,11 @@ exports.getRecallById = function (req, res) {
 	}).done();
 };
 
+/**
+ * Searches recalls.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.getRecalls = function (req, res) {
 	var obj = {
 		firmname: req.query.firmname,
@@ -131,6 +146,11 @@ exports.getRecalls = function (req, res) {
 	}).done();
 };
 
+/**
+ * Gets recall counts.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
 exports.getRecallsCounts = function (req, res) {
 	recallsDal.getCounts({
 		field: req.query.field,

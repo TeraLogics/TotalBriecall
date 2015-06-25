@@ -3,6 +3,10 @@
 var path = require('path'),
 	siteCtrl = require(path.join(global.__ctrldir, 'site'));
 
+/**
+ * A function to register all of the routes with ExpressJS
+ * @param {Object} app An instance of ExpressJS server
+ */
 module.exports = function (app) {
 	app.route('/')
 		.get(siteCtrl.landing);

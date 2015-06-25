@@ -6,9 +6,9 @@ var _ = require('underscore'),
 	Promise = require('bluebird'),
 	request = require('request-promise'),
 	errorHelper = require(path.join(global.__libdir, 'errorHelper')),
-	recallHelper = require(path.join(global.__libdir, 'recallHelper'));
+	recallHelper = require(path.join(global.__libdir, 'recallHelper')),
 
-var options = {
+	options = {
 		uri: 'https://api.fda.gov/food/enforcement.json',
 		method: 'GET',
 		resolveWithFullResponse: true, // useful for debugging
@@ -48,9 +48,9 @@ var options = {
 	lastLetterRegex = /(\w)$/i;
 
 /**
- * Format input for use in search
- * @param {String} val
- * @returns {String}
+ * Format input for use in search.
+ * @param {String} val The value to format.
+ * @returns {String} The formatted value.
  * @private
  */
 function _formatValue(val) {
@@ -62,10 +62,10 @@ function _formatValue(val) {
 }
 
 /**
- * Converts an array of values to query string using field
- * @param {String[]} arr Values to match against
- * @param {String} [field] Field to query on
- * @returns {string}
+ * Converts an array of values to query string using field.
+ * @param {String[]} arr Values to match against.
+ * @param {String} [field] Field to query on.
+ * @returns {String} The formatted param.
  * @private
  */
 function _convertArrayToParam(arr, field) {
@@ -73,9 +73,9 @@ function _convertArrayToParam(arr, field) {
 }
 
 /**
- * Pluralizes a word (naive)
- * @param {String} word Word to pluralize
- * @returns {String|null} Pluralized string
+ * Pluralizes a word (naive).
+ * @param {String} word Word to pluralize.
+ * @returns {String|null} Pluralized string.
  * @private
  */
 function _pluralizeWord(word) {
@@ -98,9 +98,9 @@ function _pluralizeWord(word) {
 }
 
 /**
- * Converts a food recall's product descritption to a blob
- * @param {String} desc Product description of food recall
- * @returns {String} '+' delimited string of keywords
+ * Converts a food recall's product description to a blob.
+ * @param {String} desc Product description of food recall.
+ * @returns {String} '+' delimited string of keywords.
  * @private
  */
 function _getBlobFromProductDescription(desc) {
@@ -129,9 +129,9 @@ function _getBlobFromProductDescription(desc) {
 }
 
 /**
- * Encodes select foodrecall object properties to base64
- * @param {Object} foodrecall The food recall object to encode
- * @returns {String}
+ * Encodes select FoodRecall object properties to base64.
+ * @param {Object} foodrecall The food recall object to encode.
+ * @returns {String} The encoded FoodRecall information.
  * @private
  */
 function _encodeFoodRecall(foodrecall) {
@@ -174,8 +174,8 @@ function _decodeFoodRecall(val) {
 
 /**
  * Takes openFDA results data and modifies it to have the desired output format
- * @param data
- * @returns {Object}
+ * @param {Object} data The openFDA data.
+ * @returns {Object} A FoodResults object
  * @private
  */
 function _formatRecallResults(data) {
@@ -246,12 +246,12 @@ function _formatRecallResults(data) {
 }
 
 /**
- * Makes a request to the openFDA's api
- * @param obj
- * @param {String} obj.search
- * @param {Number} [obj.skip]
- * @param {Number} [obj.limit]
- * @returns {Promise}
+ * Makes a request to the openFDA's api.
+ * @param {Object} obj The params object.
+ * @param {String} obj.search The search string that is used for searching the API.
+ * @param {Number} [obj.skip] The number of records to skip.
+ * @param {Number} [obj.limit] the number of records to get.
+ * @returns {Promise} The openFDA response object.
  * @private
  */
 function _makeRequest(obj) {
@@ -292,13 +292,14 @@ function _makeRequest(obj) {
 }
 
 /**
- * Gets food recall details for specific recall id
- * @param obj
- * @param {String} obj.data
- * @returns {Promise}
+ * Gets food recall details for specific recall id.
+ * @param {Object} obj The params object.
+ * @param {String} obj.id The encoded recall id.
+ * @returns {Promise} An openFDA food recall object.
  */
 exports.getFoodRecallById = function (obj) {
 	var recall_number;
+
 	return _decodeFoodRecall(obj.id).then(function (data) {
 		var search = [
 			'event_id:' + data.event_id,
@@ -334,16 +335,17 @@ exports.getFoodRecallById = function (obj) {
 };
 
 /**
- * Gets food recall(s) based on search parameters
- * @param obj
- * @param {String} [obj.state]
- * @param {Number} [obj.from]
- * @param {Number} [obj.to]
- * @param {Number} [obj.classificationlevel]
- * @param {String[]} [obj.keywords]
- * @param {Number} [obj.skip]
- * @param {Number} [obj.limit]
- * @returns {Promise}
+ * Gets food recall(s) based on search parameters.
+ * @param {Object} obj The params object.
+ * @param {String} [obj.state] The state to search by.
+ * @param {Number} [obj.eventid] The event id to search by.
+ * @param {String} [obj.from] The start date to search by.
+ * @param {String} [obj.to] The end date to search by.
+ * @param {String[]} [obj.classificationlevels] A list of classification levels to search by.
+ * @param {String[]} [obj.keywords] A list of key words to search by.
+ * @param {Number} [obj.skip] The number of records to skip.
+ * @param {Number} [obj.limit] The number of records to get.
+ * @returns {Promise} A food recall result set from the openFDA aPI.
  */
 exports.searchFoodRecalls = function (obj) {
 	var search = [];
@@ -391,11 +393,11 @@ exports.searchFoodRecalls = function (obj) {
 };
 
 /**
- * Gets counts for each unique item in a field
- * @param obj
- * @param {String} [obj.state]
- * @param {String} [obj.status]
- * @returns {Promise}
+ * Gets counts for each unique item in a field.
+ * @param {Object} obj The params object.
+ * @param {String} [obj.state] The state to search by.
+ * @param {String} [obj.status] The status to search by.
+ * @returns {Promise<Object[]>} The number of food recalls by state.
  */
 exports.getFoodRecallsCounts = function (obj) {
 	var search = [];
@@ -412,7 +414,10 @@ exports.getFoodRecallsCounts = function (obj) {
 		search: search.join('+AND+'),
 		count: obj.field + '.exact'
 	}).then(function (data) {
-		var stats = { total: 0, counts: {} };
+		var stats = {
+			total: 0,
+			counts: {}
+		};
 
 		_.each(data.results, function (result) {
 			var key = result.term,

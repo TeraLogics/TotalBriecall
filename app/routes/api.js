@@ -43,6 +43,10 @@ var path = require('path'),
  * }
  */
 
+/**
+ * A function to register all of the routes with ExpressJS
+ * @param {Object} app An instance of ExpressJS server
+ */
 module.exports = function (app) {
 	/**
 	 * @api {put} /comments Add comment

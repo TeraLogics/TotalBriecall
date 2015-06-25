@@ -12,7 +12,7 @@ var _ = require('underscore'),
 
 /**
  * Gets recall for specific id.
- * @param obj
+ * @param {Object} obj The params object.
  * @param {Number} obj.id The recall id.
  * @returns {Promise.<Object>} A recall.
  */
@@ -45,14 +45,16 @@ exports.getById = function (obj) {
 };
 
 /**
- *
  * Gets recalls for matches against provided input.
- * @param obj
+ * @param {Object} obj The params object.
  * @param {String} [obj.state] The state to search by.
+ * @param {Number} [obj.eventid] The event id to search by.
  * @param {String} [obj.from] The start date to search by.
  * @param {String} [obj.to] The end date to search by.
  * @param {String[]} [obj.classificationlevels] A list of classification levels to search by.
  * @param {String[]} [obj.keywords] A list of key words to search by.
+ * @param {Number} [obj.skip] The number of records to skip.
+ * @param {Number} [obj.limit] The number or records to fetch.
  * @returns {Promise<Object>} A list of recalls and their metadata.
  */
 exports.search = function (obj) {
@@ -70,7 +72,7 @@ exports.search = function (obj) {
 		}
 
 		if (obj.to && (!validationHelper.isInt(obj.to) || !moment.unix(obj.to).isValid())) {
-			throw errorHelper.getValidationError('Invalid from');
+			throw errorHelper.getValidationError('Invalid to');
 		}
 
 		if (obj.to && obj.from && obj.from >= obj.to) {
@@ -120,7 +122,7 @@ exports.search = function (obj) {
 
 /**
  * Gets counts.
- * @param obj
+ * @param {Object} obj The params object.
  * @param {String} obj.field The field to count by.
  * @param {String} [obj.state] The state to count by.
  * @param {String} [obj.status] The status to count by.

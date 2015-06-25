@@ -7,7 +7,7 @@
  * @returns {Error} The error.
  * @private
  */
-function getError (message, type) {
+function _getError (message, type) {
 	var e = new Error(message);
 	e.type = type;
 	return e;
@@ -19,7 +19,7 @@ function getError (message, type) {
  * @returns {Error} The error.
  */
 exports.getValidationError = function (message) {
-	return getError(message, 'INVALID_ARGUMENT');
+	return _getError(message, 'INVALID_ARGUMENT');
 };
 
 /**
@@ -28,5 +28,5 @@ exports.getValidationError = function (message) {
  * @returns {Error} The error.
  */
 exports.getNotFoundError = function (message) {
-	return getError(message, 'NOT_FOUND');
+	return _getError(message, 'NOT_FOUND');
 };

@@ -21,4 +21,8 @@ var mongoose = require('mongoose'),
 		}
 	});
 
+/**
+ * The comments model.
+ * @type {Model<Comments>} The comments model.
+ */
 module.exports = mongoose.model('Comments', CommentsSchema);

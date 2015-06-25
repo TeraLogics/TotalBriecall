@@ -27,7 +27,7 @@ exports.getComments = function (recallNumbers) {
 
 /**
  * Adds a comment.
- * @param {Object} obj
+ * @param {Object} obj The params object.
  * @param {String} obj.recallnumber The recall number.
  * @param {String} obj.name The user's name.
  * @param {String} [obj.location] The location of the user.
