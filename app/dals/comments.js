@@ -14,7 +14,7 @@ var _ = require('underscore'),
  * @param {String} obj.name The user's name.
  * @param {String} [obj.location] The location of the user.
  * @param {String} obj.comment The comment.
- * @returns {void|Promise.<Object>|Promise.<Object>|Set.<T>|*}
+ * @returns {Promise<Object>}
  */
 exports.add = function (obj) {
 	return Promise.try(function validate () {
@@ -44,6 +44,14 @@ exports.add = function (obj) {
 			name: obj.name,
 			location: obj.location,
 			comment: obj.comment
+		}).then(function (comment) {
+			// delete mongo's internal stuff
+			delete comment.__v;
+			delete comment._id;
+			// remove the recall number as it's duplicated from the recall record
+			delete comment.recallnumber;
+
+			return comment;
 		});
 	});
 };

@@ -30,7 +30,12 @@ exports.getById = function (obj) {
 					recallResult.comments = _.chain(comments)
 						.where({recallnumber: recallResult.recall_number})
 						.map(function (comment) {
+							// delete mongo's internal stuff
+							delete comment.__v;
+							delete comment._id;
+							// remove the recall number as it's duplicated from the recall record
 							delete comment.recallnumber;
+
 							return comment;
 						})
 						.value();
@@ -75,17 +80,21 @@ exports.search = function (obj) {
 			throw errorHelper.getValidationError('Invalid to');
 		}
 
+		if ((obj.to && !obj.from) || (obj.from && !obj.to)) {
+			throw errorHelper.getValidationError('Invalid from/to - both must be provided if one is');
+		}
+
 		if (obj.to && obj.from && obj.from >= obj.to) {
 			throw errorHelper.getValidationError('Invalid from/to - from must be before to');
 		}
 
-		if (obj.classificationlevels && !_.isArray(obj.classificationlevels) && !_.every(obj.classificationlevels, function (c) {
-				return validationHelper.isInt(c) && c >= 1 && c <= 3;
-			})) {
+		if (obj.classificationlevels && (!_.isArray(obj.classificationlevels) || !_.every(obj.classificationlevels, function (level) {
+				return validationHelper.isInt(level) && level >= 1 && level <= 3;
+			}))) {
 			throw errorHelper.getValidationError('Invalid classificationlevels');
 		}
 
-		if (obj.keywords && !_.isArray(obj.keywords) && !recallHelper.areValidKeywords(obj.keywords)) {
+		if (obj.keywords && (!_.isArray(obj.keywords) || !recallHelper.areValidKeywords(obj.keywords))) {
 			throw errorHelper.getValidationError('Invalid keywords - could not match keywords');
 		}
 
@@ -105,7 +114,12 @@ exports.search = function (obj) {
 					r.comments = _.chain(comments)
 						.where({recallnumber: r.recall_number})
 						.map(function (comment) {
+							// delete mongo's internal stuff
+							delete comment.__v;
+							delete comment._id;
+							// remove the recall number as it's duplicated from the recall record
 							delete comment.recallnumber;
+
 							return comment;
 						})
 						.value();

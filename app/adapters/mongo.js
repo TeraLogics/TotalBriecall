@@ -16,6 +16,7 @@ exports.getComments = function (recallNumbers) {
 	}).sort({ created: -1 }).exec()).then(function (comments) {
 		return _.map(comments, function (comment) {
 			var c = comment.toObject();
+			// convert created to a timestamp
 			c.created = moment(comment.created).unix();
 			return c;
 		});
@@ -42,7 +43,8 @@ exports.addComment = function (obj) {
 		comment: obj.comment
 	})).then(function (comment) {
 		var c = comment.toObject();
-		c.created = moment(c.created).unix();
+		// convert created to a timestamp
+		c.created = moment(comment.created).unix();
 		return c;
 	}).catch(function (err) {
 		console.error('Failed to add comment: ' + err);

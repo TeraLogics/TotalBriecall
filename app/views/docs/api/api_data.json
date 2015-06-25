@@ -3,9 +3,10 @@
     "type": "put",
     "url": "/comments",
     "title": "Add comment",
-    "name": "AddCommentToRecall",
+    "group": "Comments",
+    "name": "AddComment",
     "version": "1.0.0",
-    "description": "<p>Add a comment to the recall.</p> ",
+    "description": "<p>Adds a comment to the recall identified by <code>recallnumber</code>.</p> ",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -20,8 +21,15 @@
             "group": "Parameter",
             "type": "<p>String</p> ",
             "optional": false,
+            "field": "name",
+            "description": "<p>The name of the commenter.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>String</p> ",
+            "optional": true,
             "field": "location",
-            "description": "<p>The location of the user.</p> "
+            "description": "<p>The location of the user.</p> <p>If <code>location</code> is not provided, the user's current session's state preference is used.</p> "
           },
           {
             "group": "Parameter",
@@ -33,6 +41,47 @@
         ]
       }
     },
+    "success": {
+      "fields": {
+        "Success": [
+          {
+            "group": "SuccessHeader",
+            "type": "<p>Number</p> ",
+            "optional": false,
+            "field": "created",
+            "description": "<p>The date/time when the comment was created as UNIX timestamp.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the commenter.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "location",
+            "description": "<p>The location of the user.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "comment",
+            "description": "<p>The comment.</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"created\": 123456789,\n  \"name\": \"Vizzini\",\n  \"location\": \"IL\",\n  \"comment\": \"Inconceivable.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "error": {
       "fields": {
         "Failure": [
@@ -40,7 +89,7 @@
             "group": "FailureHeader",
             "optional": false,
             "field": "InvalidArgumentError",
-            "description": "<p><code>recallnumber</code> or <code>location</code> or <code>comment</code> was not provided or was invalid.</p> "
+            "description": "<p><code>recallnumber</code>, <code>location</code> or <code>comment</code> was not provided or was invalid. They must be strings.</p> <p><code>location</code> is invalid. It must be a string and a valid US state abbreviation.</p> "
           }
         ]
       },
@@ -53,16 +102,16 @@
       ]
     },
     "filename": "app/routes/api.js",
-    "group": "c__code_TotalBriecall_app_routes_api_js",
-    "groupTitle": "c__code_TotalBriecall_app_routes_api_js"
+    "groupTitle": "Comments"
   },
   {
     "type": "get",
     "url": "/counts/recalls",
-    "title": "Count Distinct Values",
-    "name": "CountDistinctValues",
+    "title": "Count Distinct Recall Values",
+    "group": "Counts",
+    "name": "CountDistinctRecallValues",
     "version": "1.0.0",
-    "description": "<p>Gets counts for distinct values in a recall field.</p> ",
+    "description": "<p>Gets count information for distinct values in a recall field.</p> ",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -71,14 +120,14 @@
             "type": "<p>String</p> ",
             "optional": false,
             "field": "field",
-            "description": "<p>The state abbreviation affected by the recall.</p> "
+            "description": "<p>The field for which to get count information.</p> "
           },
           {
             "group": "Parameter",
             "type": "<p>String</p> ",
             "optional": true,
             "field": "state",
-            "description": "<p>The state abbreviation affected by the recall.</p> "
+            "description": "<p>The affected state.</p> "
           },
           {
             "group": "Parameter",
@@ -91,7 +140,7 @@
             ],
             "optional": true,
             "field": "status",
-            "description": "<p>The state abbreviation affected by the recall.</p> "
+            "description": "<p>The recall status.</p> "
           }
         ]
       }
@@ -111,7 +160,14 @@
             "type": "<p>Object</p> ",
             "optional": false,
             "field": "counts",
-            "description": "<p>The counts of unique terms.</p> "
+            "description": "<p>The counts of unique values.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>Number</p> ",
+            "optional": false,
+            "field": "counts.term",
+            "description": "<p>The count of a specific value.</p> <p>There will be a <code>term</code> key for every distinct value.</p> "
           }
         ]
       },
@@ -136,7 +192,7 @@
             "group": "FailureHeader",
             "optional": false,
             "field": "InvalidArgumentError",
-            "description": "<p><code>field</code> is invalid. It must be a supported field. <code>state</code> is invalid. It must be a valid state abbreviation, including 'DC'. <code>status</code> is invalid. It must be one of the valid values.</p> <p><code>skip</code> or <code>limit</code> cannot be provided.</p> "
+            "description": "<p><code>field</code> is invalid. It must be a supported count field.</p> <p><code>state</code> is invalid. It must be a valid US state abbreviation, including <code>&quot;DC&quot;</code>.</p> <p><code>status</code> is invalid. It must be one of the valid values.</p> "
           }
         ]
       },
@@ -154,14 +210,14 @@
       ]
     },
     "filename": "app/routes/api.js",
-    "group": "c__code_TotalBriecall_app_routes_api_js",
-    "groupTitle": "c__code_TotalBriecall_app_routes_api_js"
+    "groupTitle": "Counts"
   },
   {
     "type": "get",
     "url": "/recalls/:recallid",
-    "title": "Get Recall By ID",
-    "name": "GetRecallByID",
+    "title": "Get Recall",
+    "group": "Recalls",
+    "name": "GetRecall",
     "version": "1.0.0",
     "description": "<p>Gets the recall identified by <code>recallid</code>.</p> ",
     "parameter": {
@@ -192,35 +248,35 @@
             "type": "<p>String</p> ",
             "optional": false,
             "field": "reason_for_recall",
-            "description": "<p>The reason for recall.</p> "
+            "description": "<p>The reason for the recall.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>String</p> ",
             "optional": false,
             "field": "status",
-            "description": "<p>The status of the recall.</p> "
+            "description": "<p>The status.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>String</p> ",
             "optional": false,
             "field": "distribution_pattern",
-            "description": "<p>The pattern for distribution of the recall.</p> "
+            "description": "<p>The distribution pattern of the recalled product.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>String</p> ",
             "optional": false,
             "field": "product_quantity",
-            "description": "<p>The quantity distributed of the recall.</p> "
+            "description": "<p>The number of products recalled.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "recall_initiation_date",
-            "description": "<p>The timestamp of the initial recall date.</p> "
+            "description": "<p>The date/time when the recall was initiated as a UNIX timestamp.</p> "
           },
           {
             "group": "SuccessHeader",
@@ -234,14 +290,14 @@
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "event_id",
-            "description": "<p>The event ID of the recall.</p> "
+            "description": "<p>The ID of the recall event that includes this recall.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>String</p> ",
             "optional": false,
             "field": "product_type",
-            "description": "<p>The product type of the recall.</p> <p>The value of this feed is always <code>&quot;Food&quot;</code>.</p> "
+            "description": "<p>The type of product recalled.</p> <p>The value of this field is always <code>&quot;Food&quot;</code>.</p> "
           },
           {
             "group": "SuccessHeader",
@@ -269,21 +325,28 @@
             "type": "<p>String</p> ",
             "optional": false,
             "field": "recalling_firm",
-            "description": "<p>The recalling firm's name.</p> "
+            "description": "<p>The recalling firm.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "report_date",
-            "description": "<p>The timestamp of the recall report date.</p> "
+            "description": "<p>The date/time when the recall was reported.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>String</p> ",
             "optional": false,
             "field": "voluntary_mandated",
-            "description": "<p>The initiating party for the recall.</p> "
+            "description": "<p>Explanation of whether the recall was voluntary or mandatory.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>Boolean</p> ",
+            "optional": false,
+            "field": "mandated",
+            "description": "<p>Indicates whether the recall was mandatory.</p> "
           },
           {
             "group": "SuccessHeader",
@@ -311,21 +374,14 @@
             "type": "<p>String</p> ",
             "optional": false,
             "field": "id",
-            "description": "<p>A unique ID to identify the recall.</p> "
+            "description": "<p>A unique ID that identifies the recall.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "classificationlevel",
-            "description": "<p>The <code>classification</code> string expressed as a numerical level.</p> "
-          },
-          {
-            "group": "SuccessHeader",
-            "type": "<p>Boolean</p> ",
-            "optional": false,
-            "field": "mandated",
-            "description": "<p>The <code>voluntary_mandated</code> expressed as a boolean.</p> "
+            "description": "<p>The <code>classification</code> expressed as a numerical level.</p> "
           },
           {
             "group": "SuccessHeader",
@@ -339,14 +395,63 @@
             "type": "<p>Boolean</p> ",
             "optional": false,
             "field": "affectednationally",
-            "description": "<p>The <code>distribution_pattern</code> expressed as matching a national keyword.</p> "
+            "description": "<p>Indicates whether <code>distribution_pattern</code> indicates national distribution.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String[]</p> ",
+            "optional": false,
+            "field": "categories",
+            "description": "<p>An array of categories into which this recall may fall.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "openfda_id",
+            "description": "<p>The <code>@id</code> from the OpenFDA API.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>Object[]</p> ",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>An array of comments that have been made on this recall.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>Number</p> ",
+            "optional": false,
+            "field": "comments.created",
+            "description": "<p>The date/time when the comment was created as UNIX timestamp.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "comments.name",
+            "description": "<p>The name of the commenter.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "comments.location",
+            "description": "<p>The location of the user.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "comments.comment",
+            "description": "<p>The comment.</p> "
           }
         ]
       },
       "examples": [
         {
           "title": "Success Example",
-          "content": "HTTP/1.1 200 OK\n{\n  \"recall_number\": \"F-0489-2015\",\n  \"reason_for_recall\": \"Protein supplement fails to declare allergen: milk\",\n  \"status\": \"Ongoing\",\n  \"distribution_pattern\": \"AK\",\n  \"product_quantity\": null,\n  \"recall_initiation_date\": 1348200000,\n  \"state\": \"ME\",\n  \"event_id\": 63260,\n  \"product_type\": \"Food\",\n  \"product_description\": \"Kettle Corn\",\n  \"country\": \"US\",\n  \"city\": \"Warren\",\n  \"recalling_firm\": \"Kettle Corn Co\",\n  \"report_date\": 1416373200,\n  \"voluntary_mandated\": \"Voluntary: Firm Initiated\",\n  \"classification\": \"Class I\",\n  \"code_info\": \"All lots codes that fail to declare the allergens: milk\",\n  \"initial_firm_notification\": \"Press Release\",\n  \"id\": \"WyJGLTA0ODktMjAxNSIsIjYzMj\",\n  \"classificationlevel\": 1,\n  \"mandated\": false,\n  \"affectedstates\": [\n    \"AK\"\n  ],\n  \"affectednationally\": false\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"recall_number\": \"F-123-4567\",\n  \"reason_for_recall\": \"There were peanuts in the apples.\",\n  \"status\": \"Ongoing\",\n  \"distribution_pattern\": \"AK only.\",\n  \"product_quantity\": \"2\",\n  \"recall_initiation_date\": 1347235200,\n  \"state\": \"AK\",\n  \"event_id\": 46798,\n  \"product_type\": \"Food\",\n  \"product_description\": \"Very shiny apples.\",\n  \"country\": \"US\",\n  \"city\": \"Anchorage\",\n  \"recalling_firm\": \"Far-North Apple Distributor\",\n  \"report_date\": 1351036800,\n  \"voluntary_mandated\": \"Voluntary: Firm Initiated\",\n  \"classification\": \"Class III\",\n  \"code_info\": \"All apples with peanuts sticking out of them.\",\n  \"initial_firm_notification\": \"E-Mail\",\n  \"id\": \"Ri0wMjgzLTIwMTMLNjMxNTkLMjAxMjA5MTALenVjY2hpbmkrcG91bmRz\",\n  \"classificationlevel\": 3,\n  \"mandated\": false,\n  \"affectedstates\": [\n    \"AK\"\n  ],\n  \"affectednationally\": false,\n  \"categories\": [\n    \"fruit\"\n  ],\n  \"openfda_id\": \"00028a950de0ef32fc01dc3963e6fdae7073912c0083faf0a1d1bcdf7a03c44c\",\n  \"comments\": [{\n    \"created\": 1435191493,\n    \"name\": \"Granny Smith\",\n    \"location\": \"AK\",\n    \"comment\": \"I was wondering why my apples were super crunchy!\"\n  }]\n}",
           "type": "json"
         }
       ]
@@ -364,7 +469,7 @@
             "group": "FailureHeader",
             "optional": false,
             "field": "InvalidArgumentError",
-            "description": "<p><code>skip</code> or <code>limit</code> cannot be provided.</p> "
+            "description": "<p><code>id</code> is invalid.</p> "
           }
         ]
       },
@@ -382,16 +487,16 @@
       ]
     },
     "filename": "app/routes/api.js",
-    "group": "c__code_TotalBriecall_app_routes_api_js",
-    "groupTitle": "c__code_TotalBriecall_app_routes_api_js"
+    "groupTitle": "Recalls"
   },
   {
     "type": "get",
     "url": "/recalls",
-    "title": "Search Recalls",
-    "name": "SearchRecalls",
+    "title": "Get Recalls",
+    "group": "Recalls",
+    "name": "GetRecalls",
     "version": "1.0.0",
-    "description": "<p>Gets the recalls matching provided parameters.</p> ",
+    "description": "<p>Gets recalls matching the provided parameters.</p> ",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -400,7 +505,7 @@
             "type": "<p>String</p> ",
             "optional": true,
             "field": "state",
-            "description": "<p>The state abbreviation affected by the recall.</p> "
+            "description": "<p>The two-letter abbreviation of the state affected by the recall.</p> "
           },
           {
             "group": "Parameter",
@@ -421,40 +526,28 @@
             "type": "<p>Number</p> ",
             "optional": true,
             "field": "from",
-            "description": "<p>The timestamp for the earliest point in the desired time period. Requires <code>to</code> parameter.</p> "
+            "description": "<p>A date/time that the <code>recall_initiation_date</code> must be after, as a UNIX timestamp.</p> <p>When <code>from</code> is provided, <code>to</code> must be provided.</p> "
           },
           {
             "group": "Parameter",
             "type": "<p>Number</p> ",
             "optional": true,
             "field": "to",
-            "description": "<p>The timestamp for the latest point in the desired time period. Requires <code>from</code> parameter.</p> "
+            "description": "<p>A date/time that the <code>recall_initiation_date</code> must be before, as a UNIX timestamp.</p> <p>When <code>to</code> is provided, <code>from</code> must be provided.</p> "
           },
           {
             "group": "Parameter",
-            "type": "<p>Number[]</p> ",
-            "allowedValues": [
-              "{1..3}"
-            ],
+            "type": "<p>String</p> ",
             "optional": true,
             "field": "classificationlevels",
-            "description": "<p>The classification levels of the recall.</p> "
+            "description": "<p>A comma-delimited list of one or more classification levels.</p> <p>Allowed values: <code>1</code>, <code>2</code>, <code>3</code>.</p> "
           },
           {
             "group": "Parameter",
-            "type": "<p>String[]</p> ",
-            "allowedValues": [
-              "\"dairy\"",
-              "\"dye\"",
-              "\"egg\"",
-              "\"fish\"",
-              "\"gluten\"",
-              "\"nut\"",
-              "\"soy\""
-            ],
+            "type": "<p>String</p> ",
             "optional": true,
             "field": "keywords",
-            "description": "<p>An array of keywords to target in reason for recall.</p> "
+            "description": "<p>A comma-delimited list of one or more keywords.</p> <p>Allowed values: <code>&quot;dairy&quot;</code>, <code>&quot;dye&quot;</code>, <code>&quot;egg&quot;</code>, <code>&quot;fish&quot;</code>, <code>&quot;gluten&quot;</code>, <code>&quot;nut&quot;</code>, <code>&quot;soy&quot;</code></p> "
           },
           {
             "group": "Parameter",
@@ -463,7 +556,7 @@
             "optional": true,
             "field": "skip",
             "defaultValue": "0",
-            "description": "<p>The offset of the initial result to return.</p> "
+            "description": "<p>How many records to skip in the results.</p> "
           },
           {
             "group": "Parameter",
@@ -485,21 +578,21 @@
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "skip",
-            "description": "<p>The skip input used to fetch data.</p> "
+            "description": "<p>The value of the <code>skip</code> input parameter.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "limit",
-            "description": "<p>The limit input used to fetch data.</p> "
+            "description": "<p>The value of the <code>limit</code> input parameter.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "total",
-            "description": "<p>The total rows found.</p> "
+            "description": "<p>The total number of records matchin the parameters.</p> "
           },
           {
             "group": "SuccessHeader",
@@ -520,35 +613,35 @@
             "type": "<p>String</p> ",
             "optional": false,
             "field": "data.reason_for_recall",
-            "description": "<p>The reason for recall.</p> "
+            "description": "<p>The reason for the recall.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>String</p> ",
             "optional": false,
             "field": "data.status",
-            "description": "<p>The status of the recall.</p> "
+            "description": "<p>The status.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>String</p> ",
             "optional": false,
             "field": "data.distribution_pattern",
-            "description": "<p>The pattern for distribution of the recall.</p> "
+            "description": "<p>The distribution pattern of the recalled product.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>String</p> ",
             "optional": false,
             "field": "data.product_quantity",
-            "description": "<p>The quantity distributed of the recall.</p> "
+            "description": "<p>The number of products recalled.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "data.recall_initiation_date",
-            "description": "<p>The timestamp of the initial recall date.</p> "
+            "description": "<p>The date/time when the recall was initiated as a UNIX timestamp.</p> "
           },
           {
             "group": "SuccessHeader",
@@ -562,14 +655,14 @@
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "data.event_id",
-            "description": "<p>The event ID of the recall.</p> "
+            "description": "<p>The ID of the recall event that includes this recall.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>String</p> ",
             "optional": false,
             "field": "data.product_type",
-            "description": "<p>The product type of the recall.</p> <p>The value of this feed is always <code>&quot;Food&quot;</code>.</p> "
+            "description": "<p>The type of product recalled.</p> <p>The value of this field is always <code>&quot;Food&quot;</code>.</p> "
           },
           {
             "group": "SuccessHeader",
@@ -597,21 +690,28 @@
             "type": "<p>String</p> ",
             "optional": false,
             "field": "data.recalling_firm",
-            "description": "<p>The recalling firm's name.</p> "
+            "description": "<p>The recalling firm.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "data.report_date",
-            "description": "<p>The timestamp of the recall report date.</p> "
+            "description": "<p>The date/time when the recall was reported.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>String</p> ",
             "optional": false,
             "field": "data.voluntary_mandated",
-            "description": "<p>The initiating party for the recall.</p> "
+            "description": "<p>Explanation of whether the recall was voluntary or mandatory.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>Boolean</p> ",
+            "optional": false,
+            "field": "data.mandated",
+            "description": "<p>Indicates whether the recall was mandatory.</p> "
           },
           {
             "group": "SuccessHeader",
@@ -639,21 +739,14 @@
             "type": "<p>String</p> ",
             "optional": false,
             "field": "id",
-            "description": "<p>A unique ID to identify the recall.</p> "
+            "description": "<p>A unique ID that identifies the recall.</p> "
           },
           {
             "group": "SuccessHeader",
             "type": "<p>Number</p> ",
             "optional": false,
             "field": "data.classificationlevel",
-            "description": "<p>The <code>classification</code> string expressed as a numerical level.</p> "
-          },
-          {
-            "group": "SuccessHeader",
-            "type": "<p>Boolean</p> ",
-            "optional": false,
-            "field": "data.mandated",
-            "description": "<p>The <code>voluntary_mandated</code> expressed as a boolean.</p> "
+            "description": "<p>The <code>classification</code> expressed as a numerical level.</p> "
           },
           {
             "group": "SuccessHeader",
@@ -667,14 +760,63 @@
             "type": "<p>Boolean</p> ",
             "optional": false,
             "field": "data.affectednationally",
-            "description": "<p>The <code>distribution_pattern</code> expressed as matching a national keyword.</p> "
+            "description": "<p>Indicates whether <code>distribution_pattern</code> indicates national distribution.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String[]</p> ",
+            "optional": false,
+            "field": "data.categories",
+            "description": "<p>An array of categories into which this recall may fall.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "data.openfda_id",
+            "description": "<p>The <code>@id</code> from the OpenFDA API.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>Object[]</p> ",
+            "optional": false,
+            "field": "data.comments",
+            "description": "<p>An array of comments that have been made on this recall.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>Number</p> ",
+            "optional": false,
+            "field": "data.comments.created",
+            "description": "<p>The date/time when the comment was created as UNIX timestamp.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "data.comments.name",
+            "description": "<p>The name of the commenter.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "data.comments.location",
+            "description": "<p>The location of the user.</p> "
+          },
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "data.comments.comment",
+            "description": "<p>The comment.</p> "
           }
         ]
       },
       "examples": [
         {
           "title": "Success Example",
-          "content": "HTTP/1.1 200 OK\n{\n  \"skip\": 0,\n  \"limit\": 100,\n  \"total\": 1,\n  \"data\": [{\n    \"recall_number\": \"F-0489-2015\",\n    \"reason_for_recall\": \"Protein supplement fails to declare allergen: milk\",\n    \"status\": \"Ongoing\",\n    \"distribution_pattern\": \"AK\",\n    \"product_quantity\": null,\n    \"recall_initiation_date\": 1348200000,\n    \"state\": \"ME\",\n    \"event_id\": 63260,\n    \"product_type\": \"Food\",\n    \"product_description\": \"Kettle Corn\",\n    \"country\": \"US\",\n    \"city\": \"Warren\",\n    \"recalling_firm\": \"Kettle Corn Co\",\n    \"report_date\": 1416373200,\n    \"voluntary_mandated\": \"Voluntary: Firm Initiated\",\n    \"classification\": \"Class I\",\n    \"code_info\": \"All lots codes that fail to declare the allergens: milk\",\n    \"initial_firm_notification\": \"Press Release\",\n    \"id\": \"WyJGLTA0ODktMjAxNSIsIjYzMj\",\n    \"classificationlevel\": 1,\n    \"mandated\": false,\n    \"affectedstates\": [\n      \"AK\"\n    ],\n    \"affectednationally\": false\n  }]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"skip\": 0,\n  \"limit\": 100,\n  \"total\": 1,\n  \"data\": [{\n    \"recall_number\": \"F-123-4567\",\n    \"reason_for_recall\": \"There were peanuts in the apples.\",\n    \"status\": \"Ongoing\",\n    \"distribution_pattern\": \"AK only.\",\n    \"product_quantity\": \"2\",\n    \"recall_initiation_date\": 1347235200,\n    \"state\": \"AK\",\n    \"event_id\": 46798,\n    \"product_type\": \"Food\",\n    \"product_description\": \"Very shiny apples.\",\n    \"country\": \"US\",\n    \"city\": \"Anchorage\",\n    \"recalling_firm\": \"Far-North Apple Distributor\",\n    \"report_date\": 1351036800,\n    \"voluntary_mandated\": \"Voluntary: Firm Initiated\",\n    \"classification\": \"Class III\",\n    \"code_info\": \"All apples with peanuts sticking out of them.\",\n    \"initial_firm_notification\": \"E-Mail\",\n    \"id\": \"Ri0wMjgzLTIwMTMLNjMxNTkLMjAxMjA5MTALenVjY2hpbmkrcG91bmRz\",\n    \"classificationlevel\": 3,\n    \"mandated\": false,\n    \"affectedstates\": [\n      \"AK\"\n    ],\n    \"affectednationally\": false,\n    \"categories\": [\n      \"fruit\"\n    ],\n    \"openfda_id\": \"00028a950de0ef32fc01dc3963e6fdae7073912c0083faf0a1d1bcdf7a03c44c\",\n    \"comments\": [{\n      \"created\": 1435191493,\n      \"name\": \"Granny Smith\",\n      \"location\": \"AK\",\n      \"comment\": \"I was wondering why my apples were super crunchy!\"\n    }]\n  }]\n}",
           "type": "json"
         }
       ]
@@ -686,13 +828,13 @@
             "group": "FailureHeader",
             "optional": false,
             "field": "ResourceNotFoundError",
-            "description": "<p>There are no recalls associated with provided parameters.</p> "
+            "description": "<p>There are no recalls matching the provided parameters.</p> "
           },
           {
             "group": "FailureHeader",
             "optional": false,
             "field": "InvalidArgumentError",
-            "description": "<p><code>state</code> is invalid. It must be a valid state abbreviation, including 'DC'.</p> <p><code>eventid</code> is invalid. It must be a valid number.</p> <p><code>from</code> is invalid. It must be a valid timestamp and must have an associated <code>to</code> parameter. <code>from</code> must be before <code>to</code>.</p> <p><code>to</code> is invalid. It must be a valid timestamp and must have an associated <code>from</code> parameter. <code>to</code> must be after <code>from</code>.</p> <p><code>classificationlevels</code> is invalid. It must be one of the valid values.</p> <p><code>keywords</code> is invalid. It must be one of the valid values.</p> <p><code>skip</code> or <code>limit</code> are invalid. They must be in their respective ranges.</p> "
+            "description": "<p><code>state</code> is invalid. It must be a valid US state abbreviation, including <code>&quot;DC&quot;</code>.</p> <p><code>eventid</code> is invalid. It must be an integer.</p> <p><code>from</code> is invalid. It must be a valid UNIX timestamp.</p> <p><code>to</code> is invalid. It must be a valid UNIX timestamp.</p> <p><code>from</code> and <code>to</code> are invalid. <code>from</code> must be before <code>to</code>, and if one is provided, both must be.</p> <p><code>classificationlevels</code> is invalid. It/they must be one of the valid values.</p> <p><code>keywords</code> is invalid. It/they must be one of the valid values.</p> <p><code>skip</code> or <code>limit</code> are invalid. They must integers in their respective ranges.</p> "
           }
         ]
       },
@@ -710,7 +852,6 @@
       ]
     },
     "filename": "app/routes/api.js",
-    "group": "c__code_TotalBriecall_app_routes_api_js",
-    "groupTitle": "c__code_TotalBriecall_app_routes_api_js"
+    "groupTitle": "Recalls"
   }
 ]
