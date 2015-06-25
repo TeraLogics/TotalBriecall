@@ -78,7 +78,23 @@ module.exports = function (app) {
 	app.route('/api/comments')
 		.put(apiCtrl.addCommentForRecall);
 
-	// TODO DOCUMENT ME!!!!
+	/**
+	 * @api {get} /recalls/categories Get Recall Categories
+	 * @apiGroup Recalls
+	 * @apiName GetRecallCategories
+	 * @apiVersion 1.0.0
+	 *
+	 * @apiDescription Gets the recall categories.
+	 *
+	 * @apiSuccess (SuccessHeader) {String[]} -- The recall categories.
+	 *
+	 * @apiSuccessExample {json} Success Example
+	 * HTTP/1.1 200 OK
+	 * [
+	 *   "fruit",
+	 *   "fish"
+	 * ]
+	 */
 	app.route('/api/recalls/categories')
 		.get(apiCtrl.getRecallCategories);
 

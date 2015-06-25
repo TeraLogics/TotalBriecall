@@ -491,6 +491,37 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/recalls/categories",
+    "title": "Get Recall Categories",
+    "group": "Recalls",
+    "name": "GetRecallCategories",
+    "version": "1.0.0",
+    "description": "<p>Gets the recall categories.</p> ",
+    "success": {
+      "fields": {
+        "Success": [
+          {
+            "group": "SuccessHeader",
+            "type": "<p>String[]</p> ",
+            "optional": false,
+            "field": "--",
+            "description": "<p>The recall categories.</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Example",
+          "content": "HTTP/1.1 200 OK\n[\n  \"fruit\",\n  \"fish\"\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/routes/api.js",
+    "groupTitle": "Recalls"
+  },
+  {
+    "type": "get",
     "url": "/recalls",
     "title": "Get Recalls",
     "group": "Recalls",

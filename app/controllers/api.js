@@ -172,4 +172,4 @@ exports.getRecallsCounts = function (req, res) {
  */
 exports.getRecallCategories = function (req, res) {
 	res.json(_.keys(recallHelper.keywordMappings).sort());
-}
+};
