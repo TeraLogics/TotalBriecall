@@ -13,7 +13,7 @@ var assert = chai.assert;
 
 module.exports = function () {
 
-	describe('FDA', function () {
+	describe.only('FDA', function () {
 
 		var getFDAAPIFoodRecallObject = function () {
 				return {
@@ -72,7 +72,7 @@ module.exports = function () {
 					"status": "Ongoing",
 					"distribution_pattern": "Ohio, Michigan, West Virginia, Kentucky, Tennessee, Pennsylvania, Wisconsin, Illinois, and Indiana.",
 					"product_quantity": "85 cases",
-					"recall_initiation_date": 1370318400,
+					"recall_initiation_date": 1370304000,
 					"state": "MI",
 					"event_id": 65392,
 					"product_type": "Food",
@@ -80,7 +80,7 @@ module.exports = function () {
 					"country": "US",
 					"city": "Warren",
 					"recalling_firm": "Lipari Foods, Inc.",
-					"report_date": 1374033600,
+					"report_date": 1374019200,
 					"voluntary_mandated": "Voluntary: Firm Initiated",
 					"classification": "Class I",
 					"code_info": "Lot Numbers: 08201304, 23201305, 03201306\\\nBest By Dates: 4/8/2014, 5/23/2014, 6/3/2014",
