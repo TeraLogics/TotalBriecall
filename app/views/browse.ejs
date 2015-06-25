@@ -1,11 +1,11 @@
 <% include ./common/header.ejs %>
 <% include ./common/brie-core-js.ejs %>
-	<style>
-		#header-map .leaflet-container,
-		#header-map .leaflet-container .leaflet-clickable {
-			cursor: default
-		}
-	</style>
+<style>
+	#header-map .leaflet-container,
+	#header-map .leaflet-container .leaflet-clickable {
+		cursor: default
+	}
+</style>
 </head>
 <body class="bg-void application">
 <div class="navmenu navmenu-default">
@@ -17,6 +17,7 @@
 			<div class="row">
 				<div class="col-sm-6 col-md-8">
 					<h1><%= typeof brie.preferences.state !== 'undefined' ? brie.preferences.state : 'Nationwide' %></h1>
+
 					<div id="header-map">
 						<!-- map goes here -->
 					</div>
@@ -29,6 +30,7 @@
 						<option>Nuts</option>
 						<option>Dairy</option>
 					</select>
+
 					<div class="btn-group btn-group-justified" data-toggle="buttons">
 						<label class="btn btn-danger active">
 							<input type="checkbox" autocomplete="off" checked> Class I
@@ -69,7 +71,7 @@
 		</div>
 	</div>
 </div>
-<div id="recall-link-copy" class="modal fade">
+<div id="recall-link-copy" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -86,9 +88,12 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 <script data-main="/js/app-browse" src="/js/require.js"></script>
 </body>
 </html>

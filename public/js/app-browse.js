@@ -304,6 +304,8 @@ requirejs([
 		recallLinkInput.val(text);
 
 		recallLinkCopyModal.modal('show');
+
+		return false;
 	});
 	appView.on('click', '[data-action="recall-pin"]', function (event) {
 		var element = $(this),
