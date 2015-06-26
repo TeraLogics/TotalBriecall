@@ -202,6 +202,15 @@ requirejs([
 		this.select();
 	});
 
+	appView.on('change', '[name="classification[]"]', function (event) {
+		if (appView.find('[name="classification[]"]:checked').length === 0) {
+			$(this).parent().button('toggle');
+		}
+		else {
+			sisyphusList.reset();
+		}
+	});
+
 	// Setup infini-scroll
 	sisyphusList = new Sisyphus(appWindow, {
 		trigger: recentRecallLoadingView,
@@ -222,6 +231,9 @@ requirejs([
 			}
 
 			meta.keywords = categoryFilterView.val();
+			meta.classificationlevels = appView.find('[name="classification[]"]:checked').serializeArray().map(function (element, index) {
+				return parseInt(element.value, 10);
+			});
 
 			return $.ajax({
 				url: '/api/recalls',

@@ -27,19 +27,19 @@
 					<ul class="list-group list-group-borderless">
 						<li class="list-group-item">
 							<div style="position: relative;">
-								<select style="width:100%" class="select2 categories" multiple></select>
+								<select style="width:100%" class="select2 categories" multiple size="2"></select>
 							</div>
 						</li>
 						<li class="list-group-item">
-							<div class="btn-group btn-group-justified" data-toggle="buttons">
+							<div class="btn-group btn-group-justified" id="classification-filters" data-toggle="buttons">
 								<label class="btn btn-danger active">
-									<input type="checkbox" autocomplete="off" checked> Danger
+									<input type="checkbox" autocomplete="off" name="classification[]" checked value="1"> Danger
 								</label>
 								<label class="btn btn-warning active">
-									<input type="checkbox" autocomplete="off" checked> Warning
+									<input type="checkbox" autocomplete="off" name="classification[]" checked value="2"> Warning
 								</label>
 								<label class="btn btn-info active">
-									<input type="checkbox" autocomplete="off" checked> Notice
+									<input type="checkbox" autocomplete="off" name="classification[]" checked value="3"> Notice
 								</label>
 							</div>
 						</li>
