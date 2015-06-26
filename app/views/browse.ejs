@@ -1,5 +1,4 @@
 <% include ./common/header.ejs %>
-<% include ./common/brie-core-js.ejs %>
 <style>
 	#header-map .leaflet-container,
 	#header-map .leaflet-container .leaflet-clickable {
@@ -31,15 +30,19 @@
 							</div>
 						</li>
 						<li class="list-group-item">
-							<div class="btn-group btn-group-justified" id="classification-filters" data-toggle="buttons">
+							<div class="btn-group btn-group-justified" id="classification-filters"
+								 data-toggle="buttons">
 								<label class="btn btn-danger active">
-									<input type="checkbox" autocomplete="off" name="classification[]" checked value="1"> Danger
+									<input type="checkbox" autocomplete="off" name="classification[]" checked value="1">
+									Danger
 								</label>
 								<label class="btn btn-warning active">
-									<input type="checkbox" autocomplete="off" name="classification[]" checked value="2"> Warning
+									<input type="checkbox" autocomplete="off" name="classification[]" checked value="2">
+									Warning
 								</label>
 								<label class="btn btn-info active">
-									<input type="checkbox" autocomplete="off" name="classification[]" checked value="3"> Notice
+									<input type="checkbox" autocomplete="off" name="classification[]" checked value="3">
+									Notice
 								</label>
 							</div>
 						</li>
@@ -99,9 +102,12 @@
 	<!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-<script data-main="/js/app-browse" src="/js/require.js"></script>
-<script>
-	brie.page.categories = <%- JSON.stringify(categories) %>;
-</script>
+<%
+var appModule = '/js/app-browse',
+	pageConfig = {
+		categories: categories
+	};
+%>
+<% include ./common/require-application.ejs %>
 </body>
 </html>

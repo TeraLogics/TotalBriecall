@@ -11,6 +11,9 @@ module.exports = function (app) {
 	app.route('/')
 		.get(siteCtrl.landing);
 
+	app.route('/js/brie-core.js')
+		.get(siteCtrl.brieCore);
+
 	app.route('/browse')
 		.get(siteCtrl.browse);
 

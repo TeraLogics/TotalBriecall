@@ -1,5 +1,4 @@
 <% include ./common/header.ejs %>
-<% include ./common/brie-core-js.ejs %>
 </head>
 <body>
 <% include ./common/page-header.ejs %>
@@ -33,6 +32,9 @@
 		</div>
 	</form>
 </div>
-<script data-main="/js/app-landing" src="/js/require.js"></script>
+<%
+var appModule = '/js/app-landing';
+%>
+<% include ./common/require-application.ejs %>
 </body>
 </html>

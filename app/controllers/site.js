@@ -12,6 +12,15 @@ var defaultPorts = {
 };
 
 /**
+ * Serves client-side JS configuration module.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
+exports.brieCore = function (req, res) {
+	res.render('common/brie-core-js');
+};
+
+/**
  * Renders the landing page.
  * @param {Object} req The request object.
  * @param {Object} res The response object.
@@ -50,11 +59,13 @@ exports.browse = function (req, res) {
 exports.details = function (req, res) {
 	recallsDal.getById({ id: req.params.id }).then(function (recall) {
 		var serverURL = req.protocol + '://' + req.get('host'),
-			urlObj = url.parse(serverURL);
+			urlObj = url.parse(serverURL),
+			serverPortUrl = serverURL + (!urlObj.port && global.config.PORT !== defaultPorts[req.protocol] ? ':' + global.config.PORT : '');
 
 		return res.render('recall', {
 			recall: recall,
-			url: serverURL + (!urlObj.port && global.config.PORT !== defaultPorts[req.protocol] ? ':' + global.config.PORT : '')
+			url: serverPortUrl,
+			pageUrl: serverPortUrl + req.originalUrl
 		});
 	}).catch(function (err) {
 		console.error(err);

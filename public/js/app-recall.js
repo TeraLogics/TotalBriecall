@@ -1,37 +1,11 @@
 'use strict';
 
 /* globals
- requirejs, brie
+ requirejs
  */
 
-requirejs.config({
-	baseUrl: '/js',
-	shim: {
-		bootstrap: {'deps': ['jquery']},
-		ejs: {exports: 'ejs'},
-		URI: {deps: ['jquery']},
-		visible: {deps: ['jquery']},
-		Tour: {deps: ['bootstrap'], exports: 'Tour'},
-		JasnyBootstrap: {deps: ['bootstrap', 'jquery']}
-	},
-	paths: {
-		jquery: 'jquery-2.1.4.min',
-		bootstrap: 'bootstrap.min',
-		ejs: 'ejs-2.3.1.min',
-		masonry: 'masonry.pkgd.min',
-		moment: 'moment.min',
-		select2: 'select2.min',
-		underscore: 'underscore-min',
-		visible: 'jquery.visible.min',
-		bluebird: 'bluebird.min',
-		UsStates: 'us-states',
-		Tour: 'bootstrap-tour.min',
-		BrowseTour: 'tour-browse',
-		JasnyBootstrap: 'jasny-bootstrap.min'
-	}
-});
-
 requirejs([
+	'brie-core',
 	'jquery',
 	'bootstrap',
 	'ejs',
@@ -43,7 +17,7 @@ requirejs([
 	'SyncFileReader',
 	'UsStates',
 	'JasnyBootstrap'
-], function ($, bootstrap, ejs, Masonry, moment, _, CommentProvider, MapApp, SyncFileReader, UsStates, JasnyBootstrap) {
+], function (BrieCore, $, bootstrap, ejs, Masonry, moment, _, CommentProvider, MapApp, SyncFileReader, UsStates, JasnyBootstrap) {
 	$.fn.serializeObject = function () {
 		var o = {},
 			a = this.serializeArray();
@@ -93,8 +67,8 @@ requirejs([
 		zoomControl: false
 	});
 
-	if (brie.page.recall.affectedstates && !brie.page.recall.affectednationally) {
-		map.add('layer', UsStates.getStateGeoJSON(brie.page.recall.affectedstates), {
+	if (BrieCore.page.recall.affectedstates && !BrieCore.page.recall.affectednationally) {
+		map.add('layer', UsStates.getStateGeoJSON(BrieCore.page.recall.affectedstates), {
 			style: style
 		});
 	} else {

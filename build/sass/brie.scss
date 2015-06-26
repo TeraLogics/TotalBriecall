@@ -113,18 +113,19 @@
 }
 
 //
-// NavMenu
+// Navmenu
 // --------------------------------------------------
-html, body {
-  height: 100%;
+
+.navmenu {
+  z-index: 1050;
 }
 
 .navbar-toggle {
   float: left;
 
-  &.releaving-toggle,
-  .navbar-default &.releaving-toggle,
-  .navbar-inverted &.releaving-toggle {
+  &.cutoff-toggle,
+  .navbar-default &.cutoff-toggle,
+  .navbar-inverted &.cutoff-toggle {
     margin-left: 0;
     margin-right: 0;
     border: none;
@@ -144,10 +145,6 @@ html, body {
   }
 }
 
-.navmenu {
-  z-index: 0;
-}
-
 .canvas {
   position: relative;
   left: 0;
@@ -157,9 +154,9 @@ html, body {
 }
 
 .navbar-toggle {
-  &.releaving-toggle,
-  .navbar-default &.releaving-toggle,
-  .navbar-inverted &.releaving-toggle {
+  &.cutoff-toggle,
+  .navbar-default &.cutoff-toggle,
+  .navbar-inverted &.cutoff-toggle {
     .canvas & .icon-bar {
       margin-left: -15px
     }

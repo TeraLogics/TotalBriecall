@@ -1,37 +1,11 @@
 'use strict';
 
 /* globals
- requirejs, brie, _
+ requirejs
  */
 
-requirejs.config({
-	baseUrl: '/js',
-	shim: {
-		bootstrap: {'deps': ['jquery']},
-		ejs: {exports: 'ejs'},
-		URI: {deps: ['jquery']},
-		visible: {deps: ['jquery']},
-		Tour: {deps: ['bootstrap'], exports: 'Tour'},
-		JasnyBootstrap: {deps: ['bootstrap', 'jquery']}
-	},
-	paths: {
-		jquery: 'jquery-2.1.4.min',
-		bootstrap: 'bootstrap.min',
-		ejs: 'ejs-2.3.1.min',
-		moment: 'moment.min',
-		masonry: 'masonry.pkgd.min',
-		select2: 'select2.min',
-		underscore: 'underscore-min',
-		visible: 'jquery.visible.min',
-		bluebird: 'bluebird.min',
-		UsStates: 'us-states',
-		Tour: 'bootstrap-tour.min',
-		BrowseTour: 'tour-browse',
-		JasnyBootstrap: 'jasny-bootstrap.min'
-	}
-});
-
 requirejs([
+	'brie-core',
 	'bluebird',
 	'bootstrap',
 	'ejs',
@@ -46,7 +20,8 @@ requirejs([
 	'UsStates',
 	'BrowseTour',
 	'JasnyBootstrap'
-], function (Promise,
+], function (BrieCore,
+			 Promise,
 			 bootstrap,
 			 ejs,
 			 $,
@@ -122,20 +97,20 @@ requirejs([
 	}
 
 	function setPreference(pref, value) {
-		if (!brie.preferences) {
-			brie.preferences = {};
+		if (!BrieCore.preferences) {
+			BrieCore.preferences = {};
 		}
 
-		brie.preferences[pref] = value;
+		BrieCore.preferences[pref] = value;
 
 		return _syncPreferences();
 	}
 
 	function getPreference(pref, dflt) {
-		if (!brie.preferences || !brie.preferences.hasOwnProperty(pref)) {
+		if (!BrieCore.preferences || !BrieCore.preferences.hasOwnProperty(pref)) {
 			return dflt;
 		} else {
-			return brie.preferences[pref];
+			return BrieCore.preferences[pref];
 		}
 	}
 
@@ -144,7 +119,7 @@ requirejs([
 			url: '/preferences',
 			type: 'POST',
 			dataType: 'JSON',
-			data: brie.preferences
+			data: BrieCore.preferences
 		});
 	}
 
@@ -193,7 +168,7 @@ requirejs([
 
 	categoryFilterView.select2({
 		placeholder: 'Select one or more categories',
-		data: brie.page.categories
+		data: BrieCore.page.categories
 	}).on('change', function (event) {
 		sisyphusList.reset();
 	});

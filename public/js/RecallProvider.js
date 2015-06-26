@@ -1,10 +1,10 @@
 'use strict';
 
 /* globals
- define, brie
+ define
  */
 
-define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
+define(['brie-core', 'ejs', 'moment', 'URI'], function (BrieCore, ejs, moment, Uri, require) {
 	var RecallProvider = function (recall, states) {
 			this._recall = recall;
 			this._states = states;
@@ -20,6 +20,9 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 		}
 
 		return category;
+	};
+	RecallProvider.prototype.canFbShare = function () {
+		return !!BrieCore.fbappid;
 	};
 	RecallProvider.prototype.getFoodCategoryImgUrl = function (index) {
 		return _getBaseURL() + '/img/foodcategories/' + this.getFoodCategoryName(index) + '.jpg';
@@ -81,7 +84,7 @@ define(['ejs', 'moment', 'URI'], function (ejs, moment, Uri, require) {
 				'description=<%=description%>',
 				'picture=<%=picture%>'
 			].join('&'), {
-			app_id: brie.fbappid,
+			app_id: BrieCore.fbappid,
 			redirect_uri: encodeURIComponent(_getBaseURL() + '/popupclose'), // TODO: landing page for redirection?
 			link: encodeURIComponent(this.getShareLink()),
 			name: encodeURIComponent('Food Recall: ' + this.getRecallNumber()),

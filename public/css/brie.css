@@ -8255,23 +8255,23 @@ button.close, .recall-summary-card button.recall-card-toggle {
   display: inline-block;
   margin-right: 8px; }
 
-html, body {
-  height: 100%; }
+.navmenu {
+  z-index: 1050; }
 
 .navbar-toggle {
   float: left; }
-  .navbar-toggle.releaving-toggle,
-  .navbar-default .navbar-toggle.releaving-toggle,
-  .navbar-inverted .navbar-toggle.releaving-toggle {
+  .navbar-toggle.cutoff-toggle,
+  .navbar-default .navbar-toggle.cutoff-toggle,
+  .navbar-inverted .navbar-toggle.cutoff-toggle {
     margin-left: 0;
     margin-right: 0;
     border: none; }
-    .navbar-toggle.releaving-toggle:hover,
-    .navbar-toggle.releaving-toggle:focus,
-    .navbar-default .navbar-toggle.releaving-toggle:hover,
-    .navbar-default .navbar-toggle.releaving-toggle:focus,
-    .navbar-inverted .navbar-toggle.releaving-toggle:hover,
-    .navbar-inverted .navbar-toggle.releaving-toggle:focus {
+    .navbar-toggle.cutoff-toggle:hover,
+    .navbar-toggle.cutoff-toggle:focus,
+    .navbar-default .navbar-toggle.cutoff-toggle:hover,
+    .navbar-default .navbar-toggle.cutoff-toggle:focus,
+    .navbar-inverted .navbar-toggle.cutoff-toggle:hover,
+    .navbar-inverted .navbar-toggle.cutoff-toggle:focus {
       background-color: transparent; }
   .navbar-toggle > .navbar-brand {
     display: inline-block;
@@ -8280,9 +8280,6 @@ html, body {
     height: auto;
     float: none; }
 
-.navmenu {
-  z-index: 0; }
-
 .canvas {
   position: relative;
   left: 0;
@@ -8290,9 +8287,9 @@ html, body {
   padding: 50px 0 0 0;
   background: #e6e6e6; }
 
-.canvas .navbar-toggle.releaving-toggle .icon-bar,
-.canvas .navbar-default .navbar-toggle.releaving-toggle .icon-bar,
-.canvas .navbar-inverted .navbar-toggle.releaving-toggle .icon-bar {
+.canvas .navbar-toggle.cutoff-toggle .icon-bar,
+.canvas .navbar-default .navbar-toggle.cutoff-toggle .icon-bar,
+.canvas .navbar-inverted .navbar-toggle.cutoff-toggle .icon-bar {
   margin-left: -15px; }
 
 @media (min-width: 0) {
