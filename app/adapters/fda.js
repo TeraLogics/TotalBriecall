@@ -37,15 +37,14 @@ var _ = require('underscore'),
 		'usa'
 	],
 	nationalRegex = new RegExp('\\b(' + nationalTerms.join('|') + ')\\b', 'i'),
-	keywordRegexes = _.reduce(recallHelper.keywordMappings, function (memo, values, key) {
+	keywordRegexes = _.reduce(recallHelper.keywordMappingsWithPlurals, function (memo, values, key) {
 		memo[key] = new RegExp('\\b(' + values.join('|') + ')\\b', 'i');
 		return memo;
 	}, {}),
 	protoPlusRegex = /\s+/ig,
 	dedupPlusRegex = /\++/g,
 	badCharacterRegex = /\W/,
-	spaceRegex = / /g,
-	lastLetterRegex = /(\w)$/i;
+	spaceRegex = / /g;
 
 /**
  * Format input for use in search.
@@ -70,24 +69,6 @@ function _formatValue(val) {
  */
 function _convertArrayToParam(arr, field) {
 	return (field ? field + ':' : '') + '(' + _.map(arr, _formatValue).join('+') + ')';
-}
-
-/**
- * Pluralizes a word (naive).
- * @param {String} word Word to pluralize.
- * @returns {String} Pluralized string.
- * @private
- */
-function _pluralizeWord(word) {
-	switch (word.match(lastLetterRegex)[1]) {
-		case 'y':
-			return word.replace(lastLetterRegex, 'ies');
-		case 'o':
-		case 'i':
-			return word + 'es';
-		default:
-			return word + 's';
-	}
 }
 
 /**
@@ -370,11 +351,7 @@ exports.searchFoodRecalls = function (obj) {
 
 	if (obj.keywords) {
 		search.push(_convertArrayToParam(_.reduce(obj.keywords, function (arr, keyword) {
-			return arr.concat(_.reduce(recallHelper.keywordMappings[keyword.toLowerCase()], function (memo, item) {
-				memo.push(item);
-				memo.push(_pluralizeWord(item));
-				return memo;
-			}, []));
+			return arr.concat(recallHelper.keywordMappingsWithPlurals[keyword.toLowerCase()]);
 		}, [])));
 	}
 

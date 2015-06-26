@@ -2,6 +2,26 @@
 
 var _ = require('underscore');
 
+var lastLetterRegex = /(\w)$/i;
+
+/**
+ * Pluralizes a word (naive).
+ * @param {String} word Word to pluralize.
+ * @returns {String} Pluralized string.
+ * @private
+ */
+function _pluralizeWord(word) {
+	switch (word.match(lastLetterRegex)[1]) {
+		case 'y':
+			return word.replace(lastLetterRegex, 'ies');
+		case 'o':
+		case 'i':
+			return word + 'es';
+		default:
+			return word + 's';
+	}
+}
+
 /**
  * State mappings.
  * @type {{AL: string[], AK: string[], AZ: string[], AR: string[], CA: string[], CO: string[], CT: string[], DE: string[], FL: string[], GA: string[], HI: string[], ID: string[], IL: string[], IN: string[], IA: string[], KS: string[], KY: string[], LA: string[], ME: string[], MD: string[], MA: string[], MI: string[], MN: string[], MS: string[], MO: string[], MT: string[], NE: string[], NV: string[], NH: string[], NJ: string[], NM: string[], NY: string[], NC: string[], ND: string[], OH: string[], OK: string[], OR: string[], PA: string[], RI: string[], SC: string[], SD: string[], TN: string[], TX: string[], UT: string[], VT: string[], VA: string[], WA: string[], WV: string[], WI: string[], WY: string[], DC: string[]}}
@@ -61,7 +81,7 @@ exports.stateMappings = {
 };
 
 /**
- * Key work mappings.
+ * Keyword mappings.
  * @type {{dairy: string[], dye: string[], egg: string[], fruit: string[], fish: string[], gluten: string[], meat: string[], nut: string[], soy: string[], spice: string[], supplement: string[], vegetable: string[]}}
  */
 exports.keywordMappings = {
@@ -78,6 +98,19 @@ exports.keywordMappings = {
 	'supplement': ['supplement', 'coffee'],
 	'vegetable': ['vegetable', 'salad', 'spinach', 'lettuce', 'sprout', 'mushroom', 'onion', 'potato', 'romaine', 'broccoli', 'celery', 'cucumber', 'pea', 'cabbage', 'chili', 'jalapeno', 'pepper', 'bean']
 };
+
+/**
+ * Keyword mappings with additional plural values.
+ * @type {{dairy: string[], dye: string[], egg: string[], fruit: string[], fish: string[], gluten: string[], meat: string[], nut: string[], soy: string[], spice: string[], supplement: string[], vegetable: string[]}}
+ */
+exports.keywordMappingsWithPlurals = _.reduce(exports.keywordMappings, function (memo, val, key) {
+	memo[key] = _.reduce(val, function (arr, item) {
+		arr.push(item);
+		arr.push(_pluralizeWord(item));
+		return arr;
+	}, []);
+	return memo;
+}, {});
 
 /**
  * Status keys.
