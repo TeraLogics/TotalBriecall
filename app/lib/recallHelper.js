@@ -88,13 +88,13 @@ exports.keywordMappings = {
 	'dairy': ['dairy', 'butter', 'cheddar', 'cheese', 'chocolate', 'cream', 'milk', 'whey'],
 	'dye': ['dye', 'color', 'red', 'yellow', 'pink', 'blue', 'green'],
 	'egg': ['egg'],
-	'fish': ['fish', 'shellfish', 'oyster', 'tuna', 'salmon', 'shrimp', 'herring', 'clam', 'lobster', 'seafood'],
-	'fruit': ['fruit', 'corn', 'raspberry', 'pineapple', 'pear', 'peach', 'apple', 'plum', 'lemon', 'strawberry', 'mango', 'cranberry', 'orange', 'cherry', 'salsa', 'melon', 'tomato', 'raisin', 'olive', 'grape', 'pumpkin', 'pomegranate'],
-	'gluten': ['gluten', 'wheat', 'bread', 'pasta', 'flour', 'rice', 'bagel', 'cake', 'cookie', 'brownie', 'taco', 'pizza'],
+	'fish': ['fish', 'shellfish', 'oyster', 'tuna', 'salmon', 'shrimp', 'herring', 'clam', 'lobster', 'seafood', 'cuttlefish'],
+	'fruit': ['fruit', 'corn', 'raspberry', 'pineapple', 'pear', 'peach', 'apple', 'plum', 'lemon', 'strawberry', 'mango', 'cranberry', 'orange', 'cherry', 'salsa', 'melon', 'tomato', 'raisin', 'olive', 'grape', 'pumpkin', 'pomegranate', 'tangerine'],
+	'gluten': ['gluten', 'wheat', 'bread', 'pasta', 'flour', 'rice', 'bagel', 'cake', 'cookie', 'brownie', 'taco', 'pizza', 'cracker', 'grain'],
 	'meat': ['meat', 'chicken', 'steak', 'beef', 'sausage', 'pork', 'ham', 'turkey', 'bacon'],
 	'nut': ['nut', 'peanut', 'seed', 'walnut', 'almond', 'pistachio', 'hazelnut', 'pecan'],
 	'soy': ['soy', 'tofu'],
-	'spice': ['spice', 'vanilla', 'peppermint', 'garlic', 'ginseng', 'ginger', 'herb', 'seasoning', 'cumin', 'cinnamon', 'salt', 'coriander', 'honey'],
+	'spice': ['spice', 'vanilla', 'peppermint', 'garlic', 'ginseng', 'ginger', 'herb', 'seasoning', 'cumin', 'cinnamon', 'salt', 'coriander', 'honey', 'basil'],
 	'supplement': ['supplement', 'coffee'],
 	'vegetable': ['vegetable', 'salad', 'spinach', 'lettuce', 'sprout', 'mushroom', 'onion', 'potato', 'romaine', 'broccoli', 'celery', 'cucumber', 'pea', 'cabbage', 'chili', 'jalapeno', 'pepper', 'bean']
 };
