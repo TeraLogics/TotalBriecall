@@ -8,9 +8,17 @@
 		<li><a href="/docs/api"><i class="fa fa-cogs"></i> API</a></li>
 		<li><a href="https://github.com/TeraLogics/TotalBriecall/wiki"><i class="glyphicon glyphicon-book"></i>
 				Documentation</a></li>
-		<li><a href="/"><i class="glyphicon glyphicon-map-marker"></i>
-				Change State</a></li>
 	</ul>
+	<div class="text-center" style="margin-top: 72px;">
+		<% if (brie.preferences.state) { %>
+		<p class="text-muted">Your results are localized to:</p>
+		<h1><%= brie.preferences.state %></h1>
+		<a class="btn btn-link" href="/"><i class="glyphicon glyphicon-map-marker"></i> Change states</a>
+		<% } else { %>
+		<h4 class="text-muted">Your results are not localized!</h4>
+		<a class="btn btn-link" href="/"><i class="glyphicon glyphicon-map-marker"></i> Get recalls for your state</a>
+		<% } %>
+	</div>
 </nav>
 <div class="canvas">
 	<div class="navbar navbar-default navbar-fixed-top">
