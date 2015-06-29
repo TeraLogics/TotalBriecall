@@ -13,9 +13,6 @@ The food category images used in Total Briecall are listed below with their asso
 **dairy.jpg** is licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) by TeraLogics    
 * It is resized and/or cropped from [Un coulommiers au lait cru/A Coulommiers cheese made from unpasteurised cow's milk](https://commons.wikimedia.org/wiki/File:Eggshell_001.jpg) by [Myrabella](https://commons.wikimedia.org/wiki/User:Myrabella), used under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
 
-**fish.jpg** is licensed under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/) by TeraLogics    
-* It is resized and/or cropped from [Fish at Ensenada's fishmarket](https://commons.wikimedia.org/wiki/File:Fishmarket_01.jpg) by [Tomás Castelazo](https://commons.wikimedia.org/wiki/User:Tomascastelazo), used under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/)
-
 **fruit.jpg** is licensed under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/) by TeraLogics    
 * It is resized and/or cropped from [This image shows a whole and a cut lemon](https://commons.wikimedia.org/wiki/File:Lemon.jpg) by [André Karwath](https://commons.wikimedia.org/wiki/User:Aka), used under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/)
 
@@ -33,3 +30,5 @@ The food category images used in Total Briecall are listed below with their asso
 **supplement.jpg** is in the public domain
 
 **meat.jpg** is in the public domain
+
+**fish.jpg** is in the public domain
