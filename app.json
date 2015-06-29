@@ -2,7 +2,7 @@
   "name": "TotalBriecall",
   "description": "Prototype for Total Briecall",
   "repository": "https://github.com/teralogics/TotalBriecall",
-  "logo": "http://totalbriecall.com/img/logo.svg",
+  "logo": "http://total-briecall.herokuapp.com/img/logo.svg",
   "keywords": ["node", "express", "static", "brie"],
   "addons": [
     "mongolab",
