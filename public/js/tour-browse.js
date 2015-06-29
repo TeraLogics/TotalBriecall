@@ -24,6 +24,20 @@ define(['jquery', 'Tour'], function ($, Tour, require) {
 				backdrop: true
 			},
 			{
+				element: "div .list-group-item .select2-selection",
+				title: "Filter by Category",
+				content: "You can filter recalls by picking one or more popular categories",
+				placement: "top",
+				backdrop: true
+			},
+			{
+				element: "#classification-filters",
+				title: "Filter by Severity",
+				content: "You can also filter recalls by clicking to hide each severity level.  Go ahead, try it out.",
+				placement: "top",
+				backdrop: true
+			},
+			{
 				element: "div .recall-summary-card:first",
 				title: "Recalls",
 				content: "Each card shows an on-going recall in your area. Watch out!",
@@ -37,9 +51,15 @@ define(['jquery', 'Tour'], function ($, Tour, require) {
 				placement: "top"
 			},
 			{
-				element: "div .recall-summary-card:first .panel-heading .panel-subtitle:first",
+				element: "div .recall-summary-card:first .panel-heading .panel-subtitle:first span",
 				title: "Company",
 				content: "This describes the company recalling the product",
+				placement: "bottom"
+			},
+			{
+				element: "div .recall-summary-card:first .panel-heading .panel-subtitle:first small",
+				title: "Recall Date",
+				content: "When the recall was initiated",
 				placement: "bottom"
 			},
 			{
@@ -49,9 +69,15 @@ define(['jquery', 'Tour'], function ($, Tour, require) {
 				placement: "top"
 			},
 			{
+				element: "div .recall-summary-card:first .panel-body .allergen-list",
+				title: "Categories",
+				content: "A quick way to see if the recalled product fits into a specific category",
+				placement: "top"
+			},
+			{
 				element: "div .recall-summary-card:first .panel-footer ul .glyphicon-share-alt",
 				title: "Share",
-				content: "Share this recall with someone via Facebook, E-mail or get a link",
+				content: "Share this recall with someone else",
 				placement: "bottom",
 				onShown: function () {
 					$("div .recall-summary-card:first .panel-footer ul .glyphicon-share-alt").parent().dropdown('toggle');
@@ -77,6 +103,12 @@ define(['jquery', 'Tour'], function ($, Tour, require) {
 				title: "Get More Info",
 				content: "Click the info button for more info about a recall, such as the states affected and other people's comments",
 				placement: "top"
+			},
+			{
+				element: ".navbar-toggle",
+				title: "Menu",
+				content: "Open the slide-out Menu to get more information and reset your selected state",
+				placement: "bottom"
 			},
 			{
 				title: "The End",
