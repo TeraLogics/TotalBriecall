@@ -226,7 +226,7 @@
   }
 }
 
-.panel-title + .panel-subtitle {
+.panel-title ~ .panel-subtitle {
   margin-top: 7px;
 }
 
@@ -416,12 +416,39 @@
   }
 
   .recall-section-heading {
+    position: relative;
     text-transform: uppercase;
     margin-top: 1em;
     margin-bottom: 1.5em;
     font-size: .7em;
     font-weight: bold;
-    color: $text-muted;
+
+    &.separator:before {
+      position: absolute;
+      width: 100%;
+      height: 0;
+      border-bottom: 1px solid transparent;
+      border-color: inherit;
+      content: '';
+      z-index: 1;
+      top: .55rem;
+      left: 0;
+    }
+
+    > span {
+      background-color: #fff;
+      position: relative;
+      z-index: 5;
+      padding: 0 8px;
+    }
+
+    &.text-left > span {
+      padding-left: 0;
+    }
+
+    &.text-right > span {
+      padding-right: 0;
+    }
   }
 
   .allergen-info {
@@ -465,6 +492,80 @@
 #recent-recalls {
   width: 100%;
   display: block;
+}
+
+.map-container {
+  min-height: 250px;
+  max-height: 300px;
+}
+
+#header-map {
+  margin: -$panel-body-padding;
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  @media (max-width: 767px) {
+    & {
+      margin-bottom: 0;
+    }
+
+    &:after {
+      height:50%;
+      width: 100%;
+
+      /* bottom gradient */
+      background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+    }
+  }
+
+  @media (min-width: 768px) {
+    & {
+      margin-right: 0;
+    }
+
+    &:after {
+      height: 100%;
+      width: 50%;
+
+      /* right gradient */
+      background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+      background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1)));
+      background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+      background: -o-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+      background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );
+    }
+
+    .pull-right > .map-container > & {
+      margin-right: -$panel-body-padding;
+      margin-left: 0;
+    }
+    .pull-right > .map-container > &:after {
+      left: 0;
+      right: auto;
+
+      /* left gradient */
+      background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* IE10+ */
+      background: linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+    }
+  }
 }
 
 @import 'brie/spinners';

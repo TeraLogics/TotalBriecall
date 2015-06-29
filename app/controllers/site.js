@@ -4,7 +4,8 @@ var _ = require('underscore'),
 	path = require('path'),
 	url = require('url'),
 	recallHelper = require(path.join(global.__libdir, 'recallHelper')),
-	recallsDal = require(path.join(global.__dalsdir, 'recalls'));
+	recallsDal = require(path.join(global.__dalsdir, 'recalls')),
+	UsStates = require(path.join(global.__assetsdir, 'js', 'us-states'));
 
 var defaultPorts = {
 	'http': 80,
@@ -43,11 +44,14 @@ exports.landing = function (req, res) {
  * @param {Object} res The response object.
  */
 exports.browse = function (req, res) {
+	console.info(JSON.stringify(UsStates));
 	if (!req.session.preferences.state && !req.session.preferences.haslanded) {
 		res.redirect('/');
 	} else {
 		res.locals.categories = _.keys(recallHelper.keywordMappings).sort();
-		res.render('browse');
+		res.render('browse', {
+			UsStates: UsStates
+		});
 	}
 };
 

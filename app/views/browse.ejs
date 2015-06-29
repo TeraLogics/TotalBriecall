@@ -12,18 +12,20 @@
 	<div class="panel panel-default panel-expanded">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-sm-6 col-md-8">
-					<h1><%= typeof brie.preferences.state !== 'undefined' ? brie.preferences.state : 'Nationwide' %></h1>
-
-					<div id="header-map">
-						<!-- map goes here -->
-					</div>
-					<div>
-						<!-- widgets / graphs go here -->
+				<div class="col-xs-12 col-sm-6 col-md-8 pull-right">
+					<div class="aspect-box aspect-ratio-2x1 map-container">
+						<div id="header-map" class="aspect-content">
+							<!-- map goes here -->
+						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-4">
+				<div class="col-xs-12 col-sm-6 col-md-4">
 					<ul class="list-group list-group-borderless">
+						<li class="list-group-item">
+							<h1><%= typeof brie.preferences.state !== 'undefined' ?
+								UsStates.stateFeatures[brie.preferences.state].properties.name
+								+ ' (' + brie.preferences.state + ')' : 'Nationwide' %></h1>
+						</li>
 						<li class="list-group-item">
 							<div style="position: relative;">
 								<select style="width:100%" class="select2 categories" multiple size="2"></select>
@@ -32,15 +34,15 @@
 						<li class="list-group-item">
 							<div class="btn-group btn-group-justified" id="classification-filters"
 								 data-toggle="buttons">
-								<label class="btn btn-danger active">
+								<label class="btn btn-danger active" data-active-class="btn-danger">
 									<input type="checkbox" autocomplete="off" name="classification[]" checked value="1">
 									Danger
 								</label>
-								<label class="btn btn-warning active">
+								<label class="btn btn-warning active" data-active-class="btn-warning">
 									<input type="checkbox" autocomplete="off" name="classification[]" checked value="2">
 									Warning
 								</label>
-								<label class="btn btn-info active">
+								<label class="btn btn-info active" data-active-class="btn-info">
 									<input type="checkbox" autocomplete="off" name="classification[]" checked value="3">
 									Notice
 								</label>
@@ -104,9 +106,9 @@
 <!-- /.modal -->
 <%
 var appModule = '/js/app-browse',
-	pageConfig = {
-		categories: categories
-	};
+		pageConfig = {
+			categories: categories
+		};
 %>
 <% include ./common/require-application.ejs %>
 </body>

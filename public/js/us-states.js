@@ -10,7 +10,7 @@
  getStateGeoJSON
  */
 
-define(function () {
+(function (global) {
 	var stateFeatures = {},
 		stateNameToAbbr = {
 			"Alabama": "AL",
@@ -621,10 +621,20 @@ define(function () {
 		};
 	}
 
-	return {
-		getStateGeoJSON: getStateGeoJSON,
-		stateFeatures: stateFeatures,
-		stateNameToAbbr: stateNameToAbbr,
-		getUsNationGeoJSON: getUsNationGeoJSON
-	};
-});
+	if (typeof exports !== 'undefined') {
+		exports.getStateGeoJSON = getStateGeoJSON;
+		exports.stateFeatures = stateFeatures;
+		exports.stateNameToAbbr = stateNameToAbbr;
+		exports.getUsNationGeoJSON = getUsNationGeoJSON;
+	}
+	else if (typeof define !== 'undefined') {
+		define(function () {
+			return {
+				getStateGeoJSON: getStateGeoJSON,
+				stateFeatures: stateFeatures,
+				stateNameToAbbr: stateNameToAbbr,
+				getUsNationGeoJSON: getUsNationGeoJSON
+			}
+		});
+	}
+})(this);

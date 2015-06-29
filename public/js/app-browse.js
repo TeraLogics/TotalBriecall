@@ -178,8 +178,17 @@ requirejs([
 	});
 
 	appView.on('change', '[name="classification[]"]', function (event) {
+		var button = $(this).parent();
+
+		if (this.checked) {
+			button.addClass(button.data('activeClass')).removeClass('btn-default');
+		}
+		else {
+			button.addClass('btn-default').removeClass(button.data('activeClass'));
+		}
+
 		if (appView.find('[name="classification[]"]:checked').length === 0) {
-			$(this).parent().button('toggle');
+			button.button('toggle');
 		}
 		else {
 			sisyphusList.reset();
@@ -237,8 +246,8 @@ requirejs([
 	});
 
 	var map = new MapApp({
-		height: 100,
-		width: 200,
+		height: '100%',
+		width: '100%',
 		div: 'header-map'
 	});
 
@@ -266,6 +275,22 @@ requirejs([
 			style: style
 		});
 	}
+
+	var bounds = map._map.getBounds(),
+		timer = null;
+
+	map._map.fitBounds(bounds);
+
+	appWindow.on('resize', function () {
+		if (timer) {
+			clearTimeout(timer);
+			timer = null;
+		}
+
+		timer = setTimeout(function () {
+			map._map.fitBounds(bounds);
+		}, 1000);
+	});
 
 	/* disable moving the header map */
 	map._map.dragging.disable();
