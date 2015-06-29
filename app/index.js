@@ -1,7 +1,7 @@
 'use strict';
 
 // Include new relic in the case where an API key is included
-if (process.env.NEWRELIC_KEY) {
+if (process.env.NEW_RELIC_LICENSE_KEY) {
 	require('newrelic');
 }
 

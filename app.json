@@ -9,12 +9,7 @@
     "newrelic"
   ],
   "env": {
-    "NEWRELIC_KEY ": {
-      "description": "The API key to your New Relic account.",
-      "value": "",
-      "required": false
-    },
-    "SECRET": {
+   "SECRET": {
       "description": "The application secret used to encrypt cookie and session data.",
       "generator": "secret",
       "required": false
