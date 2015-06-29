@@ -11,7 +11,8 @@
   "env": {
     "NEWRELIC_KEY ": {
       "description": "The API key to your New Relic account.",
-      "value": ""
+      "value": "",
+      "required": false
     },
     "SECRET": {
       "description": "The application secret used to encrypt cookie and session data.",
@@ -22,10 +23,6 @@
       "description": "The session length in milliseconds.",
       "value": "3600000000",
       "required": false
-    },
-    "USPS_USER": {
-      "description": "The API key to USPS account.",
-      "value": ""
     },
     "FACEBOOK_APPID": {
       "description": "The Facebook API key used to for sharing.",

@@ -1,6 +1,9 @@
 'use strict';
 
-require('newrelic');
+// Include new relic in the case where an API key is included
+if (process.env.NEWRELIC_KEY) {
+	require('newrelic');
+}
 
 var _ = require('underscore'),
 	bodyParser = require('body-parser'),
@@ -70,6 +73,7 @@ app.enable('trust proxy');
 
 // assign the template engine to .ejs files
 app.engine('ejs', consolidate.ejs);
+
 // also allow straight html; use the EJS renderer
 app.engine('html', consolidate.ejs);
 
