@@ -27,15 +27,7 @@ exports.brieCore = function (req, res) {
  * @param {Object} res The response object.
  */
 exports.landing = function (req, res) {
-	if (!req.session.preferences.haslanded) {
-		req.session.preferences.haslanded = true;
-	}
-
-	if (req.session.preferences.state) {
-		res.redirect('/browse');
-	} else {
-		res.render('landing');
-	}
+	res.render('landing');
 };
 
 /**

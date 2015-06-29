@@ -18,7 +18,7 @@ define(['brie-core', 'jquery', 'underscore', 'UsStates'], function (BrieCore, $,
 			}
 			$.ajax({
 				type: 'GET',
-				url: 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + obj.lat + '&lon=' + obj.lon,
+				url: '//nominatim.openstreetmap.org/reverse?format=json&lat=' + obj.lat + '&lon=' + obj.lon,
 				dataType: 'JSON' //use text so we can simply regex match the state
 			}).done(function (data) {
 				if (!data || !data.address) {

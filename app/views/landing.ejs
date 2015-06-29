@@ -7,23 +7,27 @@
 </div>
 <% include ./common/page-footer.ejs %>
 <div id="modal">
-	<form class="col-md-4" id="zipcodeForm" name="zipcodeForm" action="javascript:void(0);">
-		<div class="modal fade" id="zipcodeModal" tabindex="-1" role="dialog" aria-labelledby="zipcodeModalLabel">
+	<form class="col-md-4" id="stateForm" name="stateForm" action="javascript:void(0);">
+		<div class="modal fade" id="stateModal" tabindex="-1" role="dialog" aria-labelledby="stateModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title" id="myModalLabel">Help us show recalls affecting your area</h4>
+						<h4 class="modal-title" id="myModalLabel">Help us show recalls affecting your state</h4>
 					</div>
 					<div class="modal-body">
 						<div class="input-group input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
-							<input type="text" tabindex="1" class="form-control" id="zipcodeInput"
-								   name="zipcodeInput"
-								   maxlength="5" required placeholder="Enter Zipcode"/>
+							<input type="text" tabindex="2" class="form-control" id="stateInput"
+								   name="stateInput"
+								   maxlength="5" required placeholder="Enter state"/>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" id="zipcodeFormButton" class="btn btn-primary" tabindex="2">Submit
+						<div id="stateAutomaticLocation" class="btn btn-primary" tabindex="1">
+							Detect Automatically
+						</div>
+						<button type="submit" id="stateFormButton" class="btn btn-primary" tabindex="3">
+							Submit
 						</button>
 					</div>
 				</div>
