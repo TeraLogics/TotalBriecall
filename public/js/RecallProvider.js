@@ -54,6 +54,9 @@ define(['brie-core', 'ejs', 'moment', 'URI'], function (BrieCore, ejs, moment, U
 	RecallProvider.prototype.getProductDescription = function () {
 		return this._recall.product_description;
 	};
+	RecallProvider.prototype.getRecallInitiationFromNow = function () {
+		return moment.unix(this._recall.recall_initiation_date).fromNow();
+	};
 	RecallProvider.prototype.getRecallInitiationDate = function (format) {
 		return moment.unix(this._recall.recall_initiation_date).format(format || 'MMMM Do, YYYY');
 	};

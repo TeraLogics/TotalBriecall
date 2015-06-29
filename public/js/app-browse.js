@@ -354,23 +354,24 @@ requirejs([
 			_layoutRemovedRecallCards(recentRecallsMasonry, cardView);
 			recentRecallsView.toggleClass('empty', (recentRecallsView.children().length === 0 ));
 
-			cardView = _generateRecallCards(recallData);
-
 			pinnedRecallsView.toggleClass('empty', false);
+			_onRecallPin(recallId, true);
+			_onRecallVisibility(recallId, false);
+
+			cardView = _generateRecallCards(recallData);
 			_addRecallCardsToView(pinnedRecallsView, cardView);
 			_layoutAddedRecallCards(pinnedRecallsMasonry, cardView);
-			_onRecallPin(recallId, true);
 		}
 		else {
 			_layoutRemovedRecallCards(pinnedRecallsMasonry, cardView);
 			pinnedRecallsView.toggleClass('empty', (pinnedRecallsView.children().length === 0 ));
 
-			cardView = _generateRecallCards(recallData);
-
 			recentRecallsView.toggleClass('empty', false);
+			_onRecallPin(recallId, false);
+
+			cardView = _generateRecallCards(recallData);
 			_addRecallCardsToView(recentRecallsView, cardView);
 			_layoutAddedRecallCards(recentRecallsMasonry, cardView);
-			_onRecallPin(recallId, false);
 		}
 	});
 

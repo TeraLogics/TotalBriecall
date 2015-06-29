@@ -19,9 +19,10 @@
 			<span rel="tooltip" data-placement="bottom"
 				  title="<%= recallProvider.getFirmAddress() %>">
 				<%= recallProvider.getFirmName() %>
-			</span> &nbsp;-&nbsp;
-			<small>
-				<%= recallProvider.getRecallInitiationDate('MMMM Do, YYYY') %>
+			</span> &nbsp;&#183;&nbsp;
+			<small rel="tooltip" data-placement="bottom"
+				   title="<%= recallProvider.getRecallInitiationDate('MMMM Do, YYYY') %>">
+				<%= recallProvider.getRecallInitiationFromNow() %>
 			</small>
 		</h4>
 	</div>
@@ -63,13 +64,13 @@
 				</li>
 			</ul>
 			<ul class="list-inline pull-right">
-				<li>
+				<!--li>
 					<div data-action="recall-pin" data-recall-id="<%= recallProvider.getFdaId() %>" data-toggle="button"
 						 rel="tooltip" data-placement="bottom" title="Pin recall to your board"
 						 class="btn btn-link <%= recallProvider.isPinned() ? 'active' : '' %>"><i
 								class="glyphicon glyphicon-pushpin"></i> Pin
 					</div>
-				</li>
+				</li-->
 				<li>
 					<div class="dropup">
 						<span data-toggle="dropdown" rel="tooltip" data-placement="bottom"

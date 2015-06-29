@@ -18,6 +18,10 @@ requirejs([
 	'UsStates',
 	'JasnyBootstrap'
 ], function (BrieCore, $, bootstrap, ejs, Masonry, moment, _, CommentProvider, MapApp, SyncFileReader, UsStates, JasnyBootstrap) {
+	var appWindow = $(window),
+		appDocument = $(document),
+		appView = $('.application');
+
 	$.fn.serializeObject = function () {
 		var o = {},
 			a = this.serializeArray();
@@ -37,8 +41,8 @@ requirejs([
 	};
 
 	var map = new MapApp({
-			height: 300,
-			width: 600,
+			height: '100%',
+			width: '100%',
 			div: 'map'
 		}),
 		commentCardTemplate = ejs.compile(SyncFileReader.request('/templates/comment-card.ejs')),
@@ -53,10 +57,6 @@ requirejs([
 			};
 		},
 		$form = $('form'),
-		recallCategoriesView = $('#recall-categories'),
-		recallCategoriesMasonry = new Masonry(recallCategoriesView[0], {
-			itemSelector: '.recall-category-card'
-		}),
 		recallLinkCopyModal = $('#recall-link-copy');
 
 	recallLinkCopyModal.find('[name="recall-link"]').on('click', function (event) {
@@ -76,6 +76,22 @@ requirejs([
 			style: style
 		});
 	}
+
+	var bounds = map._map.getBounds(),
+		timer = null;
+
+	map._map.fitBounds(bounds);
+
+	appWindow.on('resize', function () {
+		if (timer) {
+			clearTimeout(timer);
+			timer = null;
+		}
+
+		timer = setTimeout(function () {
+			map._map.fitBounds(bounds);
+		}, 1000);
+	});
 
 	/* disable moving the header map */
 	map._map.dragging.disable();
@@ -120,5 +136,12 @@ requirejs([
 		if (e.ctrlKey && e.keyCode === 13) {
 			$form.submit();
 		}
+	});
+
+	appDocument.ready(function () {
+		// Tooltip heaven
+		appView.tooltip({
+			selector: '[rel=tooltip]'
+		});
 	});
 });

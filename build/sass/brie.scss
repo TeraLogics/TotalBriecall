@@ -203,7 +203,6 @@
 .panel-expanded {
   border-radius: 0;
   border: none;
-  @include box-shadow(none);
 }
 
 .panel-title {
@@ -399,17 +398,6 @@
 	@include text-overflow();
   }
 
-  & .preview-holder {
-    overflow: hidden;
-    border: none;
-
-    > * {
-      width: calc(100% + 10px);
-      margin: auto;
-      margin-left: -5px;
-    }
-  }
-
   .recall-hud {
     overflow: auto;
     margin-bottom: 16px;
@@ -450,24 +438,29 @@
       padding-right: 0;
     }
   }
+}
 
-  .allergen-info {
-    margin-top: 35px;
+.allergen-info {
+  margin-top: 35px;
+}
 
-    .allergen-list {
-      .allergen {
-        width: 20%;
-        margin-top: 5px;
-        margin-bottom: 5px;
+.allergen-list {
+  .allergen {
+    width: 20%;
+    margin-top: 5px;
+    margin-bottom: 5px;
 
-        .preview-holder {
-          height: 100%;
-          border-radius: 50%;
+    & .preview-holder {
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: none;
 
-          > img {
-            height: 100%;
-          }
-        }
+      > img {
+        height: 100%;
+        width: calc(100% + 10px);
+        margin: auto;
+        margin-left: -5px;
       }
     }
   }
@@ -492,6 +485,15 @@
 #recent-recalls {
   width: 100%;
   display: block;
+
+  @media (min-width: 1900px) {
+    & {
+      width: 1900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
 }
 
 .map-container {
@@ -566,6 +568,10 @@
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
     }
   }
+}
+
+.comment-form {
+  margin-bottom: 36px;
 }
 
 @import 'brie/spinners';

@@ -2,7 +2,7 @@
 <script>
 	requirejs.config({
 		config: {
-			'brie-core': <%- JSON.stringify(typeof pageConfig !== 'undefined' ? pageConfig : {}) %>
+			'brie-core': <%- JSON.stringify(typeof pageConfig !== 'undefined' ? pageConfig : {}, null, '\t') %>
 		},
 		baseUrl: '/js',
 		shim: {
