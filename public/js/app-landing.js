@@ -10,9 +10,10 @@ requirejs([
 	'ejs',
 	'UsStates',
 	'Geocode',
+	'select2',
 	'bootstrap',
 	'JasnyBootstrap'
-], function ($, _, ejs, UsStates, GeoCode, bootstrap, JasnyBootstrap) {
+], function ($, _, ejs, UsStates, GeoCode, select2, bootstrap, JasnyBootstrap) {
 	$(document).ready(function () {
 		$('#stateModal').on('shown.bs.modal', function () {
 			$('#stateInput').focus();
@@ -39,6 +40,12 @@ requirejs([
 					//need to refresh page?
 				});
 			});
+		});
+
+		$('.select2').select2({
+			placeholder: 'Select a state by abbreviation',
+			allowClear: true,
+			data: ['', 'VA', 'NC']
 		});
 
 		$('#stateModal').modal('show');
