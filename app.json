@@ -20,7 +20,7 @@
       "required": false
     },
     "FACEBOOK_APPID": {
-      "description": "The Facebook API key used to for sharing.",
+      "description": "The Facebook App ID used to for sharing.",
       "value": "",
       "required": false
     },
