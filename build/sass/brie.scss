@@ -259,6 +259,12 @@
 	display: none;
   }
 
+  &.loaded {
+    & + .list-view-messages > .list-view-loading-message {
+      display: none;
+    }
+  }
+
   &.error + .list-view-messages > .list-view-empty-message {
 	display: none;
   }

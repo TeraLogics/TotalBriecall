@@ -160,6 +160,7 @@ requirejs([
 		recentRecallsMasonry = new Masonry(recentRecallsView[0], {
 			itemSelector: '.recall-card'
 		}),
+		recentRecallMsgView = $('#recent-recalls + .list-view-messages'),
 		recentRecallLoadingView = $('#recent-recalls + .list-view-messages > .list-view-loading-message'),
 		eventTrolley = $({}),
 		recallLinkCopyModal = $('#recall-link-copy'),
@@ -197,7 +198,7 @@ requirejs([
 
 	// Setup infini-scroll
 	sisyphusList = new Sisyphus(appWindow, {
-		trigger: recentRecallLoadingView,
+		trigger: recentRecallMsgView,
 		autoTrigger: true,
 		onFetch: function (meta, sisyphus) {
 			meta.status = 'ongoing';
@@ -219,6 +220,8 @@ requirejs([
 				return parseInt(element.value, 10);
 			});
 
+			recentRecallsView.removeClass('loaded');
+
 			return $.ajax({
 				url: '/api/recalls',
 				data: meta,
@@ -228,6 +231,8 @@ requirejs([
 		onReset: function (meta, sisyphus) {
 			recentRecallsMasonry.remove(recentRecallsView.children());
 			recentRecallsMasonry.layout();
+			recentRecallsView.removeClass('loaded');
+			recentRecallsView.removeClass('error');
 			recentRecallsView.addClass('empty');
 		},
 		onProcess: function (result, meta, sisyphus) {
@@ -235,13 +240,19 @@ requirejs([
 				result.data.length === 0 && recentRecallsView.children().length === 0
 			));
 
-			if (result.data.length === 0) {
-				sisyphus.stop();
-			}
-			else {
-				addRecalls(recentRecallsView, recentRecallsMasonry, result.data);
+
+			addRecalls(recentRecallsView, recentRecallsMasonry, result.data);
+
+			if (result.data.length !== 0 && meta.skip + result.data.length < result.total) {
 				sisyphus.rebind();
 			}
+			else {
+				recentRecallsView.addClass('loaded');
+			}
+		},
+		onError: function (error) {
+			recentRecallsView.addClass('loaded');
+			recentRecallsView.toggleClass('error', (error.status !== 404));
 		}
 	});
 

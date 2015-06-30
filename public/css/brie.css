@@ -8356,6 +8356,8 @@ button.close, .recall-summary-card button.recall-card-toggle {
   .list-view:empty,
   .list-view.empty {
     display: none; }
+  .list-view.loaded + .list-view-messages > .list-view-loading-message {
+    display: none; }
   .list-view.error + .list-view-messages > .list-view-empty-message {
     display: none; }
   .list-view:empty + .list-view-messages > .list-view-empty-message,
