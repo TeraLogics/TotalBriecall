@@ -87,7 +87,8 @@ requirejs([
 			lat: location.coords.latitude,
 			lon: location.coords.longitude
 		}).then(function (state) {
-			$('#stateInput').val(state);
+			console.log(state);
+			$('#stateSelect').val(state).trigger("change");
 		}).fail(function () {
 			handleGeoLocError();
 		});
