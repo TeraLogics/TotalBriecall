@@ -87,12 +87,6 @@ define(['jquery', 'Tour'], function ($, Tour, require) {
 				}
 			},
 			{
-				element: "div .recall-summary-card:first .panel-footer ul .glyphicon-pushpin",
-				title: "#Pinning",
-				content: "You can pin recalls to find them again easily",
-				placement: "top"
-			},
-			{
 				element: "div .recall-summary-card:first .recall-card-toggle",
 				title: "Hide Recalls",
 				content: "If you don't want to see a recall again, you can hide it from view",
