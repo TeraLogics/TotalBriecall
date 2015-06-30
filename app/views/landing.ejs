@@ -1,35 +1,38 @@
 <% include ./common/header.ejs %>
 </head>
-<body>
+<body class="bg-void application">
 <% include ./common/page-header.ejs %>
 <div class="container">
-	<div id="map"></div>
+	<div class="panel" style="border-radius: 0;">
+		<div class="panel-heading">
+			<h4 class="panel-title">Food Recall Notices Affecting Your Area</h4>
+			<h5 class="panel-subtitle">Stay up to date on food recalls affecting your local area so you can keep you and
+				your loved ones safe and healthy.</h5>
+		</div>
+		<div class="panel-body">
+			<p>Total Briecall provides an up to date repository of food related recall notifications organized by
+				geographic region. Quickly find the recalls that impact you and your family based on your current
+				location, or use the map to see recalls impacting other areas around the country.</p>
+
+
+			<form class="col-md-offset-4 col-md-4 text-center" style="margin-top: 56px;" id="stateForm" name="stateForm" action="javascript:void(0);">
+				<div class="form-group">
+					<select style="width:100%" class="select2" id="stateSelect" required></select>
+				</div>
+				<div class="form-group">
+					<button type="submit" id="stateFormButton" class="btn btn-primary" tabindex="3">Submit</button>
+				</div>
+
+				<h5>OR</h5>
+
+				<div class="form-group">
+					<div id="stateAutomaticLocation" class="btn btn-default" tabindex="1">Detect Automatically</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 <% include ./common/page-footer.ejs %>
-<div id="modal">
-	<form class="col-md-4" id="stateForm" name="stateForm" action="javascript:void(0);">
-		<div class="modal fade" id="stateModal" tabindex="-1" role="dialog" aria-labelledby="stateModalLabel">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title" id="myModalLabel">Help us show recalls affecting your state</h4>
-					</div>
-					<div class="modal-body">
-						<select style="width:100%" class="select2" id="stateSelect" required></select>
-					</div>
-					<div class="modal-footer">
-						<div id="stateAutomaticLocation" class="btn btn-primary" tabindex="1">
-							Detect Automatically
-						</div>
-						<button type="submit" id="stateFormButton" class="btn btn-primary" tabindex="3">
-							Submit
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-</div>
 <%
 var appModule = '/js/app-landing';
 %>

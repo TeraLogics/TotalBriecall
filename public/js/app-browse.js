@@ -271,7 +271,7 @@ requirejs([
 			style: style
 		});
 	} else {
-		map.add('layer', UsStates.getNationGeoJSON(), {
+		map.add('layer', UsStates.getUsNationGeoJSON(), {
 			style: style
 		});
 	}
