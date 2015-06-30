@@ -97,6 +97,10 @@
 // Navbar
 // --------------------------------------------------
 
+.navbar {
+  @include box-shadow(0 2px 1px -1px rgba(50, 50, 50, 0.1));
+}
+
 .navbar-brand {
   & > img {
     height: 20px;
@@ -118,6 +122,7 @@
 
 .navmenu {
   z-index: 1050;
+  @include box-shadow(4px 0px 6px -1px rgba(50, 50, 50, 0.15));
 }
 
 .navbar-toggle {
@@ -129,6 +134,7 @@
     margin-left: 0;
     margin-right: 0;
     border: none;
+    @include navbar-vertical-align(40px);
 
     &:hover,
     &:focus {
@@ -199,6 +205,10 @@
 //
 // Panels
 // --------------------------------------------------
+
+.panel {
+  @include box-shadow(0 3px 1px -1px rgba(50, 50, 50, 0.15));
+}
 
 .panel-expanded {
   border-radius: 0;

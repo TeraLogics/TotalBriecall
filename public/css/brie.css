@@ -8245,6 +8245,10 @@ button.close, .recall-summary-card button.recall-card-toggle {
     display: inline-block;
     vertical-align: middle; }
 
+.navbar {
+  -webkit-box-shadow: 0 2px 1px -1px rgba(50, 50, 50, 0.1);
+  box-shadow: 0 2px 1px -1px rgba(50, 50, 50, 0.1); }
+
 .navbar-brand > img {
   height: 20px;
   display: inline-block;
@@ -8256,7 +8260,9 @@ button.close, .recall-summary-card button.recall-card-toggle {
   margin-right: 8px; }
 
 .navmenu {
-  z-index: 1050; }
+  z-index: 1050;
+  -webkit-box-shadow: 4px 0px 6px -1px rgba(50, 50, 50, 0.15);
+  box-shadow: 4px 0px 6px -1px rgba(50, 50, 50, 0.15); }
 
 .navbar-toggle {
   float: left; }
@@ -8265,7 +8271,9 @@ button.close, .recall-summary-card button.recall-card-toggle {
   .navbar-inverted .navbar-toggle.cutoff-toggle {
     margin-left: 0;
     margin-right: 0;
-    border: none; }
+    border: none;
+    margin-top: 10.5px;
+    margin-bottom: 10.5px; }
     .navbar-toggle.cutoff-toggle:hover,
     .navbar-toggle.cutoff-toggle:focus,
     .navbar-default .navbar-toggle.cutoff-toggle:hover,
@@ -8309,6 +8317,10 @@ button.close, .recall-summary-card button.recall-card-toggle {
 .btn.btn-link[data-toggle="button"][disabled] {
   -webkit-box-shadow: none;
   box-shadow: none; }
+
+.panel {
+  -webkit-box-shadow: 0 3px 1px -1px rgba(50, 50, 50, 0.15);
+  box-shadow: 0 3px 1px -1px rgba(50, 50, 50, 0.15); }
 
 .panel-expanded {
   border-radius: 0;
