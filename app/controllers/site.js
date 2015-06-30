@@ -36,15 +36,10 @@ exports.landing = function (req, res) {
  * @param {Object} res The response object.
  */
 exports.browse = function (req, res) {
-	console.info(JSON.stringify(UsStates));
-	if (!req.session.preferences.state && !req.session.preferences.haslanded) {
-		res.redirect('/');
-	} else {
-		res.locals.categories = _.keys(recallHelper.keywordMappings).sort();
-		res.render('browse', {
-			UsStates: UsStates
-		});
-	}
+	res.locals.categories = _.keys(recallHelper.keywordMappings).sort();
+	res.render('browse', {
+		UsStates: UsStates
+	});
 };
 
 /**

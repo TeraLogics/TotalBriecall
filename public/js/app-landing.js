@@ -29,7 +29,7 @@ requirejs([
 		});
 
 		$('#stateForm').submit(function () {
-			var state = $('#stateInput').val();
+			var state = $('#stateSelect').val();
 			saveState(state).then(function () {
 				window.location = '/browse';
 			}).fail(function (err) {
@@ -45,7 +45,7 @@ requirejs([
 		$('.select2').select2({
 			placeholder: 'Select a state by abbreviation',
 			allowClear: true,
-			data: ['', 'VA', 'NC']
+			data: ["", "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
 		});
 
 		$('#stateModal').modal('show');
@@ -95,7 +95,7 @@ requirejs([
 
 	function saveState(state) {
 		var deferred = $.Deferred();
-
+		console.log(state);
 		$.ajax({
 			type: 'POST',
 			url: '/preferences',
