@@ -18,4 +18,4 @@
 1. Click the 'Edit' button
 1. Add/modify configuration variables per the configuration
 
-![Config](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/heroku-config.gif)
+![Config](/docs/images/heroku-config.gif?raw=true)

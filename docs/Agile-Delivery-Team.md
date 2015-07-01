@@ -1,1 +1,1 @@
-![Our Delivery Team](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/org-chart.jpg)
+![Our Delivery Team](/docs/images/org-chart.jpg?raw=true)

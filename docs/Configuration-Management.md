@@ -16,7 +16,7 @@ Configuration variables can either be set via the interface or via the Heroku To
 
 `heroku config:set MY_KEY1=MYVALUE_A MY_KEY2=MYVALUE_B --app <APPNAME>`
 
-![UI](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/heroku-config.gif)
+![UI](/docs/images/heroku-config.gif?raw=true)
 
 ### Heroku Pipelining
 
@@ -43,4 +43,4 @@ heroku pipeline:add -a staging production
 heroku pipeline:promote
 ```
 
-![UI](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Heroku%20Pipeline%20Diagram.png)
+![UI](/docs/images/Heroku%20Pipeline%20Diagram.png?raw=true)

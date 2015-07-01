@@ -36,7 +36,7 @@ Lastly, our build process also includes generation of a code coverage report and
 
 [Travis CI](https://travis-ci.org/) keeps track of our build history and provides views into the build process and the test results so we know exactly what tests or build processes failed, so we can take corrective action.
 
-![Travis CI Results](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/TravisCIResults.png)
+![Travis CI Results](/docs/images/TravisCIResults.png?raw=true)
 
 It also generates a badge image that shows whether or not the build is passing or errored. This is tagged directly at the top of the [README.md](https://github.com/TeraLogics/TotalBriecall/blob/master/README.md)
 
@@ -48,7 +48,7 @@ It also generates a badge image that shows whether or not the build is passing o
 
 [Istanbul](https://gotwarlost.github.io/istanbul/) is an open-source code coverage utility that works hand-in-hand with [Mocha](http://mochajs.org/) to generate code coverage based on unit tests.
 
-![Istanbul Results](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/CoverageSummary.png)
+![Istanbul Results](/docs/images/CoverageSummary.png?raw=true)
 
 It generates a file (`.lcov`) that is a global format for coverage results and can be imported into many different tools for analysis. [Istanbul](https://gotwarlost.github.io/istanbul/) can also generate an HTML report, but we use the `.lcov` file and submit it to [Coveralls](https://coveralls.io/) because their interface is public, is easier to use, and provides additional functionality.
 

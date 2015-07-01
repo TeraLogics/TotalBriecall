@@ -21,20 +21,20 @@ Our status page can be found [here](https://status.totalbriecall.com).
 ## [New Relic](http://newrelic.com/)
 This tool monitors the internals of our application providing in-depth analysis of our NodeJS processes for all of our applications and provides a dashboard to monitor key metrics.
 
-![Apps](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicApps.png)
-![Dashboard](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicOverview.png)
+![Apps](/docs/images/NewRelicApps.png?raw=true)
+![Dashboard](/docs/images/NewRelicOverview.png?raw=true)
 
 ### Error Reporting
 
 [New Relic](http://newrelic.com/) reports any errors that are produced in the code which help our teams to identify issues as they happen and provide state information so the errors are easy to troubleshoot, fix, unit test, run through the [CI](Continuous-Integration) system, and ultimately deploy automatically.
 
-![Error Events](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicErrors.png)
+![Error Events](/docs/images/NewRelicErrors.png?raw=true)
 
 ### SLAs
 
 Because [New Relic](http://newrelic.com/) is integrated into our code, it can report transaction level statistics. This allows us to implement SLAs for our API and notifies our teams if those SLAs are broken. This is important to determine slow transactions and also to alert our teams to larger system problems with external resources, such as third party APIs and data stores.
 
-![SLA Report](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicSLAReport.png)
+![SLA Report](/docs/images/NewRelicSLAReport.png?raw=true)
 
 Once an anomaly is detected our operations teams can then view specific transactions that might be causing issues whether they be datastore, external, or web.
 
@@ -42,34 +42,34 @@ Once an anomaly is detected our operations teams can then view specific transact
 
 This report show metrics against the openFDA database to ensure that even though we are using external APIs to provide data, that our users are getting the best experience possible.
 
-![External Services](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicExternalServices.png)
+![External Services](/docs/images/NewRelicExternalServices.png?raw=true)
 
 ### Datastore Performance
 
 These reports provide real-time and historical views of DB performance. 
 
-![DB Transactions](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicDatabase.png)
-![DB Report](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicDatabaseReport.png)
+![DB Transactions](/docs/images/NewRelicDatabase.png?raw=true)
+![DB Report](/docs/images/NewRelicDatabaseReport.png?raw=true)
 
 ### Web Performance
 
 These reports provide information about real-time and historical web transactions, which help our teams determine the overall performance of our system and can identify slow resources.
 
-![Transactions](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicTransactions.png)
-![Transactions Report](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicWebTransactionsReport.png)
+![Transactions](/docs/images/NewRelicTransactions.png?raw=true)
+![Transactions Report](/docs/images/NewRelicWebTransactionsReport.png?raw=true)
 
 ### System Performance and Scalability
 
 We also have access to instance metrics and scalability reports, showing us how each instance is running, instance resource consumption, how well the system as a whole is scaling, and what pieces might need additional resources spun up.
 
-![Instance Report](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicInstances.png)
-![Scalability Report](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/NewRelicScalabilityReport.png)
+![Instance Report](/docs/images/NewRelicInstances.png?raw=true)
+![Scalability Report](/docs/images/NewRelicScalabilityReport.png?raw=true)
 
 ## [Pingdom](https://www.pingdom.com/)
 
 All of these metrics are more fine grained detail about the internals of our application, but we also monitor major outages as well. We use [Pingdom](https://www.pingdom.com/) to keep track of site availability. Sometimes even the service providers have issues, but we can stay ahead of the curve because [Pingdom](https://www.pingdom.com/) provides notifications to our operations teams, in the form of emails, SMS and more, allowing us to quickly respond to major network outages, server restarts/crashes, and more.
 
-![Pingdom Uptime Report](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/PingdomUptime.png)
+![Pingdom Uptime Report](/docs/images/PingdomUptime.png?raw=true)
 
 ## [StatusPage.io](https://www.statuspage.io/)
 
@@ -77,6 +77,6 @@ All of these are internal tools which allow our operations teams to quickly resp
 
 Our status page can be found [here](https://status.totalbriecall.com).
 
-![Status Page](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/StatusPage.png)
+![Status Page](/docs/images/StatusPage.png?raw=true)
 
 All of these utilities come together to ensure that our teams have a detailed view into our systems and continually monitor our services to provide the best user experience possible.

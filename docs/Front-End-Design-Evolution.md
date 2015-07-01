@@ -1,26 +1,26 @@
 ## Whiteboarding
 
-![Whiteboard](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/whiteboard.jpg)
+![Whiteboard](/docs/images/whiteboard.jpg?raw=true)
 
 ## Mockups
 
-![Mockups](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Mockups Full Set.png)
+![Mockups](/docs/images/Mockups Full Set.png?raw=true)
 
-![Mockups](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/frontend-evolution-mockups.png)
+![Mockups](/docs/images/frontend-evolution-mockups.png?raw=true)
 
 ## Initial Working Prototype
 
-![Initial Working Prototpe](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/mobile-usability-test.png)
+![Initial Working Prototpe](/docs/images/mobile-usability-test.png?raw=true)
 
 ## Revised Prototype after User Feedback
 
-![Frontend In-Development](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/frontend-evolution-cards.png)
+![Frontend In-Development](/docs/images/frontend-evolution-cards.png?raw=true)
 
-![Frontend In-Development](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/frontend-evolution-development-recall.png)
+![Frontend In-Development](/docs/images/frontend-evolution-development-recall.png?raw=true)
 
 ## Final Frontend Design
 
-![Final UI](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/frontend-evolution-final-main.png)
+![Final UI](/docs/images/frontend-evolution-final-main.png?raw=true)
 
-![Final UI](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/frontend-evolution-final-detail.png)
+![Final UI](/docs/images/frontend-evolution-final-detail.png?raw=true)
 

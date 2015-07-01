@@ -1,1 +1,1 @@
-![User Feedback Group](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/user-chart.jpg)
+![User Feedback Group](/docs/images/user-chart.jpg?raw=true)

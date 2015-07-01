@@ -4,12 +4,12 @@ This document is designed to show the system design, software design, UI design,
 # System Design
 The design is based around the MVC (Model-View-Controller) design pattern, and utilizes several new technologies in order to fulfill that pattern. The Models are comprised of both database data and API data; the Views are dynamically-rendered using both client-side and server-side templates and delivered to the client; and, the Controllers are where the data is merged, mangled, and transformed.
 
-![Design](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/MVC%20Design.png)
+![Design](/docs/images/MVC%20Design.png?raw=true)
 
 ## Models
 The model consist of data from two different sources, the API, and MongoDB.  The FoodRecall model wraps the FDA API recall data, adding additional properties from analysis performed by the application and removing data that is not used. The FoodResults model contains paging information and a list of FoodRecall models. The Comments model represents a user-made comment on a recall. Each FoodRecall model contains a list of associated comments.
 
-![Design](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Models%20Diagram.png)
+![Design](/docs/images/Models%20Diagram.png?raw=true)
 
 ## Controllers
 There are two main controllers in the application: the `recalls` controller and the `comments` controller. The `recalls` controller retrieves `FoodRecall` objects from the `fda` adapter and then retrieves the `Comments` objects associated with those `FoodRecall` objects from the `mongo` adapter. The `comments` controller creates `Comments` using the `mongo` adapter.
@@ -25,4 +25,4 @@ The `api` views route the JSON API requests. `FoodResults` can be retrieved via 
 
 # Process Flow
 
-![Process Flow](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Process%20Flow.png)
+![Process Flow](/docs/images/Process%20Flow.png?raw=true)

@@ -47,7 +47,7 @@ _**NOTE**: You must be an administrator of the GitHub repository in order to con
 1. Select the 'master' branch
 1. Select the 'Wait for CI to pass before deploy' check box, then click the 'Enable Automatic Deploys' button
 
-![Enabling Continuous Integration](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/heroku-ci.gif)
+![Enabling Continuous Integration](/docs/images/heroku-ci.gif?raw=true)
 
 ## Creating an Open FDA API Key (Optional)
 
@@ -58,7 +58,7 @@ _**NOTE**: You must be an administrator of the GitHub repository in order to con
 1. Click the 'Get API Key' button
 1. Copy the API key and put it in the application's configuration variable named `OPENFDA_KEY`
 
-![OpenFDA API Key](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/openfda-api-key.gif)
+![OpenFDA API Key](/docs/images/openfda-api-key.gif?raw=true)
 
 
 ## Creating a Facebook Application ID (Optional)
@@ -69,27 +69,27 @@ Facebook integration was not completed for production due to the waiting period 
 1. Go to [Facebook's Developers page](https://developers.facebook.com). It will ask you to accept their user agreement. If you agree, continue.
 1. In the upper left hand corner, there should be a link for 'My Apps'. Click the button, then select 'Add a New App':
 
-    ![New App](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/fbdev-new-app.jpg)
+    ![New App](/docs/images/fbdev-new-app.jpg?raw=true)
 
 1. From the modal dialog that comes up, select 'Website':
 
-    ![Website App](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/fbdev-web-app.jpg)
+    ![Website App](/docs/images/fbdev-web-app.jpg?raw=true)
 
 1. Enter in a name for your app. We needed our main app as well as some development apps, so you can see how we named ours below.
 Enter a name, and then click 'Create New Facebook App ID'.
 
-    ![App Name](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/fbdev-app-name.jpg)
+    ![App Name](/docs/images/fbdev-app-name.jpg?raw=true)
 
 1. Wait for Facebook to generate your app. Once it's done, you will get a small options dialog. Unless you have made another app before that
 you want to attach this as a test app to, select no for the first option. For category, we went with 'Reference'. Afterwards, click 'Create App ID'.
 
-    ![New App Dialog](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/fbdev-newapp-dialog.jpg)
+    ![New App Dialog](/docs/images/fbdev-newapp-dialog.jpg?raw=true)
 
 1. It will show you more information about their SDK, which you don't need. At the bottom of the page should be a box for the URL you will be using with the app. Our main app uses 'totalbriecall.com'. Enter whatever URL your app will be using. It is important to match the URL correctly. Once entered, hit 'Next'.
 
-    ![New App Dialog](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/fbdev-app-url.jpg)
+    ![New App Dialog](/docs/images/fbdev-app-url.jpg?raw=true)
 
 1. Facebook will then show you some more integration information, which you also don't need. At the bottom under 'Next Steps' is a link to the app's [Developer Dashboard](https://developers.facebook.com/apps/).
 1. Go to your app's [Developer Dashboard](https://developers.facebook.com/apps/). At the top will be a window with 'App ID'. Use that ID in your Heroku configuration under the key 'FACEBOOK_APPID'.
 
-    ![App Dashboard](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/fbdev-app-dash.jpg)
+    ![App Dashboard](/docs/images/fbdev-app-dash.jpg?raw=true)

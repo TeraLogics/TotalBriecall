@@ -18,4 +18,4 @@ We use the Bootstrap grid layout to design responsive interfaces for desktop and
 
 We targeted 3 types of users, desktop/laptop, tablet and mobile phone.  Our goal was to make the application adapt to each screen size and accept both mouse and touch inputs.
 
-![Multiple screen sizes](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/responsive-design.jpg)
+![Multiple screen sizes](/docs/images/responsive-design.jpg?raw=true)

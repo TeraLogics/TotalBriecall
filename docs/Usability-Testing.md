@@ -19,7 +19,7 @@ Test users are listed on the [User Feedback Group] (/docs/User-Feedback-Group.md
 
 The Agile team worked directly with end users to conduct interviews and elicit requirements. Development of user stories occurred after completion of the interviews. These stories were opened and tracked using our Trello User Feedback board, as seen below. Interviews revealed that end users were primarily looking for an application that could quickly identify product recalls and associated recall details in their local areas, as well as share this information with friends and family. 
 
-![Pre-Development User Feedback](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/User Feedback.png)
+![Pre-Development User Feedback](/docs/images/User Feedback.png?raw=true)
 
 ##Mockup User Feedback
 
@@ -27,7 +27,7 @@ After review of the user stories, the team worked to develop mockups of the prot
 
 Users offered various inputs on the look and feel of the application as well as other potential functionality the team could include.
 
-![Mockup User Feedback](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Mockup Feedback from Users.png)
+![Mockup User Feedback](/docs/images/Mockup Feedback from Users.png?raw=true)
 
 ##Test Scenarios
 Test users interacted with the application and completed the following high-level scenarios:
@@ -96,9 +96,9 @@ The team conducted an initial round of usability testing with end users prior to
 - Want to include photos of products included in recall 
 - Want a guide/tour on how to use application included
 
-![Initial Prototype User Feedback](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Usability Testing - Round 1 Feedback.png)
+![Initial Prototype User Feedback](/docs/images/Usability Testing - Round 1 Feedback.png?raw=true)
 
-![Initial Prototype User Feedback](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/mobile-usability-test.png)
+![Initial Prototype User Feedback](/docs/images/mobile-usability-test.png?raw=true)
 
 ###Round 2
 
@@ -119,7 +119,7 @@ The team conducted a second round of usability testing with end users prior to t
 - “Show comments" link did not work on detail page
 - Information page has the menu overlapped on the map so it was not easy to see
 
-![Prototype Iteration 2](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Working Prototype Iteration 2.png)
+![Prototype Iteration 2](/docs/images/Working Prototype Iteration 2.png?raw=true)
 
 ###Round 3
 
@@ -139,5 +139,5 @@ The team conducted a final round of usability testing with end users to collect 
 - Search on keywords in the description of the recall cards would be nice
 
 
-![Prototype Iteration 3](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Working Prototype Iteration 3.png)
+![Prototype Iteration 3](/docs/images/Working Prototype Iteration 3.png?raw=true)
 

@@ -26,7 +26,7 @@ To achieve these goals and streamline delivery, we use the following variety of 
    - Enhances real-time team visibility into sprint tasking and status (for both the development team and management)
    - Promotes accountability for task assignments 
 
-![Trello](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Sprint Board (Day 2).png)
+![Trello](/docs/images/Sprint Board (Day 2).png?raw=true)
 
 ### [Github] (https://github.com/)
  - Overview
@@ -47,7 +47,7 @@ To achieve these goals and streamline delivery, we use the following variety of 
    - Makes code issues and improvements visible across the team
    - Enhances code reviews process to ensure coding standards are met
 
-![GitHub](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/github issues.png)
+![GitHub](/docs/images/github issues.png?raw=true)
 
 ### [Slack] (https://slack.com)
  - Overview
@@ -66,7 +66,7 @@ To achieve these goals and streamline delivery, we use the following variety of 
    - Reduces dependency on emails
    - Connects via API to key services/tools in our development process (e.g. Google Apps, Trello, GitHub, TravisCI), creating a central location for viewing project status and updates
  
-![Slack](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Slack.png)
+![Slack](/docs/images/Slack.png?raw=true)
   
 ### [InVision] (http://www.invisionapp.com)
  - Overview 
@@ -79,4 +79,4 @@ To achieve these goals and streamline delivery, we use the following variety of 
    - Users are immersed in the design by using their own devices
    - Gathers pinpoint feedback about UI features
 
-![InVision](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Mockup Feedback from Users.png)
+![InVision](/docs/images/Mockup Feedback from Users.png?raw=true)

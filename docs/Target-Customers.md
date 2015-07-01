@@ -1,1 +1,1 @@
-![Our Customers](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/user-chart.jpg)
+![Our Customers](/docs/images/user-chart.jpg?raw=true)

@@ -10,20 +10,20 @@ These questions, along with various design and feedback sessions, helped to driv
 
 ### User Stories and Ideas
 
-![User Stories](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/User Stories Backlog.png)
+![User Stories](/docs/images/User Stories Backlog.png?raw=true)
 
 ## Ideation — _Get Visual_
 
 When designing the prototype, the Delivery Team created visual mockups of the user interface to create an initial plan for displaying the dataset to users. The design considered: how users would interact with the prototype and from what range of devices; and, how users currently access the kinds of data that the prototype would display. One design goal was to ensure that the prototype was intuitive and required no training or prior experience to use. User feedback was collected in the first sprint iteration, using the design review tool [InVision](/docs/Tools.md#invision). This influenced a simple, clean design approach which incorporated user feedback to refine how users access, view, and share the displayed data.  
 
-![Mockups](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Mockup Feedback from Users.png)
+![Mockups](/docs/images/Mockup Feedback from Users.png?raw=true)
 
-![Mockups](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Mockups Full Set.png)
+![Mockups](/docs/images/Mockups Full Set.png?raw=true)
 
-![Mockups](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/User Design Review 1 .jpg)
+![Mockups](/docs/images/User Design Review 1 .jpg?raw=true)
 
 ## Implementation — _Live Prototyping_
 
 During the development stages of the sprint cycles, the team employed rapid prototyping to quickly build and test various components of the prototype, including localizing product defect information and formatting product information display. The prototype was deployed to a publicly-available repository ([GitHub](/docs/Tools.md#github)), and end users were engaged again to review the first iteration of the prototype, providing real-time feedback for incorporation in the second sprint cycle. 
 
-![Mockups](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/prototype-implementation.png)
+![Mockups](/docs/images/prototype-implementation.png?raw=true)
