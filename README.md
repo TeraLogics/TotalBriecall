@@ -11,4 +11,4 @@ A Node.js website, powered by [openFDA](https://open.fda.gov) data, aimed to all
 
 **OpenFDA is a beta research project and not for clinical or production use. As all data within the system is publically available, openFDA does not contain data with Personally Identifiable Information or other sensitive information.**
 
-[Test!](docs/Agile-Delivery-Team.md)
+[Test!](docs/Home.md)
