@@ -19,6 +19,7 @@ body > header {
 .styleguide-sections {
   counter-reset: styleguide-section-counter; }
   .styleguide-sections .styleguide-section {
+    overflow: auto;
     margin-bottom: 48px; }
     .styleguide-sections .styleguide-section header {
       margin-bottom: 32px; }
@@ -39,9 +40,6 @@ body > header {
           margin-top: 8px;
           border-bottom: 1px solid #c5c5c5; }
 
-.palette-colors {
-  overflow: auto; }
-
 .color-card .color-name {
   margin: 0;
   font-weight: bold;
@@ -58,6 +56,3 @@ body > header {
   margin: -1px; }
   .color-strips .color-strip {
     height: 125px; }
-
-.button-styles {
-  overflow: auto; }
