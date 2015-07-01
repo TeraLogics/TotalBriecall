@@ -34,7 +34,7 @@ Our overall development process is fairly simple. Design -> Prototype -> Impleme
 
 ### Version Control
 
-We used git for version control, primarily [GitHub](docs/Tools.md#github) for this project. We set up a repository, made some basic commits, then branched out from our master into a development branch:
+We used git for version control, primarily [GitHub](/docs/Tools.md#github) for this project. We set up a repository, made some basic commits, then branched out from our master into a development branch:
 
 ![Branches](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/branches.png)
 
@@ -57,7 +57,7 @@ Part of our quality control process included code reviews. If the change was a b
 ![Code Review](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/Code%20Review%20Meeting.jpg)
 ### Code Climate
 
-Code Climate is a tool that we use during our development process to evaluate the quality of our code over time. You can see a more detailed view of what it does and how it works on the [Continuous Integration](docs/Continuous-Integration#code-climate) wiki page. Ultimately, we use this tool to help our team identify pitfalls, and quality issues in our code. Our Testing/QC team is responsible for reviewing this content and reporting important issues.
+Code Climate is a tool that we use during our development process to evaluate the quality of our code over time. You can see a more detailed view of what it does and how it works on the [Continuous Integration](/docs/Continuous-Integration#code-climate) wiki page. Ultimately, we use this tool to help our team identify pitfalls, and quality issues in our code. Our Testing/QC team is responsible for reviewing this content and reporting important issues.
 
 ![Code Climate](https://raw.githubusercontent.com/wiki/TeraLogics/TotalBriecall/images/CodeClimate.png)
 

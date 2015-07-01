@@ -8,7 +8,7 @@ This application has been tested with the latest versions of Chrome, Firefox, IE
 
 This application utilizes a number of external APIs to provide users with a robust and modern experience.  Although none of the APIs are required, and the site will attempt to gracefully handle the lack of them, the application works best when they are configured correctly.
 
-See [Configurations](docs/Configuration.md)
+See [Configurations](/docs/Configuration.md)
 
 ## Heroku 
 
@@ -18,15 +18,15 @@ We wanted to make deployment as easy as possible and we actually tried a few dif
 
 1. Navigate to [GitHub](https://github.com/TeraLogics/TotalBriecall).
 1. Scroll to the README section and click the 'Deploy to Heroku' button    
-   _**NOTE**: If you do not have a Heroku account you may need to create one at this point. See [Login / Create Account](docs/Installation-Instructions#login--create-account) for further instructions_.
+   _**NOTE**: If you do not have a Heroku account you may need to create one at this point. See [Login / Create Account](/docs/Installation-Instructions#login--create-account) for further instructions_.
 1. Fill in the App Name field (_this is optional_).
 1. Scroll down to the Config Variable section.
-   1. If you have a Facebook App ID enter it in the `FACEBOOK_APPID` field. If you do not have one, you can deploy the application and add your App ID later. Your application will not have direct Facebook sharing integration until this is configured. Follow the link for instructions on [Creating a Facebook Application ID](docs/Installation-Instructions#creating-a-facebook-application-id).
-   1. If you have an OpenFDA API key enter it into the `OPENFDA_APIKEY` field. If you do not have an OpenFDA API key, you can still deploy the application and add an API key later. This key is not required, but if it is supplied the OpenFDA API will allow more requests per minute and total requests per day. Follow the link for instructions on [Getting an OpenFDA API Key](docs/Installation-Instructions#creating-an-open-fda-api-key).
-   1. If you have a [StatusPage.io](docs/Backend-Technologies#statuspageio-paid) status page, go ahead and enter the url in the `STATUS_PAGE_IO_URL` configuration variable. If you do not supply this, there will not be an externally available status page for your application. This integration is not required, but is a nicety for your users.
+   1. If you have a Facebook App ID enter it in the `FACEBOOK_APPID` field. If you do not have one, you can deploy the application and add your App ID later. Your application will not have direct Facebook sharing integration until this is configured. Follow the link for instructions on [Creating a Facebook Application ID](/docs/Installation-Instructions#creating-a-facebook-application-id).
+   1. If you have an OpenFDA API key enter it into the `OPENFDA_APIKEY` field. If you do not have an OpenFDA API key, you can still deploy the application and add an API key later. This key is not required, but if it is supplied the OpenFDA API will allow more requests per minute and total requests per day. Follow the link for instructions on [Getting an OpenFDA API Key](/docs/Installation-Instructions#creating-an-open-fda-api-key).
+   1. If you have a [StatusPage.io](/docs/Backend-Technologies#statuspageio-paid) status page, go ahead and enter the url in the `STATUS_PAGE_IO_URL` configuration variable. If you do not supply this, there will not be an externally available status page for your application. This integration is not required, but is a nicety for your users.
 1. Click the 'Deploy for Free' button.
 
-To modify any additional configuration values see [Configuration Settings](docs/Configuration#configuration-settings)
+To modify any additional configuration values see [Configuration Settings](/docs/Configuration#configuration-settings)
 
 ## Login / Create Account
 

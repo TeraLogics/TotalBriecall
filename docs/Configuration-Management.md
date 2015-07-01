@@ -1,6 +1,6 @@
 # Configuration Management, Heroku, and You
 
-_Looking for the application [configuration](docs/Configuration.md)?_
+_Looking for the application [configuration](/docs/Configuration.md)?_
 
 Using a PaaS solution (Heroku) has greatly reduced the configuration Management tasks for Total Briecall.
 
@@ -30,7 +30,7 @@ In the diagram below, the steps are as follows ([Offical Documentation](https://
 1. Staging environment was forked to production (since one did not exist)
 1. Production configuration was updated
 1. The pipeline was created between staging and production
-1. Development received an update from from [GitHub](docs/Tools.md#github), and it was validated as working
+1. Development received an update from from [GitHub](/docs/Tools.md#github), and it was validated as working
 1. Operations pushed the pipeline, which pushed development code to staging, and staging code to production
 
 ```

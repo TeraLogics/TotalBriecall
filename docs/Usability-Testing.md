@@ -13,7 +13,7 @@ The Total Briecall usability test objectives were to enable users to:
 
 ##Test Participants
 
-Test users are listed on the [User Feedback Group] (docs/User-Feedback-Group.md) wiki page.
+Test users are listed on the [User Feedback Group] (/docs/User-Feedback-Group.md) wiki page.
 
 ##Pre-Development User Feedback
 
