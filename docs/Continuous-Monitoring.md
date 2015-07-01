@@ -1,5 +1,7 @@
 # Continuously Monitoring for Rancid Cheese
 
+Our team has extensive experience with continuous monitoring, accreditation and system security from our ongoing work supporting the US Department of Defense.  We use security tools like SCAP, ACAS and Retina on our IaaS test and production production systems to ensure our applications and operating systems adhere to the highest security standards.  Our application ensures security using HTTPS, session/cookie encryption, and other secure web practices. The team idenitified a PaaS solution would free our team to focus on rapid application delivery, instead of custom instructure hardening, and so our continuous monitoring focuses on system availability.
+
 Total Briecall uses several different monitoring technologies to make sure our customers don't experience downtime and that we are notified of issues before the customer is impacted.
 
 We use [Pingdom](https://www.pingdom.com/), [New Relic](http://newrelic.com/), and [StatusPage.io](https://www.statuspage.io/) to help us report on different statistics including:
