@@ -8196,6 +8196,15 @@ button.close, .recall-summary-card button.recall-card-toggle {
 .bg-void {
   background-color: #e6e6e6; }
 
+.bg-default {
+  background-color: #fff; }
+
+.bg-none {
+  background-color: transparent; }
+
+.bg-secondary {
+  background-color: #fef; }
+
 .dropdown.no-clip {
   direction: ltr;
   position: static; }
@@ -8306,6 +8315,9 @@ button.close, .recall-summary-card button.recall-card-toggle {
     /* force showing the toggle */ } }
 
 .list-group.list-group-borderless .list-group-item {
+  border: none; }
+
+.list-group.list-unstyled .list-group-item {
   border: none; }
 
 .btn.btn-link[data-toggle="button"]:active,

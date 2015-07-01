@@ -14,6 +14,18 @@
   background-color: $bg-void;
 }
 
+.bg-default {
+  background-color: $bg-default;
+}
+
+.bg-none {
+  background-color: transparent;
+}
+
+.bg-secondary {
+  background-color: $brand-secondary;
+}
+
 //
 // Drop down
 // --------------------------------------------------
@@ -181,6 +193,10 @@
 
 .list-group {
   &.list-group-borderless .list-group-item {
+    border: none;
+  }
+
+  &.list-unstyled .list-group-item {
     border: none;
   }
 }

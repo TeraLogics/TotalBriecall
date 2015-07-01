@@ -42,6 +42,10 @@ function getShareLink(recall, url) {
 	return url + '/details/' + encodeURIComponent(recall.id);
 }
 
+function getRecallStyle(classificationLevel) {
+	return ['bg-danger text-danger', 'bg-warning text-warning', 'bg-info text-info'][classificationLevel - 1];
+}
+
 function getGravatar(email, size) {
 	// MD5 (Message-Digest Algorithm) by WebToolkit
 	var MD5 = function (s) {
@@ -280,11 +284,8 @@ function getGravatar(email, size) {
 		min-height: 100px;
 	}
 
-	.steps > li:before {
-		content: counter(step, upper-roman);
+	.classification-level {
 		font-size: 40px;
-		background: rgba(0, 0, 0, 0.3);
-		color: white;
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -294,17 +295,8 @@ function getGravatar(email, size) {
 		text-align: center;
 		font-family: 'Times New Roman';
 	}
-
-	.steps.c1 > li:before {
-		background: rgba(255, 0, 0, 0.7);
-	}
-
-	.steps.c2 > li:before {
-		background: rgba(255, 128, 0, 0.7);
-	}
-
-	.steps.c3 > li:before {
-		background: rgba(255, 255, 0, 0.7);
+	.classification-level:before {
+		content: counter(step, upper-roman);
 	}
 
 	.details {
@@ -324,8 +316,9 @@ function getGravatar(email, size) {
 <div class="container-flexible">
 	<div class="panel panel-default panel-expanded panel-main">
 		<div class="panel-body container">
-			<ol class="steps c<%= (recall.classificationlevel > 3) ? '' : recall.classificationlevel %>">
+			<ol class="steps">
 				<li>
+					<div class="classification-level  <%= getRecallStyle(recall.classificationlevel) %>"></div>
 					<h3 class="panel-title"><%= recall.product_description %></h3>
 					<h4 class="panel-subtitle">
 						<a data-toggle="tooltip" data-placement="bottom"

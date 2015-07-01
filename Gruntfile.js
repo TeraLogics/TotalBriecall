@@ -19,7 +19,8 @@ module.exports = function (grunt) {
 			js_dir: ['<%= project.web_dir %>/<%= project.http_js_path %>'],
 			img_dir: ['<%= project.web_dir %>/<%= project.http_img_path %>'],
 			gen_img_dir: ['<%= project.img_dir %>'],
-			font_dir: ['<%= project.web_dir %>/<%= project.http_font_path %>']
+			font_dir: ['<%= project.web_dir %>/<%= project.http_font_path %>'],
+			styleguide_css_dir: ['app/views/docs/styleguide/css']
 		},
 		sass: {
 			options: {
@@ -33,7 +34,8 @@ module.exports = function (grunt) {
 					style: 'expanded'
 				},
 				files: {
-					'<%= project.css_dir %>/brie.css': '<%= project.sass_dir %>/brie.scss'
+					'<%= project.css_dir %>/brie.css': '<%= project.sass_dir %>/brie.scss',
+					'<%= project.styleguide_css_dir %>/styleguide.css': '<%= project.sass_dir %>/styleguide.scss'
 				}
 			},
 			production: {
@@ -42,7 +44,8 @@ module.exports = function (grunt) {
 					sourceMap: false
 				},
 				files: {
-					'<%= project.css_dir %>/brie.css': '<%= project.sass_dir %>/brie.scss'
+					'<%= project.css_dir %>/brie.css': '<%= project.sass_dir %>/brie.scss',
+					'<%= project.styleguide_css_dir %>/styleguide.css': '<%= project.sass_dir %>/styleguide.scss'
 				}
 			}
 		},
