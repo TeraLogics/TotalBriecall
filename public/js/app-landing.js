@@ -87,7 +87,6 @@ requirejs([
 			lat: location.coords.latitude,
 			lon: location.coords.longitude
 		}).then(function (state) {
-			console.log(state);
 			$('#stateSelect').val(state).trigger("change");
 		}).fail(function () {
 			handleGeoLocError();
@@ -96,7 +95,6 @@ requirejs([
 
 	function saveState(state) {
 		var deferred = $.Deferred();
-		console.log(state);
 		$.ajax({
 			type: 'POST',
 			url: '/preferences',
