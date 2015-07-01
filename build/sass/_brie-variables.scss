@@ -1,8 +1,29 @@
+$navbar-height: 61px !default;
+
 $text-direction: ltr !default;
+
 $bg-default: #fff !default;
 $bg-void: darken($bg-default, 10%) !default;
-$brand-secondary: #fef !default;
-$navbar-height: 61px !default;
+
+$brand-primary: #03C9A9 !default;
+$brand-secondary: #F7CA18 !default;
+$brand-info: #59ABE3 !default;
+$brand-warning: #F5AB35 !default;
+$brand-danger: #EF4836 !default;
+
+$state-info-bg:                  lighten($brand-info, 30%);
+$state-info-text:                darken(desaturate($state-info-bg, 50%), 50%);
+$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%);
+
+$state-warning-bg:               lighten($brand-warning, 30%);
+$state-warning-text:             darken(desaturate($state-warning-bg, 50%), 50%);
+$state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%);
+
+$state-danger-bg:                lighten($brand-danger, 30%);
+$state-danger-text:              darken(desaturate($state-danger-bg, 50%), 50%);
+$state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%);
+
+$link-color:                     darken($brand-primary, 7%);
 
 // Font-awesome path
 $fa-font-path: "../fonts" !default;

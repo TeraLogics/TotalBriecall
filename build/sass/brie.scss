@@ -26,6 +26,26 @@
   background-color: $brand-secondary;
 }
 
+.bg-primary-darker {
+  background-color: darken($brand-primary, 10%);
+}
+.bg-secondary-darker {
+  background-color: darken($brand-secondary, 10%);
+}
+.bg-danger-darker {
+  background-color: darken(desaturate($state-danger-bg, 50%), 50%);
+}
+.bg-warning-darker {
+  background-color: darken(desaturate($state-warning-bg, 50%), 50%);
+}
+.bg-info-darker {
+  background-color: darken(desaturate($state-info-bg, 50%), 50%);
+}
+
+body .logo-fill {
+  fill: red;
+}
+
 //
 // Drop down
 // --------------------------------------------------
@@ -115,9 +135,11 @@
 
 .navbar-brand {
   & > img {
-    height: 20px;
+    height: 38px;
     display: inline-block;
     margin-right: 8px;
+    margin-top: -9px;
+    margin-bottom: -9px;
   }
 }
 .navmenu-brand {
