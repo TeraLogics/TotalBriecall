@@ -1,7 +1,10 @@
-## Color Palette
+# Overview
+This document is designed to present the style guide according to which the Total Briecall project's UI has been implemented.
 
-## Logo
+## Incorporated Frameworks
+The basis for the Total Briecall's style has been derived from [Bootstrap](http://getbootstrap.com/components/) framework.
 
-## More
+## Living Style Guide
+A [living style guide](https://www.totalbriecall.com/docs/styleguide) was created to reflect the latest look of the customized styles for the Total Briecall project. Below is a captured view of that guide.
 
-http://getbootstrap.com/components/
+![Style Guide](/docs/images/style-guide-capture.jpg?raw=true)
