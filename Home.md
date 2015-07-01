@@ -70,6 +70,6 @@ We made a best effort attempt to validate open source and freely available code 
 
 ## Sprint Closing & Retrospective Meetings
 
-[Sprint Closing Meetings](docs/files/Sprint-Closing-&-Retrospective-Documentation#sprint-closing-meetings)
+[Sprint Closing Meetings](docs/Sprint-Closing-&-Retrospective-Documentation.md#sprint-closing-meetings)
 
-[Sprint Retrospective](docs/files/Sprint-Closing-&-Retrospective-Documentation#sprint-retrospective)
+[Sprint Retrospective](docs/Sprint-Closing-&-Retrospective-Documentation.md#sprint-retrospective)
