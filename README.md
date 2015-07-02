@@ -1,4 +1,13 @@
-                                          https://www.totalbriecall.com
+https://www.totalbriecall.com
+
+# Total Briecall
+
+[![Build](https://travis-ci.org/TeraLogics/TotalBriecall.png)](https://travis-ci.org/TeraLogics/TotalBriecall)
+[![Coverage Status](https://coveralls.io/repos/TeraLogics/TotalBriecall/badge.svg)](https://coveralls.io/r/TeraLogics/TotalBriecall)
+[![Quality](https://codeclimate.com/github/TeraLogics/TotalBriecall.png)](https://codeclimate.com/github/TeraLogics/TotalBriecall)
+[![Dependencies](https://david-dm.org/TeraLogics/TotalBriecall.png)](https://david-dm.org/TeraLogics/TotalBriecall)
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/TeraLogics/TotalBriecall/tree/master)
 
 TeraLogics, LLC. is the prime contractor delivering a widely used web application to DoD and IC communities. We've grown the system from a prototype into one of the most used DoD websites by executing 2 week sprints, deploying weekly, and communicating directly with users stationed all over the world. Our program requirements allow us to develop innovative user-focused features, respond quickly, and make the entire government team lean and efficient. Our approach differs from standard government processes and acquisitions, but our results validate that there are better and faster ways to deliver software in the government.
 
