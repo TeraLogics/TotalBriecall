@@ -5,8 +5,6 @@
 [![Quality](https://codeclimate.com/github/TeraLogics/TotalBriecall.png)](https://codeclimate.com/github/TeraLogics/TotalBriecall)
 [![Dependencies](https://david-dm.org/TeraLogics/TotalBriecall.png)](https://david-dm.org/TeraLogics/TotalBriecall)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/TeraLogics/TotalBriecall/tree/master)
-
 ## Our Team
 
 [Agile Delivery Team](/docs/Agile-Delivery-Team.md)
