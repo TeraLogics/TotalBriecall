@@ -14,6 +14,7 @@ requirejs([
 	'bootstrap',
 	'JasnyBootstrap'
 ], function ($, _, ejs, UsStates, GeoCode, select2, bootstrap, JasnyBootstrap) {
+
 	$(document).ready(function () {
 		$('#stateModal').on('shown.bs.modal', function () {
 			$('#stateInput').focus();
@@ -71,7 +72,7 @@ requirejs([
 
 	function promptForGeolocation() {
 		if ('geolocation' in navigator) {
-			navigator.geolocation.getCurrentPosition(getLatLon, handleGeoLocError, { timeout: 1500, enableHighAccuracy: false, maximumAge: 30000 });
+			navigator.geolocation.getCurrentPosition(getLatLon, handleGeoLocError, { timeout: 3000, enableHighAccuracy: false, maximumAge: 30000 });
 		} else {
 			handleGeoLocError();
 		}

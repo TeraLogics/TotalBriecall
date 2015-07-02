@@ -5910,10 +5910,6 @@ button.close, .recall-summary-card button.recall-card-toggle {
     right: -5px;
     border-radius: 0 2px 2px 0; }
 
-.btn-group > .btn:last-child:not(:first-child) .btn-label, .btn-group > .dropdown-toggle:not(:first-child) .btn-label {
-  border-bottom-left-radius: 0px;
-  border-top-left-radius: 0px; }
-
 .nav-tabs-bottom {
   border-bottom: 0;
   border-top: 1px solid #ddd; }
@@ -5993,15 +5989,15 @@ button.close, .recall-summary-card button.recall-card-toggle {
   position: fixed;
   z-index: 1030;
   top: 0;
-  border-radius: 0;
-  overflow-y: auto; }
+  border-radius: 0; }
 
 .navmenu-fixed-left,
 .navbar-offcanvas.navmenu-fixed-left {
   left: 0;
   right: auto;
   border-width: 0 1px 0 0;
-  bottom: 0; }
+  bottom: 0;
+  overflow-y: auto; }
 
 .navmenu-fixed-right,
 .navbar-offcanvas {
@@ -6246,11 +6242,6 @@ button.close, .recall-summary-card button.recall-card-toggle {
       border-top-right-radius: 4px;
       border-top-left-radius: 4px;
       border-width: 1px 1px 0 1px; } }
-
-.offcanvas {
-  display: none; }
-  .offcanvas.in {
-    display: block; }
 
 @media (max-width: 767px) {
   .offcanvas-xs {
