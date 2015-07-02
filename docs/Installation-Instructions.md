@@ -10,7 +10,7 @@ This application utilizes a number of external APIs to provide users with a robu
 
 See [Configurations](/docs/Configuration.md)
 
-## Heroku 
+# Heroku 
 
 We wanted to make deployment as easy as possible and we actually tried a few different things. Heroku provides a simple url that configures the application for you based on what the application requires.  We chose to put this on the GitHub page for ease of access. Clicking the button provides a simple one step deployment. The following instruction will walk you through exactly what you need to do to deploy this application as well as link you to any additional walkthroughs on how to configure advanced options.
 
@@ -48,6 +48,24 @@ _**NOTE**: You must be an administrator of the GitHub repository in order to con
 1. Select the 'Wait for CI to pass before deploy' check box, then click the 'Enable Automatic Deploys' button
 
 ![Enabling Continuous Integration](/docs/images/heroku-ci.gif?raw=true)
+
+# Docker
+
+The docker container can be built and started in multiple ways, but we have provided a simple setup as a proof-of-concept.  This configuration does not use HTTPS or load balancing, as it assumes existing web hosting infrastructure exists outside of this container. 
+
+These instructions were tested on Windows using [Boot2Docker](https://github.com/boot2docker/windows-installer/releases/tag/v1.7.0), installation of Docker or Boot2Docker is outside the scope of these installation instructions.  Run the following commands from the Docker shell:
+
+1. git clone https://github.com/TeraLogics/TotalBriecall.git
+1. cd TotalBriecall
+1. docker pull mongo
+1. docker run -itd --name mongo mongo
+1. docker build -t teralogics/totalbriecall .
+1. docker run -itd --name app1 --link mongo:mongo -p 80:5000 teralogics/totalbriecall
+1. docker run -itd --name app2 --link mongo:mongo -p 81:5000 teralogics/totalbriecall
+
+You now have 2 TotalBriecall web applications communicating with a MongoDB. 
+ 
+# Obtaining API Keys
 
 ## Creating an Open FDA API Key (Optional)
 
