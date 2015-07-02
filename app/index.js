@@ -50,6 +50,11 @@ global.__dalsdir = path.join(global.__appdir, 'dals');
 // Load application configuration
 global.config = require(path.join(global.__appdir, 'config'));
 
+// If we are using docker, get information from the linked mongodb
+if (global.config.MONGO_PORT_27017_TCP_ADDR && global.config.MONGO_PORT_27017_TCP_PORT) {
+	global.config.MONGOLAB_URI = "mongodb://" + global.config.MONGO_PORT_27017_TCP_ADDR + ":" + global.config.MONGO_PORT_27017_TCP_PORT;
+}
+
 var app = express(),
 	readDir = Promise.promisify(fs.readdir);
 
