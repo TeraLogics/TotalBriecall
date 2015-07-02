@@ -12,6 +12,7 @@ var _ = require('underscore'),
 	consolidate = require('consolidate'),
 	cookieParser = require('cookie-parser'),
 	errorHandler = require('errorhandler'),
+	escape = require('escape-html'),
 	express = require('express'),
 	expressValidator = require('express-validator'),
 	favicon = require('serve-favicon'),
@@ -21,6 +22,7 @@ var _ = require('underscore'),
 	mongoose = require('mongoose'),
 	path = require('path'),
 	Promise = require('bluebird'),
+	sanitize = require('sanitize-html'),
 	session = require('express-session'),
 	mongoStore = require('connect-mongo')(session);
 
@@ -74,6 +76,8 @@ app.use(compression({
 
 app.locals._ = _; // use underscore in views
 app.locals.moment = moment; // use moment in views
+app.locals.sanitize = sanitize; // use sanitize in views
+app.locals.escape = escape; // use escape in views
 app.enable('trust proxy');
 
 // assign the template engine to .ejs files
