@@ -30,7 +30,8 @@ To modify any additional configuration values see [Configuration Settings](/docs
 
 ## Login / Create Account
 
-1. Open a browser and navigate to [Heroku](https://id.heroku.com/login)
+1. Open a browser and navigate to [Heroku] (https://id.heroku.com/login) <br>
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/TeraLogics/TotalBriecall/tree/master)
 1. Enter your 'Email address' and 'Password'  
 _**NOTE**: If you do not have a Heroku account, then select the Sign up option at the bottom and fill in the required fields._
 1. Click the 'Log In' button   
