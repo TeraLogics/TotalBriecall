@@ -1,4 +1,4 @@
-https://www.totalbriecall.com
+                                          https://www.totalbriecall.com
 
 TeraLogics, LLC. is the prime contractor delivering a widely used web application to DoD and IC communities. We've grown the system from a prototype into one of the most used DoD websites by executing 2 week sprints, deploying weekly, and communicating directly with users stationed all over the world. Our program requirements allow us to develop innovative user-focused features, respond quickly, and make the entire government team lean and efficient. Our approach differs from standard government processes and acquisitions, but our results validate that there are better and faster ways to deliver software in the government.
 
