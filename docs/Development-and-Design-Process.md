@@ -34,7 +34,7 @@ Our overall development process is fairly simple. Design -> Prototype -> Impleme
 
 ### Version Control
 
-We used git for version control, primarily [GitHub](/docs/Tools.md#github) for this project. We set up a repository, made some basic commits, then branched out from our master into a development branch:
+We used git for version control, primarily [GitHub](https://github.com/TeraLogics/TotalBriecall/blob/master/docs/Tools.md#github) for this project. We set up a repository, made some basic commits, then branched out from our master into a development branch:
 
 ![Branches](/docs/images/branches.png?raw=true)
 
@@ -46,7 +46,7 @@ Once our initial repository was set up and the branches were in place, we begant
 
 These branches were hooked into our [Slack](http://slack.com) development channels so our team received notifications as commits were made.
 
-![Slack Integration](/docs/images/SlackIntegration.png?raw=true)
+![Slack Integration](/docs/images/SlackIntegration.PNG?raw=true)
 
 Along with general feature development, our developers were also responsible for writing and running unit tests before committing code. If any unit tests fail, the team member became responsible for resolving the issues, and rerunning the unit test to ensure quality. The developers also work closely with the test teams to ensure that unit tests cover all test cases. Our test team also assisted in running unit tests, documenting output, running integration tests, and running load tests. Our CI processes were kicked off when our branches were committed. The CI process runs the unit tests on environments that look like our production environment. The test team was also responsible for validating builds, CI reports, and hand testing our staging environments.
 
@@ -57,7 +57,7 @@ Part of our quality control process included code reviews. If the change was a b
 ![Code Review](/docs/images/Code%20Review%20Meeting.jpg?raw=true)
 ### Code Climate
 
-Code Climate is a tool that we use during our development process to evaluate the quality of our code over time. You can see a more detailed view of what it does and how it works on the [Continuous Integration](/docs/Continuous-Integration#code-climate) wiki page. Ultimately, we use this tool to help our team identify pitfalls, and quality issues in our code. Our Testing/QC team is responsible for reviewing this content and reporting important issues.
+Code Climate is a tool that we use during our development process to evaluate the quality of our code over time. You can see a more detailed view of what it does and how it works on the [Continuous Integration](https://github.com/TeraLogics/TotalBriecall/blob/master/docs/Continuous-Integration.md#code-climate) wiki page. Ultimately, we use this tool to help our team identify pitfalls, and quality issues in our code. Our Testing/QC team is responsible for reviewing this content and reporting important issues.
 
 ![Code Climate](/docs/images/CodeClimate.png?raw=true)
 
