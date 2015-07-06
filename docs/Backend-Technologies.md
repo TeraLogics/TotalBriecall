@@ -16,7 +16,7 @@ Code Climate is a product that analyzes code in your repositories for security i
 
 ## [Apidoc.js](http://apidocjs.com/ ) _(Open Source)_
 
-Apidoc.js is an API documentation framework that uses JSDoc standards to dynamically generate API documentation. This is ideally a post build step to dynamically generate API documentation; however, in this project the API documentation is baked into the repository. See [Backend Design Evolution](Backend-Design-Evolution) for more information.
+Apidoc.js is an API documentation framework that uses JSDoc standards to dynamically generate API documentation. This is ideally a post build step to dynamically generate API documentation; however, in this project the API documentation is baked into the repository. See [Backend Design Evolution](https://github.com/TeraLogics/TotalBriecall/blob/master/docs/Backend-Design-Evolution.md) for more information.
 
 ## [JSHint](http://jshint.com/) _(Open Source)_
 
