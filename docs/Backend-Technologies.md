@@ -32,7 +32,7 @@ Express is a minimal and flexible Node.js web application framework that provide
 
 ## [Heroku](https://www.heroku.com/)
 
-Heroku is a leading PaaS solution allowing customers to focus on application development, not the infrastructure behind it. We use this as our PaaS solution. We chose it because of its easy integration with other tools, such as [GitHub](/docs/Tools.md#github) and [Travis CI](/docs/Backend-Technologies#travis-ci-open-source-hosted).
+Heroku is a leading PaaS solution allowing customers to focus on application development, not the infrastructure behind it. We use this as our PaaS solution. We chose it because of its easy integration with other tools, such as [GitHub](https://github.com/TeraLogics/TotalBriecall/blob/master/docs/Tools.md#github) and [Travis CI](https://github.com/TeraLogics/TotalBriecall/blob/master/docs/Backend-Technologies.md#travis-ci-open-source-hosted).
 
 ## [Mocha](http://mochajs.org/) _(Open Source)_
 
@@ -44,7 +44,7 @@ MongoDB is a document based data store. We use it for session handling and as ou
 
 ## [New Relic](http://newrelic.com/) _(Paid)_
 
-New Relic is a software/system analytics and data collection platform which provides real-time and historical data about your software and system. We use this as a piece of our [Continuous Monitoring](/docs/Continuous-Monitoring.md) solution.
+New Relic is a software/system analytics and data collection platform which provides real-time and historical data about your software and system. We use this as a piece of our [Continuous Monitoring](https://github.com/TeraLogics/TotalBriecall/blob/master/docs/Continuous-Monitoring.md) solution.
 
 ## [Node.js](https://nodejs.org/) _(Open Source)_
 
@@ -52,7 +52,7 @@ Node.js is a platform built on Chrome's JavaScript runtime for easily building f
 
 ## [Pingdom](https://www.pingdom.com/) _(Paid)_
 
-Pingdom is a website monitoring tool which keeps track of uptime. We use this as a piece of our [Continuous Monitoring](/docs/Continuous-Monitoring.md) solution.
+Pingdom is a website monitoring tool which keeps track of uptime. We use this as a piece of our [Continuous Monitoring](https://github.com/TeraLogics/TotalBriecall/blob/master/docs/Continuous-Monitoring.md) solution.
 
 ## [Sinon](http://sinonjs.org/) _(Open Source)_
 
@@ -60,7 +60,7 @@ Sinon is a library that provides standalone test spies, stubs, and mocks for Jav
 
 ## [StatusPage.io](https://www.statuspage.io/) _(Paid)_
 
-StatusPage.io is a tool which allows our customer to see an externally hosted status page for the overall health of our site. 'Is the site up?' is the question this solution answers. It provides an easy way for users to get notifications of downtime and a platform for operations to communicate with simple statuses. We use this as a piece of our [Continuous Monitoring](/docs/Continuous-Monitoring.md) solution.
+StatusPage.io is a tool which allows our customer to see an externally hosted status page for the overall health of our site. 'Is the site up?' is the question this solution answers. It provides an easy way for users to get notifications of downtime and a platform for operations to communicate with simple statuses. We use this as a piece of our [Continuous Monitoring](https://github.com/TeraLogics/TotalBriecall/blob/master/docs/Continuous-Monitoring.md) solution.
 
 ## [Supertest](https://github.com/visionmedia/supertest) _(Open Source)_
 
