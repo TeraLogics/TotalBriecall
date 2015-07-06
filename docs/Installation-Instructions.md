@@ -12,7 +12,7 @@ See [Configurations](/docs/Configuration.md)
 
 # Heroku 
 
-We wanted to make deployment as easy as possible and we actually tried a few different things. Heroku provides a simple url that configures the application for you based on what the application requires.  We chose to put this on the GitHub page for ease of access. Clicking the button provides a simple one step deployment. The following instruction will walk you through exactly what you need to do to deploy this application as well as link you to any additional walkthroughs on how to configure advanced options.
+We wanted to make deployment as easy as possible and we actually tried a few different things. Heroku provides a simple url that configures the application for you based on what the application requires.  Clicking the button provides a simple one step deployment. The following instruction will walk you through exactly what you need to do to deploy this application as well as link you to any additional walkthroughs on how to configure advanced options.
 
 # Step-By-Step Deployment Instructions for [Total Briecall](https://www.totalbriecall.com)
 
@@ -82,7 +82,7 @@ You now have 2 TotalBriecall web applications communicating with a MongoDB.
 
 ## Creating a Facebook Application ID (Optional)
 
-Facebook integration was not completed for production due to the waiting period necessary by Facebook to approve sharing.  Although the feature was usable by our team in the development environment, we choose not make it required for anyone else deploying our code, and did not enable it on [https://www.totalbriecall.com](https://www.totalbriecall.com)
+Facebook integration was not completed for production due to the waiting period necessary by Facebook to approve sharing.  Although the feature was usable by our team in the development environment, we chose not make it required for anyone else deploying our code, and did not enable it on [https://www.totalbriecall.com](https://www.totalbriecall.com)
 
 1. Log into or create an account on Facebook.
 1. Go to [Facebook's Developers page](https://developers.facebook.com). It will ask you to accept their user agreement. If you agree, continue.
