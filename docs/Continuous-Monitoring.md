@@ -28,7 +28,7 @@ This tool monitors the internals of our application providing in-depth analysis 
 
 ### Error Reporting
 
-[New Relic](http://newrelic.com/) reports any errors that are produced in the code which help our teams to identify issues as they happen and provide state information so the errors are easy to troubleshoot, fix, unit test, run through the [CI](Continuous-Integration) system, and ultimately deploy automatically.
+[New Relic](http://newrelic.com/) reports any errors that are produced in the code which help our teams to identify issues as they happen and provide state information so the errors are easy to troubleshoot, fix, unit test, run through the CI system, and ultimately deploy automatically.
 
 ![Error Events](/docs/images/NewRelicErrors.png?raw=true)
 
