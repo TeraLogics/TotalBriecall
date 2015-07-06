@@ -8184,6 +8184,17 @@ button.close, .recall-summary-card button.recall-card-toggle {
 .fa-medium:before {
   content: ""; }
 
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
 .bg-void {
   background-color: #e6e6e6; }
 
@@ -8258,7 +8269,8 @@ body .logo-fill {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
-    content: ''; }
+    content: '';
+    margin-left: -.5rem; }
   .valign-helper > .valign {
     display: inline-block;
     vertical-align: middle; }
@@ -8312,6 +8324,7 @@ body .logo-fill {
   position: relative;
   left: 0;
   min-height: 100%;
+  height: 100%;
   padding: 61px 0 0 0;
   background: #e6e6e6; }
 
@@ -8624,6 +8637,15 @@ body .logo-fill {
 
 .comment-form {
   margin-bottom: 36px; }
+
+.hero-banner {
+  height: 100%;
+  background-image: url(/img/hero.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  text-align: center; }
 
 .spinner.spinner-pulsation,
 .spinner.spinner-pulsation:before,
