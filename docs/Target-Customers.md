@@ -1,1 +1,0 @@
-![Our Customers](/docs/images/user-chart.jpg?raw=true)
