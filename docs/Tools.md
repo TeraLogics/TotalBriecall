@@ -31,7 +31,7 @@ To achieve these goals and streamline delivery, we use the following variety of 
 ### [Github] (https://github.com/)
  - Overview
    - Web-based code repository manager
-   - Contains [wiki] (https://github.com/TeraLogics/TotalBriecall/wiki) and [issue] (https://github.com/TeraLogics/TotalBriecall/issues) tracking features
+   - Contains wiki and [issue] (https://github.com/TeraLogics/TotalBriecall/issues) tracking features
    - Assists with code reviews
    - Primary mechanism for tracking and managing [bugs & issues] (https://github.com/TeraLogics/TotalBriecall/issues) reported to delivery team 
    - Uses branches to store code, along with the wiki for internal docs, such as:
