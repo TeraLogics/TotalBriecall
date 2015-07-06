@@ -1,6 +1,6 @@
 # Configuration Management, Heroku, and You
 
-_Looking for the application [configuration](/docs/Configuration.md)?_
+_Looking for the application [configuration](https://github.com/TeraLogics/TotalBriecall/blob/master/docs/Configuration.md)?_
 
 Using a PaaS solution (Heroku) has greatly reduced the configuration Management tasks for Total Briecall.
 
