@@ -17,7 +17,7 @@ We wanted to make deployment as easy as possible and we actually tried a few dif
 # Step-By-Step Deployment Instructions for [Total Briecall](https://www.totalbriecall.com)
 
 1. Click [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/TeraLogics/TotalBriecall/tree/master)
-   _**NOTE**: If you do not have a Heroku account you need to create one at this point. See [Login / Create Account](/docs/Installation-Instructions.md#login--create-account) for further instructions_.
+   - _**NOTE**: If you do not have a Heroku account you need to create one at this point. See [Login / Create Account](/docs/Installation-Instructions.md#login--create-account) for further instructions_.
 1. Fill in the App Name field (_this is optional_).
 1. Scroll down to the Config Variable section.
    1. If you have a Facebook App ID enter it in the `FACEBOOK_APPID` field. If you do not have one, you can deploy the application and add your App ID later. Your application will not have direct Facebook sharing integration until this is configured. Follow the link for instructions on [Creating a Facebook Application ID](/docs/Installation-Instructions.md#creating-a-facebook-application-id-optional).
